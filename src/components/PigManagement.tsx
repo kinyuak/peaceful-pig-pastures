@@ -26,6 +26,8 @@ interface PigManagementProps {
 const PigManagement = ({ onAddPig }: PigManagementProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedPig, setSelectedPig] = useState<Pig | null>(null);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   // Sample data - in real app this would come from a database
   const [pigs] = useState<Pig[]>([
@@ -80,6 +82,17 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
   ]);
 
   const categories = ['All', 'Sow', 'Boar', 'Weaner', 'Porker'];
+
+  const handleViewDetails = (pig: Pig) => {
+    setSelectedPig(pig);
+    console.log('Viewing details for pig:', pig.name);
+  };
+
+  const handleEditPig = (pig: Pig) => {
+    setSelectedPig(pig);
+    setShowEditForm(true);
+    console.log('Editing pig:', pig.name);
+  };
 
   const filteredPigs = pigs.filter(pig => {
     const matchesSearch = pig.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -218,7 +231,7 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
         {/* Pig Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPigs.map((pig) => (
-            <Card key={pig.id} className="hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+            <Card key={pig.id} className="hover:shadow-lg transition-shadow duration-200">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -259,10 +272,20 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
                   </div>
                   <div className="pt-3 border-t">
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleViewDetails(pig)}
+                      >
                         View Details
                       </Button>
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleEditPig(pig)}
+                      >
                         Edit
                       </Button>
                     </div>
@@ -288,6 +311,118 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
             <Button onClick={onAddPig} className="bg-farm-blue-600 hover:bg-farm-blue-700">
               Add New Pig
             </Button>
+          </div>
+        )}
+
+        {/* Pig Details Modal */}
+        {selectedPig && !showEditForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">{selectedPig.name}</h3>
+                  <p className="text-gray-600">ID: {selectedPig.pigId}</p>
+                </div>
+                <Button 
+                  onClick={() => setSelectedPig(null)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Close
+                </Button>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-900">Basic Information</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Breed:</span>
+                      <span className="font-medium">{selectedPig.breed}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Date of Birth:</span>
+                      <span className="font-medium">{new Date(selectedPig.dateOfBirth).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Category:</span>
+                      <Badge variant="secondary">{selectedPig.category}</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Current Weight:</span>
+                      <span className="font-medium">{selectedPig.weight} kg</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-900">Health & Status</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Status:</span>
+                      <Badge className={getStatusColor(selectedPig.status)}>{selectedPig.status}</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Health Status:</span>
+                      <Badge className={getHealthStatusColor(selectedPig.healthStatus)}>{selectedPig.healthStatus}</Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Last Checkup:</span>
+                      <span className="font-medium">{new Date(selectedPig.lastCheckup).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 pt-6 border-t">
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => handleEditPig(selectedPig)}
+                    className="bg-farm-blue-600 hover:bg-farm-blue-700"
+                  >
+                    Edit Pig
+                  </Button>
+                  <Button 
+                    onClick={() => setSelectedPig(null)}
+                    variant="outline"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Form Modal */}
+        {showEditForm && selectedPig && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+              <h3 className="text-lg font-semibold mb-4">Edit {selectedPig.name}</h3>
+              <p className="text-gray-600 mb-4">Edit form will be implemented here with all pig details.</p>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => {
+                    setShowEditForm(false);
+                    setSelectedPig(null);
+                  }}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowEditForm(false);
+                    setSelectedPig(null);
+                    console.log('Pig updated');
+                  }}
+                  className="flex-1 bg-farm-blue-600 hover:bg-farm-blue-700"
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </div>

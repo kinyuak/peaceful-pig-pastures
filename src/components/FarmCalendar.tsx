@@ -7,6 +7,7 @@ import { Calendar, Plus, Clock, Syringe, Scale } from 'lucide-react';
 
 const FarmCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showAddEvent, setShowAddEvent] = useState(false);
   
   // Sample events - in real app this would come from database
   const events = [
@@ -44,6 +45,31 @@ const FarmCalendar = () => {
     }
   ];
 
+  const handleAddEvent = () => {
+    setShowAddEvent(true);
+    console.log('Add Event clicked');
+  };
+
+  const handleScheduleVaccination = () => {
+    console.log('Schedule Vaccination clicked');
+    alert('Vaccination scheduling feature coming soon!');
+  };
+
+  const handlePlanWeightCheck = () => {
+    console.log('Plan Weight Check clicked');
+    alert('Weight check planning feature coming soon!');
+  };
+
+  const handleSetBreedingDate = () => {
+    console.log('Set Breeding Date clicked');
+    alert('Breeding date setting feature coming soon!');
+  };
+
+  const handleHealthCheckup = () => {
+    console.log('Health Checkup clicked');
+    alert('Health checkup scheduling feature coming soon!');
+  };
+
   const getEventTypeColor = (type: string) => {
     switch (type) {
       case 'health': return 'bg-red-100 text-red-800';
@@ -76,7 +102,10 @@ const FarmCalendar = () => {
             <h1 className="text-3xl font-bold text-gray-900">Farm Calendar</h1>
             <p className="text-gray-600 mt-2">Schedule and track important farm activities</p>
           </div>
-          <Button className="bg-farm-blue-600 hover:bg-farm-blue-700">
+          <Button 
+            onClick={handleAddEvent}
+            className="bg-farm-blue-600 hover:bg-farm-blue-700"
+          >
             <Plus className="h-4 w-4 mr-2" />
             Add Event
           </Button>
@@ -116,6 +145,7 @@ const FarmCalendar = () => {
                     return (
                       <div
                         key={i}
+                        onClick={() => console.log('Date clicked:', date.toDateString())}
                         className={`
                           p-2 h-12 flex items-center justify-center text-sm cursor-pointer rounded-md relative
                           ${isCurrentMonth ? 'text-gray-900' : 'text-gray-400'}
@@ -183,19 +213,35 @@ const FarmCalendar = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleScheduleVaccination}
+                >
                   <Syringe className="h-4 w-4 mr-2" />
                   Schedule Vaccination
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handlePlanWeightCheck}
+                >
                   <Scale className="h-4 w-4 mr-2" />
                   Plan Weight Check
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleSetBreedingDate}
+                >
                   <Calendar className="h-4 w-4 mr-2" />
                   Set Breeding Date
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleHealthCheckup}
+                >
                   <Clock className="h-4 w-4 mr-2" />
                   Health Checkup
                 </Button>
@@ -203,6 +249,34 @@ const FarmCalendar = () => {
             </Card>
           </div>
         </div>
+
+        {/* Add Event Modal Placeholder */}
+        {showAddEvent && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+              <h3 className="text-lg font-semibold mb-4">Add New Event</h3>
+              <p className="text-gray-600 mb-4">Event creation form will be implemented here.</p>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowAddEvent(false)}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowAddEvent(false);
+                    console.log('Event created');
+                  }}
+                  className="flex-1 bg-farm-blue-600 hover:bg-farm-blue-700"
+                >
+                  Create Event
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
