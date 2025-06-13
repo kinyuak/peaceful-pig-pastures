@@ -20,10 +20,12 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center">
             <h1 className="text-2xl font-bold text-farm-blue-700">
               Peaceful Meadow Farm
             </h1>
+          </div>
+          <div className="flex items-center space-x-8">
             <div className="flex space-x-4">
               {tabs.map((tab) => {
                 const IconComponent = tab.icon;
@@ -44,13 +46,6 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
               })}
             </div>
           </div>
-          <Button 
-            onClick={onAddPig}
-            className="bg-farm-blue-600 hover:bg-farm-blue-700 text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Pig
-          </Button>
         </div>
       </div>
     </nav>

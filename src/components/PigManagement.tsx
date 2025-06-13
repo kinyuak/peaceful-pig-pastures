@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Users, Calendar } from 'lucide-react';
+import { Search, Users, Eye, Edit } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import EditPigForm from './EditPigForm';
 
 interface Pig {
@@ -31,60 +33,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
   const [selectedPig, setSelectedPig] = useState<Pig | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  // Sample data including TestSow with demo data
+  // Only TestSow data
   const [pigs, setPigs] = useState<Pig[]>([
-    {
-      id: '1',
-      name: 'Bella',
-      pigId: 'P001',
-      breed: 'Yorkshire',
-      dateOfBirth: '2023-03-15',
-      weight: 180,
-      category: 'Sow',
-      status: 'Alive',
-      healthStatus: 'Healthy',
-      lastCheckup: '2024-06-01',
-      notes: 'Good breeding record, calm temperament'
-    },
-    {
-      id: '2',
-      name: 'Max',
-      pigId: 'P002',
-      breed: 'Duroc',
-      dateOfBirth: '2022-08-10',
-      weight: 250,
-      category: 'Boar',
-      status: 'Alive',
-      healthStatus: 'Healthy',
-      lastCheckup: '2024-05-28',
-      notes: 'Primary breeding boar, excellent genetics'
-    },
-    {
-      id: '3',
-      name: 'Luna',
-      pigId: 'P003',
-      breed: 'Hampshire',
-      dateOfBirth: '2024-01-20',
-      weight: 45,
-      category: 'Weaner',
-      status: 'Alive',
-      healthStatus: 'Under Treatment',
-      lastCheckup: '2024-06-10',
-      notes: 'Recovery from minor digestive issues'
-    },
-    {
-      id: '4',
-      name: 'Rocky',
-      pigId: 'P004',
-      breed: 'Landrace',
-      dateOfBirth: '2023-11-05',
-      weight: 120,
-      category: 'Porker',
-      status: 'Alive',
-      healthStatus: 'Healthy',
-      lastCheckup: '2024-06-05',
-      notes: 'Ready for market soon'
-    },
     {
       id: '5',
       name: 'TestSow',
@@ -97,23 +47,36 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       healthStatus: 'Healthy',
       lastCheckup: '2024-06-12',
       boarTagNumber: 'B001',
-      notes: `FARROWING RECORDS:
-Litter 4: Due 4/10/2024, Actual 4/7/2024 - 2 alive (1M, 1F) + 1 adopted = 3 total
-Litter 5: Due 24/10/2024, Actual 25/10/2024 - 12 alive (6M, 6F)
-Litter 6: Due 1/6/2025, Actual 1/6/2025 - 11 alive
+      notes: `PEACEFUL MEADOW FARM
+FARROWING RECORDS
+
+SOW TAG 0980 BOAR TAG
+
+LITTER 4: Due 4/10/2024, Actual 4/7/2024 - 2 alive (1M, 1F) + 1 adopted = 3 total
+LITTER 5: Due 24/10/2024, Actual 25/10/2024 - 12 alive (6M, 6F)
+LITTER 6: Due 1/6/2025, Actual 1/6/2025 - 11 alive
+
+TEETH CLIPPING & CASTRATION:
+- 4th Litter: Teeth clipping 4/9/2024, Hernia condition
+- 5th Litter: Teeth clipping 30/10/2024, Male castration 21/11/2024 - Good condition
+- 6th Litter: Teeth clipping 3/6/2025
+
+WEANERS & PORKERS:
+- 6/26/2024: 3 weaners - Good condition
+- 8/26/2024: 2 porkers - Good condition
+- 2/1/2025: 9 weaners - Good condition
 
 HEALTH RECORDS:
+4th Litter:
 - 7/16/2024: Weaner worm infestation, dewormed - 3 survived
-- 8/15/2024: Weaner diarrhea, given Amprocox - 1 died, rest recovered
+- 8/15/2024: Weaner diarrhea, given Amprocox - 1 died, rest good
+
+5th Litter:
 - 27/10/2024: Piglets - 2 died, 10 remain
 - 30/10/2024: Iron deficiency prevention injection - 1 died, rest good
 
 SALES:
-- Jan 2025: 1 weaner sold (Geoffrey)
-
-OPERATIONS:
-- Teeth clipping: 4/9/2024 (4th litter), 30/10/2024 (5th litter), 3/6/2025 (6th litter)
-- Male castration: 21/11/2024 (5th litter) - good condition`
+- Jan 2025: 1 weaner sold (Geoffrey)`
     }
   ]);
 
@@ -166,32 +129,16 @@ OPERATIONS:
     }
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Sow': return '🐷';
-      case 'Boar': return '🐗';
-      case 'Weaner': return '🐽';
-      case 'Porker': return '🐖';
-      default: return '🐷';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="mb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Pig Management</h1>
               <p className="text-gray-600 mt-2">Monitor and manage your pig inventory</p>
             </div>
-            <Button 
-              onClick={onAddPig}
-              className="bg-farm-blue-600 hover:bg-farm-blue-700"
-            >
-              Add New Pig
-            </Button>
           </div>
 
           {/* Stats Cards */}
@@ -274,91 +221,84 @@ OPERATIONS:
           </div>
         </div>
 
-        {/* Pig Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPigs.map((pig) => (
-            <Card key={pig.id} className="hover:shadow-lg transition-shadow duration-200">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="text-3xl">{getCategoryIcon(pig.category)}</div>
-                    <div>
-                      <CardTitle className="text-lg">{pig.name}</CardTitle>
-                      <CardDescription>ID: {pig.pigId}</CardDescription>
-                    </div>
-                  </div>
-                  <Badge className={getStatusColor(pig.status)}>
-                    {pig.status}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Breed:</span>
-                    <span className="font-medium">{pig.breed}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Category:</span>
-                    <Badge variant="secondary">{pig.category}</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Weight:</span>
-                    <span className="font-medium">{pig.weight} kg</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Health:</span>
-                    <Badge className={getHealthStatusColor(pig.healthStatus)}>
-                      {pig.healthStatus}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Last Checkup:</span>
-                    <span className="text-sm">{new Date(pig.lastCheckup).toLocaleDateString()}</span>
-                  </div>
-                  <div className="pt-3 border-t">
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => handleViewDetails(pig)}
-                      >
-                        View Details
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => handleEditPig(pig)}
-                      >
-                        Edit
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Pig Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Livestock Inventory</CardTitle>
+            <CardDescription>Complete overview of all pigs in the farm</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Breed</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Weight (kg)</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Health</TableHead>
+                  <TableHead>Last Checkup</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPigs.map((pig) => (
+                  <TableRow key={pig.id}>
+                    <TableCell className="font-medium">{pig.name}</TableCell>
+                    <TableCell>{pig.pigId}</TableCell>
+                    <TableCell>{pig.breed}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{pig.category}</Badge>
+                    </TableCell>
+                    <TableCell>{pig.weight}</TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(pig.status)}>
+                        {pig.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getHealthStatusColor(pig.healthStatus)}>
+                        {pig.healthStatus}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{new Date(pig.lastCheckup).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleViewDetails(pig)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleEditPig(pig)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
 
-        {filteredPigs.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <Users className="h-16 w-16 mx-auto" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No pigs found</h3>
-            <p className="text-gray-600 mb-4">
-              {searchTerm || selectedCategory !== 'All' 
-                ? "Try adjusting your search or filter criteria."
-                : "Get started by adding your first pig to the system."
-              }
-            </p>
-            <Button onClick={onAddPig} className="bg-farm-blue-600 hover:bg-farm-blue-700">
-              Add New Pig
-            </Button>
-          </div>
-        )}
+            {filteredPigs.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <Users className="h-16 w-16 mx-auto" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No pigs found</h3>
+                <p className="text-gray-600 mb-4">
+                  Try adjusting your search or filter criteria.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Pig Details Modal */}
         {selectedPig && !showEditForm && (
@@ -428,7 +368,7 @@ OPERATIONS:
 
               {selectedPig.notes && (
                 <div className="mt-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">Notes & Records</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Records & Notes</h4>
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono">{selectedPig.notes}</pre>
                   </div>
