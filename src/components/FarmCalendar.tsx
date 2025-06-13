@@ -1,16 +1,17 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Plus, Clock, Syringe, Scale } from 'lucide-react';
+import AddEventForm from './AddEventForm';
 
 const FarmCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showAddEvent, setShowAddEvent] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>('');
   
   // Sample events - in real app this would come from database
-  const events = [
+  const [events, setEvents] = useState([
     {
       id: 1,
       title: "Vaccination - Bella (P001)",
@@ -43,31 +44,48 @@ const FarmCalendar = () => {
       time: "10:30",
       description: "Follow-up health checkup for Rocky"
     }
-  ];
+  ]);
 
-  const handleAddEvent = () => {
+  const handleAddEvent = (selectedDate?: string) => {
+    setSelectedDate(selectedDate || '');
     setShowAddEvent(true);
-    console.log('Add Event clicked');
+    console.log('Add Event clicked for date:', selectedDate);
+  };
+
+  const handleSaveEvent = (newEvent: any) => {
+    setEvents(prev => [...prev, newEvent]);
+    setShowAddEvent(false);
   };
 
   const handleScheduleVaccination = () => {
+    setSelectedDate('');
+    setShowAddEvent(true);
+    // Pre-fill with vaccination data
     console.log('Schedule Vaccination clicked');
-    alert('Vaccination scheduling feature coming soon!');
   };
 
   const handlePlanWeightCheck = () => {
+    setSelectedDate('');
+    setShowAddEvent(true);
     console.log('Plan Weight Check clicked');
-    alert('Weight check planning feature coming soon!');
   };
 
   const handleSetBreedingDate = () => {
+    setSelectedDate('');
+    setShowAddEvent(true);
     console.log('Set Breeding Date clicked');
-    alert('Breeding date setting feature coming soon!');
   };
 
   const handleHealthCheckup = () => {
+    setSelectedDate('');
+    setShowAddEvent(true);
     console.log('Health Checkup clicked');
-    alert('Health checkup scheduling feature coming soon!');
+  };
+
+  const handleDateClick = (date: Date) => {
+    const dateString = date.toISOString().split('T')[0];
+    console.log('Date clicked:', dateString);
+    handleAddEvent(dateString);
   };
 
   const getEventTypeColor = (type: string) => {
@@ -103,7 +121,7 @@ const FarmCalendar = () => {
             <p className="text-gray-600 mt-2">Schedule and track important farm activities</p>
           </div>
           <Button 
-            onClick={handleAddEvent}
+            onClick={() => handleAddEvent()}
             className="bg-farm-blue-600 hover:bg-farm-blue-700"
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -145,7 +163,7 @@ const FarmCalendar = () => {
                     return (
                       <div
                         key={i}
-                        onClick={() => console.log('Date clicked:', date.toDateString())}
+                        onClick={() => handleDateClick(date)}
                         className={`
                           p-2 h-12 flex items-center justify-center text-sm cursor-pointer rounded-md relative
                           ${isCurrentMonth ? 'text-gray-900' : 'text-gray-400'}
@@ -250,32 +268,13 @@ const FarmCalendar = () => {
           </div>
         </div>
 
-        {/* Add Event Modal Placeholder */}
+        {/* Add Event Modal */}
         {showAddEvent && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Add New Event</h3>
-              <p className="text-gray-600 mb-4">Event creation form will be implemented here.</p>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => setShowAddEvent(false)}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setShowAddEvent(false);
-                    console.log('Event created');
-                  }}
-                  className="flex-1 bg-farm-blue-600 hover:bg-farm-blue-700"
-                >
-                  Create Event
-                </Button>
-              </div>
-            </div>
-          </div>
+          <AddEventForm
+            selectedDate={selectedDate}
+            onClose={() => setShowAddEvent(false)}
+            onSave={handleSaveEvent}
+          />
         )}
       </div>
     </div>

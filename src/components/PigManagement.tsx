@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Users, Calendar } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import EditPigForm from './EditPigForm';
 
 interface Pig {
   id: string;
@@ -17,6 +17,8 @@ interface Pig {
   status: 'Alive' | 'Dead' | 'Sold';
   healthStatus: 'Healthy' | 'Sick' | 'Under Treatment';
   lastCheckup: string;
+  notes?: string;
+  boarTagNumber?: string;
 }
 
 interface PigManagementProps {
@@ -29,8 +31,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
   const [selectedPig, setSelectedPig] = useState<Pig | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  // Sample data - in real app this would come from a database
-  const [pigs] = useState<Pig[]>([
+  // Sample data including TestSow with demo data
+  const [pigs, setPigs] = useState<Pig[]>([
     {
       id: '1',
       name: 'Bella',
@@ -41,7 +43,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       category: 'Sow',
       status: 'Alive',
       healthStatus: 'Healthy',
-      lastCheckup: '2024-06-01'
+      lastCheckup: '2024-06-01',
+      notes: 'Good breeding record, calm temperament'
     },
     {
       id: '2',
@@ -53,7 +56,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       category: 'Boar',
       status: 'Alive',
       healthStatus: 'Healthy',
-      lastCheckup: '2024-05-28'
+      lastCheckup: '2024-05-28',
+      notes: 'Primary breeding boar, excellent genetics'
     },
     {
       id: '3',
@@ -65,7 +69,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       category: 'Weaner',
       status: 'Alive',
       healthStatus: 'Under Treatment',
-      lastCheckup: '2024-06-10'
+      lastCheckup: '2024-06-10',
+      notes: 'Recovery from minor digestive issues'
     },
     {
       id: '4',
@@ -77,7 +82,38 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       category: 'Porker',
       status: 'Alive',
       healthStatus: 'Healthy',
-      lastCheckup: '2024-06-05'
+      lastCheckup: '2024-06-05',
+      notes: 'Ready for market soon'
+    },
+    {
+      id: '5',
+      name: 'TestSow',
+      pigId: '0980',
+      breed: 'Yorkshire',
+      dateOfBirth: '2021-01-15',
+      weight: 220,
+      category: 'Sow',
+      status: 'Alive',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-06-12',
+      boarTagNumber: 'B001',
+      notes: `FARROWING RECORDS:
+Litter 4: Due 4/10/2024, Actual 4/7/2024 - 2 alive (1M, 1F) + 1 adopted = 3 total
+Litter 5: Due 24/10/2024, Actual 25/10/2024 - 12 alive (6M, 6F)
+Litter 6: Due 1/6/2025, Actual 1/6/2025 - 11 alive
+
+HEALTH RECORDS:
+- 7/16/2024: Weaner worm infestation, dewormed - 3 survived
+- 8/15/2024: Weaner diarrhea, given Amprocox - 1 died, rest recovered
+- 27/10/2024: Piglets - 2 died, 10 remain
+- 30/10/2024: Iron deficiency prevention injection - 1 died, rest good
+
+SALES:
+- Jan 2025: 1 weaner sold (Geoffrey)
+
+OPERATIONS:
+- Teeth clipping: 4/9/2024 (4th litter), 30/10/2024 (5th litter), 3/6/2025 (6th litter)
+- Male castration: 21/11/2024 (5th litter) - good condition`
     }
   ]);
 
@@ -92,6 +128,16 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
     setSelectedPig(pig);
     setShowEditForm(true);
     console.log('Editing pig:', pig.name);
+  };
+
+  const handleSavePig = (updatedPig: Pig) => {
+    setPigs(prevPigs => 
+      prevPigs.map(pig => 
+        pig.id === updatedPig.id ? updatedPig : pig
+      )
+    );
+    setShowEditForm(false);
+    setSelectedPig(null);
   };
 
   const filteredPigs = pigs.filter(pig => {
@@ -352,6 +398,12 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
                       <span className="text-gray-600">Current Weight:</span>
                       <span className="font-medium">{selectedPig.weight} kg</span>
                     </div>
+                    {selectedPig.boarTagNumber && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Boar Tag:</span>
+                        <span className="font-medium">{selectedPig.boarTagNumber}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -373,6 +425,15 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
                   </div>
                 </div>
               </div>
+
+              {selectedPig.notes && (
+                <div className="mt-6">
+                  <h4 className="font-semibold text-gray-900 mb-2">Notes & Records</h4>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono">{selectedPig.notes}</pre>
+                  </div>
+                </div>
+              )}
               
               <div className="mt-6 pt-6 border-t">
                 <div className="flex gap-2">
@@ -396,34 +457,14 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
 
         {/* Edit Form Modal */}
         {showEditForm && selectedPig && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Edit {selectedPig.name}</h3>
-              <p className="text-gray-600 mb-4">Edit form will be implemented here with all pig details.</p>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => {
-                    setShowEditForm(false);
-                    setSelectedPig(null);
-                  }}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setShowEditForm(false);
-                    setSelectedPig(null);
-                    console.log('Pig updated');
-                  }}
-                  className="flex-1 bg-farm-blue-600 hover:bg-farm-blue-700"
-                >
-                  Save Changes
-                </Button>
-              </div>
-            </div>
-          </div>
+          <EditPigForm
+            pig={selectedPig}
+            onClose={() => {
+              setShowEditForm(false);
+              setSelectedPig(null);
+            }}
+            onSave={handleSavePig}
+          />
         )}
       </div>
     </div>
