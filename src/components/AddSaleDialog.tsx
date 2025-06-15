@@ -110,19 +110,20 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Add New Sale</Button>
+        <Button onClick={() => setOpen(true)} className="w-full md:w-auto">
+          Add New Sale
+        </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-full md:max-w-lg w-[98vw] md:w-auto p-0">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add New Sale</DialogTitle>
+            <DialogTitle className="text-base md:text-lg">Add New Sale</DialogTitle>
           </DialogHeader>
-          {/* Make content scrollable */}
-          <ScrollArea className="max-h-[65vh] pr-2">
-            <div className="grid gap-3 pb-2 mt-2">
+          <ScrollArea className="h-[65vh] max-h-[65vh] px-2 md:px-0 md:max-h-[65vh]">
+            <div className="grid gap-2 md:gap-3 pb-2 mt-2">
               {/* Type */}
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Type</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Type</label>
                 <select
                   name="type"
                   className="border px-2 py-1 rounded w-full"
@@ -134,8 +135,8 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                 </select>
               </div>
               {/* Date */}
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Date</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Date</label>
                 <Input
                   type="date"
                   name="date"
@@ -147,12 +148,12 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
               {/* Item fields */}
               {isProduce ? (
                 <>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Item Name</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Item Name</label>
                     <Input name="item" value={form.item} onChange={handleInput} required />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Quantity</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Quantity</label>
                     <Input
                       name="quantity"
                       type="number"
@@ -165,16 +166,16 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                 </>
               ) : (
                 <>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Pig Tag #</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Pig Tag #</label>
                     <Input name="pigTag" value={form.pigTag} onChange={handleInput} required />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Category</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Category</label>
                     <Input name="category" value={form.category} onChange={handleInput} required />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Weight (kg)</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Weight (kg)</label>
                     <Input
                       name="weight"
                       type="number"
@@ -183,12 +184,12 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                       onChange={handleInput}
                     />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Sale Type</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Sale Type</label>
                     <Input name="saleType" value={form.saleType} onChange={handleInput} />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Unit Price</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Unit Price</label>
                     <Input
                       name="unitPrice"
                       type="number"
@@ -198,8 +199,8 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                       required
                     />
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <label className="text-sm w-32 font-medium">Quantity</label>
+                  <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                    <label className="text-sm w-full sm:w-32 font-medium">Quantity</label>
                     <Input
                       name="quantity"
                       type="number"
@@ -213,8 +214,8 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
               )}
               {/* Shared Fields */}
               {isProduce && (
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Unit Price</label>
+                <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                  <label className="text-sm w-full sm:w-32 font-medium">Unit Price</label>
                   <Input
                     name="unitPrice"
                     type="number"
@@ -225,8 +226,8 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                   />
                 </div>
               )}
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Cost per Unit</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Cost per Unit</label>
                 <Input
                   name="cost"
                   type="number"
@@ -236,16 +237,16 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                   required
                 />
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Buyer Name</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Buyer Name</label>
                 <Input name="buyer" value={form.buyer} onChange={handleInput} required />
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Buyer Contact</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Buyer Contact</label>
                 <Input name="contact" value={form.contact} onChange={handleInput} />
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Method</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Method</label>
                 <select
                   name="method"
                   className="border px-2 py-1 rounded w-full"
@@ -259,16 +260,16 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                   <option value="Credit">Credit</option>
                 </select>
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Salesperson</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Salesperson</label>
                 <Input name="salesperson" value={form.salesperson} onChange={handleInput} />
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Location</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Location</label>
                 <Input name="location" value={form.location} onChange={handleInput} />
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Status</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Status</label>
                 <select
                   name="status"
                   className="border px-2 py-1 rounded w-full"
@@ -280,16 +281,16 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                   <option value="Cancelled">Cancelled</option>
                 </select>
               </div>
-              <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Remarks</label>
+              <div className="flex flex-col sm:flex-row gap-1 items-start sm:items-center">
+                <label className="text-sm w-full sm:w-32 font-medium">Remarks</label>
                 <Input name="remarks" value={form.remarks} onChange={handleInput} />
               </div>
             </div>
           </ScrollArea>
-          <DialogFooter>
-            <Button type="submit">Add Sale</Button>
+          <DialogFooter className="flex flex-col md:flex-row gap-2 w-full justify-end mt-4">
+            <Button type="submit" className="w-full md:w-auto">Add Sale</Button>
             <DialogClose asChild>
-              <Button variant="outline" type="button">
+              <Button variant="outline" type="button" className="w-full md:w-auto">
                 Cancel
               </Button>
             </DialogClose>
@@ -299,4 +300,4 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
     </Dialog>
   );
 };
-
+// ... end of file ...
