@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -7,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 const demoStaff = [
   {
@@ -83,10 +83,14 @@ const attendanceData = [
 export default function StaffManagement() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
-      <h2 className="text-2xl font-bold text-farm-blue-700 mb-6">Staff Management</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="outline" onClick={() => navigate("/")}>Home</Button>
+        <h2 className="text-2xl font-bold text-farm-blue-700">Staff Management</h2>
+      </div>
       <Card className="p-4 mb-10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
           <Input

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 const demoProduce = [
   {
@@ -96,6 +97,7 @@ export default function InventoryManagement() {
     usage: "",
     notes: "",
   });
+  const navigate = useNavigate();
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -113,7 +115,10 @@ export default function InventoryManagement() {
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
-      <h2 className="text-2xl font-bold text-farm-blue-700 mb-6">Inventory Management</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="outline" onClick={() => navigate("/")}>Home</Button>
+        <h2 className="text-2xl font-bold text-farm-blue-700">Inventory Management</h2>
+      </div>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="produce">Farm Produce</TabsTrigger>
