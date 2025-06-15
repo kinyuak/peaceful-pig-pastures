@@ -1,18 +1,27 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import LandingPage from '@/components/LandingPage';
 import PigManagement from '@/components/PigManagement';
 import FarmCalendar from '@/components/FarmCalendar';
 import AddPigForm from '@/components/AddPigForm';
 
-const Index = () => {
-  const [activeTab, setActiveTab] = useState('home');
+interface IndexProps {
+  defaultTab?: "home" | "pigs" | "calendar";
+}
+
+const Index = ({ defaultTab }: IndexProps) => {
+  const [activeTab, setActiveTab] = useState(defaultTab || 'home');
   const [showAddPigForm, setShowAddPigForm] = useState(false);
+
+  useEffect(() => {
+    if (defaultTab) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab]);
 
   const handleAddPig = () => {
     setShowAddPigForm(true);
-    // If not on pig management page, switch to it
     if (activeTab !== 'pigs') {
       setActiveTab('pigs');
     }
@@ -20,7 +29,6 @@ const Index = () => {
 
   const handleSavePig = (pigData: any) => {
     console.log('New pig data:', pigData);
-    // Here you would typically save to database
     setShowAddPigForm(false);
   };
 
@@ -44,9 +52,7 @@ const Index = () => {
         onTabChange={setActiveTab}
         onAddPig={handleAddPig}
       />
-      
       {renderContent()}
-
       {showAddPigForm && (
         <AddPigForm
           onClose={() => setShowAddPigForm(false)}
