@@ -10,8 +10,11 @@ interface IndexProps {
   defaultTab?: "home" | "pigs" | "calendar";
 }
 
+const TABS = ["home", "pigs", "calendar"] as const;
+type TabType = typeof TABS[number];
+
 const Index = ({ defaultTab }: IndexProps) => {
-  const [activeTab, setActiveTab] = useState(defaultTab || 'home');
+  const [activeTab, setActiveTab] = useState<TabType>(defaultTab || 'home');
   const [showAddPigForm, setShowAddPigForm] = useState(false);
 
   useEffect(() => {
@@ -24,6 +27,13 @@ const Index = ({ defaultTab }: IndexProps) => {
     setShowAddPigForm(true);
     if (activeTab !== 'pigs') {
       setActiveTab('pigs');
+    }
+  };
+
+  const handleTabChange = (tab: string) => {
+    // Only allow valid tabs
+    if (TABS.includes(tab as TabType)) {
+      setActiveTab(tab as TabType);
     }
   };
 
@@ -49,7 +59,7 @@ const Index = ({ defaultTab }: IndexProps) => {
     <div className="min-h-screen bg-gray-50">
       <Navigation 
         activeTab={activeTab} 
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
         onAddPig={handleAddPig}
       />
       {renderContent()}
