@@ -106,6 +106,60 @@ const FarmCalendar = () => {
     ...calculateHeatEvents()
   ]);
 
+  // --- Helper to generate auto-suggested sow events ---
+  const generateSowSuggestions = () => {
+    const suggestions = [];
+
+    samplePigs.forEach(pig => {
+      if (pig.category === "Sow" && pig.status === "Alive") {
+        // Next expected heat (21-day cycle)
+        if (pig.lastHeatDate) {
+          const lastHeat = new Date(pig.lastHeatDate);
+          const today = new Date();
+          let nextHeat = new Date(lastHeat.getTime());
+
+          // Find the next heat date after today
+          while (nextHeat <= today) {
+            nextHeat = new Date(nextHeat.getTime() + 21 * 24 * 60 * 60 * 1000);
+          }
+
+          suggestions.push({
+            id: `sug-heat-${pig.id}`,
+            title: `Expected Heat (auto) - ${pig.name}`,
+            date: nextHeat.toISOString().split("T")[0],
+            type: "suggested",
+            source: "auto",
+            pigId: pig.pigId,
+            description: "Estimated based on 21-day cycle",
+            icon: <Heart className="h-4 w-4 text-pink-500" />,
+            priority: (nextHeat.getTime() - today.getTime())/(1000*60*60*24) <= 3 ? "high" : "normal"
+          });
+
+          // Optional: estimate farrowing if serviced (114 days/default gestation)
+          if (pig.lastServiceDate) {
+            const serviceDate = new Date(pig.lastServiceDate);
+            const farrowDate = new Date(serviceDate.getTime() + 114 * 24 * 60 * 60 * 1000);
+            if(farrowDate >= today) {
+              suggestions.push({
+                id: `sug-farrow-${pig.id}`,
+                title: `Expected Farrowing (auto) - ${pig.name}`,
+                date: farrowDate.toISOString().split("T")[0],
+                type: "suggested",
+                source: "auto",
+                pigId: pig.pigId,
+                description: "Expected farrowing (114d after service)",
+                icon: <Calendar className="h-4 w-4 text-green-600" />,
+                priority: (farrowDate.getTime() - today.getTime())/(1000*60*60*24) <= 7 ? "high" : "normal"
+              });
+            }
+          }
+        }
+      }
+    });
+
+    return suggestions;
+  };
+
   const handleAddEvent = (selectedDate?: string) => {
     setSelectedDate(selectedDate || '');
     setShowAddEvent(true);
@@ -169,12 +223,17 @@ const FarmCalendar = () => {
     return priority === 'high' ? 'border-l-4 border-red-500' : 'border-l-4 border-blue-500';
   };
 
-  const upcomingEvents = events
+  // Integrate auto suggestions with manually entered events
+  const autoSuggestions = generateSowSuggestions();
+  const allCalendarEvents = [...events, ...autoSuggestions];
+
+  // For urgent, upcoming, and day events:
+  const upcomingEvents = allCalendarEvents
     .filter(event => new Date(event.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 8);
 
-  const urgentEvents = events
+  const urgentEvents = allCalendarEvents
     .filter(event => {
       const eventDate = new Date(event.date);
       const today = new Date();
@@ -326,38 +385,31 @@ const FarmCalendar = () => {
                     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i - 6);
                     const isCurrentMonth = date.getMonth() === currentDate.getMonth();
                     const isToday = date.toDateString() === new Date().toDateString();
-                    const dayEvents = events.filter(event => 
-                      new Date(event.date).toDateString() === date.toDateString()
+                    const dayEvents = allCalendarEvents.filter(
+                      event => new Date(event.date).toDateString() === date.toDateString()
                     );
-                    const hasUrgentEvent = dayEvents.some(event => event.priority === 'high');
-
+                    const hasUrgentEvent = dayEvents.some(event => event.priority === "high");
                     return (
                       <div
                         key={i}
                         onClick={() => handleDateClick(date)}
                         className={`
-                          p-2 h-16 flex flex-col items-center justify-start text-sm cursor-pointer rounded-md relative border
-                          ${isCurrentMonth ? 'text-gray-900' : 'text-gray-400'}
-                          ${isToday ? 'bg-farm-blue-600 text-white font-bold border-farm-blue-600' : 'hover:bg-gray-100 border-gray-200'}
-                          ${hasUrgentEvent && !isToday ? 'border-red-300 bg-red-50' : ''}
+                          p-2 h-20 flex flex-col items-center text-sm cursor-pointer rounded-md relative border
+                          ${isCurrentMonth ? "text-gray-900" : "text-gray-400"}
+                          ${isToday ? "bg-farm-blue-600 text-white font-bold border-farm-blue-600" : "hover:bg-gray-100 border-gray-200"}
+                          ${hasUrgentEvent && !isToday ? "border-red-300 bg-red-50" : ""}
                         `}
                       >
                         <span className="mb-1">{date.getDate()}</span>
-                        {dayEvents.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {dayEvents.slice(0, 2).map((event, idx) => (
-                              <div 
-                                key={idx} 
-                                className={`w-2 h-2 rounded-full ${
-                                  event.priority === 'high' ? 'bg-red-500' : 'bg-blue-500'
-                                }`}
-                              ></div>
-                            ))}
-                            {dayEvents.length > 2 && (
-                              <span className="text-xs">+{dayEvents.length - 2}</span>
-                            )}
-                          </div>
-                        )}
+                        {/* Custom event dots/icons */}
+                        <div className="flex flex-wrap gap-1">
+                          {dayEvents.slice(0, 3).map((event, idx) => (
+                            event.type === "suggested"
+                              ? <span key={idx} title={event.description} className="w-3 h-3 rounded-full border-2 border-dashed border-farm-blue-400 bg-blue-100"></span>
+                              : <span key={idx} title={event.title} className={`w-2 h-2 rounded-full ${event.priority === "high" ? "bg-red-500" : "bg-blue-500"}`}></span>
+                          ))}
+                          {dayEvents.length > 3 && <span className="text-xs">+{dayEvents.length - 3}</span>}
+                        </div>
                       </div>
                     );
                   })}
@@ -375,18 +427,24 @@ const FarmCalendar = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Events:</span>
-                      <span className="font-medium">{events.filter(e => new Date(e.date).getMonth() === currentDate.getMonth()).length}</span>
+                      <span className="font-medium">{allCalendarEvents.filter(
+                        e => new Date(e.date).getMonth() === currentDate.getMonth()
+                      ).length}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Health Events:</span>
-                      <span className="font-medium">{events.filter(e => e.type === 'health' && new Date(e.date).getMonth() === currentDate.getMonth()).length}</span>
+                      <span className="font-medium">{allCalendarEvents.filter(
+                        e => e.type === "health" && new Date(e.date).getMonth() === currentDate.getMonth()
+                      ).length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Breeding Events:</span>
-                      <span className="font-medium">{events.filter(e => e.type === 'breeding' && new Date(e.date).getMonth() === currentDate.getMonth()).length}</span>
+                      <span className="text-gray-600">Suggested Events:</span>
+                      <span className="font-medium">{allCalendarEvents.filter(
+                        e => e.type === "suggested" && new Date(e.date).getMonth() === currentDate.getMonth()
+                      ).length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Urgent Events:</span>
+                      <span className="text-gray-600">Urgent/High Priority:</span>
                       <span className="font-medium text-red-600">{urgentEvents.length}</span>
                     </div>
                   </div>
@@ -401,19 +459,25 @@ const FarmCalendar = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Sows:</span>
-                      <span className="font-medium">{samplePigs.filter(p => p.category === 'Sow').length}</span>
+                      <span className="font-medium">{samplePigs.filter(p => p.category === "Sow").length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">On Heat Cycle:</span>
-                      <span className="font-medium">{samplePigs.filter(p => p.lastHeatDate).length}</span>
+                      <span className="text-gray-600">With Recent Heat:</span>
+                      <span className="font-medium">
+                        {samplePigs.filter(p => p.lastHeatDate).length}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Avg Weight:</span>
-                      <span className="font-medium">{Math.round(samplePigs.reduce((acc, p) => acc + p.weight, 0) / samplePigs.length)}kg</span>
+                      <span className="text-gray-600">Estimated Next Heats:</span>
+                      <span className="font-medium">
+                        {autoSuggestions.filter(e => e.title.startsWith("Expected Heat")).length}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Healthy Status:</span>
-                      <span className="font-medium text-green-600">{samplePigs.filter(p => p.healthStatus === 'Healthy').length}/{samplePigs.length}</span>
+                      <span className="font-medium text-green-600">
+                        {samplePigs.filter(p => p.healthStatus === "Healthy").length}/{samplePigs.length}
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -428,34 +492,34 @@ const FarmCalendar = () => {
               <CardHeader>
                 <CardTitle className="text-lg">Upcoming Events</CardTitle>
                 <CardDescription>
-                  Next scheduled activities
+                  Next scheduled & estimated activities
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {upcomingEvents.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
                     <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                    <p>No upcoming events scheduled</p>
+                    <p>No upcoming events</p>
                   </div>
                 ) : (
                   upcomingEvents.map(event => (
-                    <div key={event.id} className={`border rounded-lg p-4 hover:shadow-sm transition-shadow ${getPriorityColor(event.priority || 'normal')}`}>
+                    <div key={event.id} className={`border rounded-lg p-4 hover:shadow-sm transition-shadow ${getPriorityColor(event.priority || "normal")}`}>
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          {getEventIcon(event.type)}
+                          {event.icon || getEventIcon(event.type)}
                           <h4 className="font-medium text-sm">{event.title}</h4>
+                          {event.type === "suggested" && (
+                            <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full border border-dashed border-blue-400" title={event.description}>Suggested</span>
+                          )}
                         </div>
-                        <Badge className={getEventTypeColor(event.type)}>
+                        <Badge className={event.type === "suggested" ? "bg-blue-100 text-blue-800 border-dashed border-blue-400" : getEventTypeColor(event.type)}>
                           {event.type}
                         </Badge>
                       </div>
                       <div className="text-sm text-gray-600 mb-2">
-                        <div className="flex items-center gap-4">
-                          <span>{new Date(event.date).toLocaleDateString()}</span>
-                          <span>{event.time}</span>
-                        </div>
+                        <span>{new Date(event.date).toLocaleDateString()}</span>
                       </div>
-                      <p className="text-sm text-gray-500">{event.description}</p>
+                      <p className="text-xs text-gray-500">{event.description}</p>
                     </div>
                   ))
                 )}
