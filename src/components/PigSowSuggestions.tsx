@@ -1,7 +1,7 @@
-
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, AlertTriangle, TrendingUp } from "lucide-react";
+import PigReportsCharts from "./PigReportsCharts";
 
 interface Pig {
   id: string;
@@ -184,7 +184,7 @@ const iconComponent = {
 
 const PigSowSuggestions = ({ pig }: Props) => {
   const suggestions = getSowSuggestions(pig);
-  if (suggestions.length === 0) return null;
+  if (suggestions.length === 0 && !pig.notes) return null;
 
   return (
     <Card className="mt-8 border-blue-100 bg-blue-50 shadow">
@@ -195,17 +195,23 @@ const PigSowSuggestions = ({ pig }: Props) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-3">
-          {suggestions.map((tip, idx) => (
-            <li key={idx} className="flex gap-3 items-start">
-              <span>{iconComponent[tip.type]}</span>
-              <div>
-                <Badge className={`${badgeColor[tip.type]} mb-1 mr-2`}>{tip.title}</Badge>
-                <span className="block text-sm text-gray-700">{tip.message}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {/* Charts (only render if we have notes with litters info) */}
+        {pig.notes && <PigReportsCharts notes={pig.notes} />}
+
+        {/* Tips/analysis */}
+        {suggestions.length > 0 && (
+          <ul className="space-y-3 mt-8">
+            {suggestions.map((tip, idx) => (
+              <li key={idx} className="flex gap-3 items-start">
+                <span>{iconComponent[tip.type]}</span>
+                <div>
+                  <Badge className={`${badgeColor[tip.type]} mb-1 mr-2`}>{tip.title}</Badge>
+                  <span className="block text-sm text-gray-700">{tip.message}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </CardContent>
     </Card>
   );
