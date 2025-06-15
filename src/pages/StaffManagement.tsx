@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 
 const demoStaff = [
@@ -83,7 +84,76 @@ const attendanceData = [
 export default function StaffManagement() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const [staff, setStaff] = useState([...demoStaff]);
   const navigate = useNavigate();
+
+  // State for add staff dialog
+  const [openAdd, setOpenAdd] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    role: "",
+    phone: "",
+    email: "",
+    dateJoined: "",
+    shift: "",
+    employment: "",
+    status: "Active",
+    salary: "",
+  });
+
+  // Handler for form fields
+  function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  }
+
+  // Generate next staff id
+  function getNextStaffId() {
+    const nums = staff.map(s => Number(s.id.replace("S", ""))).filter(n => !isNaN(n));
+    const next = (nums.length ? Math.max(...nums) : 0) + 1;
+    return `S${String(next).padStart(3, "0")}`;
+  }
+
+  function handleAddStaff(e: React.FormEvent) {
+    e.preventDefault();
+    // Simple validation: require name, role, phone, salary
+    if (!form.name || !form.role || !form.phone || !form.salary) {
+      return;
+    }
+    const newStaff = {
+      id: getNextStaffId(),
+      name: form.name,
+      role: form.role,
+      phone: form.phone,
+      email: form.email,
+      dateJoined: form.dateJoined || new Date().toISOString().slice(0,10),
+      tasks: "",
+      shift: form.shift,
+      employment: form.employment,
+      status: form.status,
+      salary: Number(form.salary) || 0,
+      photo: "",
+      payroll: [{ month: "June", paid: false }, { month: "May", paid: false }],
+      attendance: 0,
+      leave: [],
+      bonus: 0,
+      deductions: 0,
+      remarks: ""
+    };
+    setStaff(prev => [...prev, newStaff]);
+    setForm({
+      name: "",
+      role: "",
+      phone: "",
+      email: "",
+      dateJoined: "",
+      shift: "",
+      employment: "",
+      status: "Active",
+      salary: "",
+    });
+    setOpenAdd(false);
+  }
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
@@ -101,11 +171,56 @@ export default function StaffManagement() {
           />
           <select className="border rounded px-2 py-1" value={roleFilter} onChange={e => setRoleFilter(e.target.value)}>
             <option value="all">All Roles</option>
-            {[...new Set(demoStaff.map(s => s.role))].map(role => (
+            {[...new Set(staff.map(s => s.role))].map(role => (
               <option key={role} value={role}>{role}</option>
             ))}
           </select>
-          <Button>Add Staff</Button>
+          <Dialog open={openAdd} onOpenChange={setOpenAdd}>
+            <DialogTrigger asChild>
+              <Button>Add Staff</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Staff Member</DialogTitle>
+              </DialogHeader>
+              <form className="space-y-3 mt-3" onSubmit={handleAddStaff}>
+                <div className="flex gap-2">
+                  <Input placeholder="Name" name="name" value={form.name} onChange={handleFormChange} required />
+                  <Input placeholder="Role" name="role" value={form.role} onChange={handleFormChange} required />
+                </div>
+                <div className="flex gap-2">
+                  <Input placeholder="Phone" name="phone" value={form.phone} onChange={handleFormChange} required />
+                  <Input placeholder="Email" name="email" value={form.email} onChange={handleFormChange} type="email" />
+                </div>
+                <div className="flex gap-2">
+                  <Input placeholder="Start Date" name="dateJoined" value={form.dateJoined} onChange={handleFormChange} type="date" />
+                  <Input placeholder="Salary" name="salary" value={form.salary} onChange={handleFormChange} type="number" min="0" required />
+                </div>
+                <div className="flex gap-2">
+                  <select className="border rounded px-2 py-1 w-full" name="shift" value={form.shift} onChange={handleFormChange}>
+                    <option value="">Shift</option>
+                    <option>Day</option>
+                    <option>Night</option>
+                    <option>Full-Time</option>
+                  </select>
+                  <select className="border rounded px-2 py-1 w-full" name="employment" value={form.employment} onChange={handleFormChange}>
+                    <option value="">Employment</option>
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Casual</option>
+                  </select>
+                  <select className="border rounded px-2 py-1 w-full" name="status" value={form.status} onChange={handleFormChange}>
+                    <option>Active</option>
+                    <option>On Leave</option>
+                    <option>Left</option>
+                  </select>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Add Staff</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
         {/* Attendance Chart */}
         <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -170,7 +285,7 @@ export default function StaffManagement() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {demoStaff
+            {staff
               .filter(s => s.name.toLowerCase().includes(search.toLowerCase()))
               .filter(s => roleFilter === "all" || s.role === roleFilter)
               .map(staff => (
