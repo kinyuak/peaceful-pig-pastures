@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Search, Users, Eye, Edit, Plus, Heart, AlertTriangle } from 'lucide-rea
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import EditPigForm from './EditPigForm';
+import PigSowSuggestions from "./PigSowSuggestions";
 
 interface Pig {
   id: string;
@@ -567,6 +567,11 @@ SALES:
                     <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono">{selectedPig.notes}</pre>
                   </div>
                 </div>
+              )}
+              
+              {/* Sow-specific suggestions (analysis & tips) */}
+              {selectedPig.category === "Sow" && (
+                <PigSowSuggestions pig={selectedPig} />
               )}
               
               <div className="mt-6 pt-6 border-t">
