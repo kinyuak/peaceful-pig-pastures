@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -104,6 +103,22 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
   const handleUpdateHeatDate = (pigId: string, heatDate: string) => {
     setFormData(prev => ({ ...prev, lastHeatDate: heatDate }));
   };
+
+  // Create a properly typed pig object for child components
+  const getCurrentPigData = (): Pig => ({
+    ...pig,
+    pigId: formData.pigId,
+    breed: formData.breed,
+    dateOfBirth: formData.dateOfBirth,
+    weight: parseFloat(formData.weight) || pig.weight,
+    category: formData.category,
+    status: formData.status,
+    healthStatus: formData.healthStatus,
+    notes: formData.notes,
+    boarTagNumber: formData.boarTagNumber,
+    lastHeatDate: formData.lastHeatDate,
+    lastServiceDate: formData.lastServiceDate
+  });
 
   if (showFarrowingForm) {
     return (
@@ -388,13 +403,13 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
 
           {activeTab === 'heat' && (
             <HeatCycleTracker 
-              pig={{...pig, ...formData, weight: parseFloat(formData.weight) || pig.weight}} 
+              pig={getCurrentPigData()} 
               onUpdateHeatDate={handleUpdateHeatDate}
             />
           )}
 
           {activeTab === 'health' && (
-            <PigHealthReports pig={{...pig, ...formData, weight: parseFloat(formData.weight) || pig.weight}} />
+            <PigHealthReports pig={getCurrentPigData()} />
           )}
 
           {activeTab === 'records' && (
