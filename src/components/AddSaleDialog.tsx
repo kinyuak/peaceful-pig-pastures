@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type SaleType = "Produce" | "Livestock";
 
@@ -116,74 +117,102 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
           <DialogHeader>
             <DialogTitle>Add New Sale</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-3 pb-2 mt-2">
-            {/* Type */}
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Type</label>
-              <select
-                name="type"
-                className="border px-2 py-1 rounded w-full"
-                value={form.type}
-                onChange={handleTypeSwitch}
-              >
-                <option value="Produce">Produce</option>
-                <option value="Livestock">Livestock</option>
-              </select>
-            </div>
-            {/* Date */}
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Date</label>
-              <Input
-                type="date"
-                name="date"
-                value={form.date}
-                onChange={handleInput}
-                required
-              />
-            </div>
-            {/* Item fields */}
-            {isProduce ? (
-              <>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Item Name</label>
-                  <Input name="item" value={form.item} onChange={handleInput} required />
-                </div>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Quantity</label>
-                  <Input
-                    name="quantity"
-                    type="number"
-                    min={1}
-                    value={form.quantity}
-                    onChange={handleInput}
-                    required
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Pig Tag #</label>
-                  <Input name="pigTag" value={form.pigTag} onChange={handleInput} required />
-                </div>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Category</label>
-                  <Input name="category" value={form.category} onChange={handleInput} required />
-                </div>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Weight (kg)</label>
-                  <Input
-                    name="weight"
-                    type="number"
-                    min={0}
-                    value={form.weight || ""}
-                    onChange={handleInput}
-                  />
-                </div>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Sale Type</label>
-                  <Input name="saleType" value={form.saleType} onChange={handleInput} />
-                </div>
+          {/* Make content scrollable */}
+          <ScrollArea className="max-h-[65vh] pr-2">
+            <div className="grid gap-3 pb-2 mt-2">
+              {/* Type */}
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Type</label>
+                <select
+                  name="type"
+                  className="border px-2 py-1 rounded w-full"
+                  value={form.type}
+                  onChange={handleTypeSwitch}
+                >
+                  <option value="Produce">Produce</option>
+                  <option value="Livestock">Livestock</option>
+                </select>
+              </div>
+              {/* Date */}
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Date</label>
+                <Input
+                  type="date"
+                  name="date"
+                  value={form.date}
+                  onChange={handleInput}
+                  required
+                />
+              </div>
+              {/* Item fields */}
+              {isProduce ? (
+                <>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Item Name</label>
+                    <Input name="item" value={form.item} onChange={handleInput} required />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Quantity</label>
+                    <Input
+                      name="quantity"
+                      type="number"
+                      min={1}
+                      value={form.quantity}
+                      onChange={handleInput}
+                      required
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Pig Tag #</label>
+                    <Input name="pigTag" value={form.pigTag} onChange={handleInput} required />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Category</label>
+                    <Input name="category" value={form.category} onChange={handleInput} required />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Weight (kg)</label>
+                    <Input
+                      name="weight"
+                      type="number"
+                      min={0}
+                      value={form.weight || ""}
+                      onChange={handleInput}
+                    />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Sale Type</label>
+                    <Input name="saleType" value={form.saleType} onChange={handleInput} />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Unit Price</label>
+                    <Input
+                      name="unitPrice"
+                      type="number"
+                      min={0}
+                      value={form.unitPrice}
+                      onChange={handleInput}
+                      required
+                    />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label className="text-sm w-32 font-medium">Quantity</label>
+                    <Input
+                      name="quantity"
+                      type="number"
+                      min={1}
+                      value={form.quantity}
+                      onChange={handleInput}
+                      required
+                    />
+                  </div>
+                </>
+              )}
+              {/* Shared Fields */}
+              {isProduce && (
                 <div className="flex gap-2 items-center">
                   <label className="text-sm w-32 font-medium">Unit Price</label>
                   <Input
@@ -195,93 +224,68 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
                     required
                   />
                 </div>
-                <div className="flex gap-2 items-center">
-                  <label className="text-sm w-32 font-medium">Quantity</label>
-                  <Input
-                    name="quantity"
-                    type="number"
-                    min={1}
-                    value={form.quantity}
-                    onChange={handleInput}
-                    required
-                  />
-                </div>
-              </>
-            )}
-            {/* Shared Fields */}
-            {isProduce && (
+              )}
               <div className="flex gap-2 items-center">
-                <label className="text-sm w-32 font-medium">Unit Price</label>
+                <label className="text-sm w-32 font-medium">Cost per Unit</label>
                 <Input
-                  name="unitPrice"
+                  name="cost"
                   type="number"
                   min={0}
-                  value={form.unitPrice}
+                  value={form.cost}
                   onChange={handleInput}
                   required
                 />
               </div>
-            )}
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Cost per Unit</label>
-              <Input
-                name="cost"
-                type="number"
-                min={0}
-                value={form.cost}
-                onChange={handleInput}
-                required
-              />
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Buyer Name</label>
+                <Input name="buyer" value={form.buyer} onChange={handleInput} required />
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Buyer Contact</label>
+                <Input name="contact" value={form.contact} onChange={handleInput} />
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Method</label>
+                <select
+                  name="method"
+                  className="border px-2 py-1 rounded w-full"
+                  value={form.method}
+                  onChange={handleInput}
+                >
+                  <option value=""></option>
+                  <option value="Cash">Cash</option>
+                  <option value="Mpesa">Mpesa</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="Credit">Credit</option>
+                </select>
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Salesperson</label>
+                <Input name="salesperson" value={form.salesperson} onChange={handleInput} />
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Location</label>
+                <Input name="location" value={form.location} onChange={handleInput} />
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Status</label>
+                <select
+                  name="status"
+                  className="border px-2 py-1 rounded w-full"
+                  value={form.status}
+                  onChange={handleInput}
+                >
+                  <option value="Completed">Completed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div className="flex gap-2 items-center">
+                <label className="text-sm w-32 font-medium">Remarks</label>
+                <Input name="remarks" value={form.remarks} onChange={handleInput} />
+              </div>
             </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Buyer Name</label>
-              <Input name="buyer" value={form.buyer} onChange={handleInput} required />
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Buyer Contact</label>
-              <Input name="contact" value={form.contact} onChange={handleInput} />
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Method</label>
-              <select
-                name="method"
-                className="border px-2 py-1 rounded w-full"
-                value={form.method}
-                onChange={handleInput}
-              >
-                <option value=""></option>
-                <option value="Cash">Cash</option>
-                <option value="Mpesa">Mpesa</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="Credit">Credit</option>
-              </select>
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Salesperson</label>
-              <Input name="salesperson" value={form.salesperson} onChange={handleInput} />
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Location</label>
-              <Input name="location" value={form.location} onChange={handleInput} />
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Status</label>
-              <select
-                name="status"
-                className="border px-2 py-1 rounded w-full"
-                value={form.status}
-                onChange={handleInput}
-              >
-                <option value="Completed">Completed</option>
-                <option value="Pending">Pending</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-            </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm w-32 font-medium">Remarks</label>
-              <Input name="remarks" value={form.remarks} onChange={handleInput} />
-            </div>
-          </div>
+          </ScrollArea>
           <DialogFooter>
             <Button type="submit">Add Sale</Button>
             <DialogClose asChild>
@@ -295,3 +299,4 @@ export const AddSaleDialog: React.FC<AddSaleDialogProps> = ({ onAddSale }) => {
     </Dialog>
   );
 };
+
