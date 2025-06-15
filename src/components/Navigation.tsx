@@ -1,7 +1,5 @@
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Home, Users, Calendar, Plus } from 'lucide-react';
+import { Home, Users, Calendar, Plus, Grid2x2, List } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -13,6 +11,8 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
   const tabs = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'pigs', label: 'Pig Management', icon: Users },
+    { id: 'inventory', label: 'Inventory', icon: Grid2x2 },
+    { id: 'staff', label: 'Staff Management', icon: List },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
   ];
 
