@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import FarrowingRecordsForm from './FarrowingRecordsForm';
 
 interface Pig {
   id: string;
@@ -32,6 +32,7 @@ interface EditPigFormProps {
 
 const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
   const { toast } = useToast();
+  const [showFarrowingForm, setShowFarrowingForm] = useState(false);
   const [formData, setFormData] = useState({
     name: pig.name,
     pigId: pig.pigId,
@@ -75,6 +76,48 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const handleFarrowingRecordsSave = (notes: string) => {
+    setFormData(prev => ({ ...prev, notes }));
+    setShowFarrowingForm(false);
+    toast({
+      title: "Records Saved",
+      description: "Farrowing records have been saved successfully.",
+    });
+  };
+
+  if (showFarrowingForm) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <Card className="w-full max-w-6xl max-h-[95vh] overflow-y-auto">
+          <CardHeader>
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle className="text-2xl text-farm-blue-700">Farrowing Records - {pig.name}</CardTitle>
+                <CardDescription>
+                  Detailed breeding and health records
+                </CardDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowFarrowingForm(false)}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <FarrowingRecordsForm
+              initialNotes={formData.notes}
+              onSave={handleFarrowingRecordsSave}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -245,21 +288,29 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
               </div>
             </div>
 
-            {/* Notes */}
+            {/* Notes & Observations */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-                Notes & Observations
-              </h3>
+              <div className="flex justify-between items-center border-b pb-2">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Farrowing Records & Notes
+                </h3>
+                <Button
+                  type="button"
+                  onClick={() => setShowFarrowingForm(true)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Open Structured Form
+                </Button>
+              </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="notes">Notes</Label>
-                <Textarea
-                  id="notes"
-                  value={formData.notes}
-                  onChange={(e) => handleInputChange('notes', e.target.value)}
-                  placeholder="Add notes about this pig's health, behavior, breeding history, etc..."
-                  rows={4}
-                />
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-2">Current Records:</p>
+                <div className="max-h-32 overflow-y-auto">
+                  <pre className="text-xs text-gray-700 whitespace-pre-wrap font-mono">
+                    {formData.notes || 'No records entered yet. Click "Open Structured Form" to add detailed farrowing records.'}
+                  </pre>
+                </div>
               </div>
             </div>
 

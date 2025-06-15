@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,10 +32,10 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
   const [selectedPig, setSelectedPig] = useState<Pig | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  // Only TestSow data
+  // Two sows data
   const [pigs, setPigs] = useState<Pig[]>([
     {
-      id: '5',
+      id: '1',
       name: 'TestSow',
       pigId: '0980',
       breed: 'Yorkshire',
@@ -77,6 +76,42 @@ HEALTH RECORDS:
 
 SALES:
 - Jan 2025: 1 weaner sold (Geoffrey)`
+    },
+    {
+      id: '2',
+      name: 'TestSow02',
+      pigId: '0985',
+      breed: 'Yorkshire',
+      dateOfBirth: '2021-03-20',
+      weight: 215,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2025-05-29',
+      boarTagNumber: '2055',
+      notes: `PEACEFUL MEADOW FARM
+FARROWING RECORDS
+
+SOW TAG 0985 BOAR TAG 2055
+
+LITTER 5: Due 9/10/2024, Actual 9/10/2024 - 4 alive (3M, 6F) + 5 adopted piglets
+
+TEETH CLIPPING & CASTRATION:
+- 5th Litter: Teeth clipping 12/10/2024, Male castration 21/11/2024
+
+WEANERS & PORKERS:
+- 2/1/2025: 9 weaners - Good condition
+
+VACCINE APPLICATION:
+- 6/20/2024: PORCILIS COLICLOS injection - 2ml
+
+HEALTH RECORDS:
+5th Litter:
+- 12/10/2024: Piglets iron deficiency prevention injection - 9 survived, well responded
+- 4/11/2024: 2nd iron injection - 9 survived, good condition
+
+SALES:
+- 30/5/2025: Sow sold 71kg dead weight - Unable to conceive (Geoffrey)`
     }
   ]);
 
@@ -259,7 +294,7 @@ SALES:
                     </TableCell>
                     <TableCell>
                       <Badge className={getHealthStatusColor(pig.healthStatus)}>
-                        {pig.healthStatus}
+                        {pig.status === 'Sold' ? 'N/A' : pig.healthStatus}
                       </Badge>
                     </TableCell>
                     <TableCell>{new Date(pig.lastCheckup).toLocaleDateString()}</TableCell>
@@ -356,7 +391,7 @@ SALES:
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Health Status:</span>
-                      <Badge className={getHealthStatusColor(selectedPig.healthStatus)}>{selectedPig.healthStatus}</Badge>
+                      <Badge className={getHealthStatusColor(selectedPig.healthStatus)}>{selectedPig.status === 'Sold' ? 'N/A' : selectedPig.healthStatus}</Badge>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Last Checkup:</span>
