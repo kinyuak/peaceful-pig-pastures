@@ -8,6 +8,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+import StaffEditDialog from "@/components/StaffEditDialog";
 
 const demoStaff = [
   {
@@ -101,6 +102,12 @@ export default function StaffManagement() {
     salary: "",
   });
 
+  // Unique roles from staff list
+  const rolesAvailable = Array.from(new Set(staff.map(s => s.role).filter(Boolean)));
+
+  // State for editing
+  const [editingStaff, setEditingStaff] = useState<any | null>(null);
+
   // Handler for form fields
   function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
@@ -155,6 +162,14 @@ export default function StaffManagement() {
     setOpenAdd(false);
   }
 
+  // Handler for updating staff
+  function handleUpdateStaff(updated: any) {
+    setStaff(prev =>
+      prev.map(s => (s.id === updated.id ? { ...s, ...updated } : s))
+    );
+    setEditingStaff(null);
+  }
+
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
       <div className="flex items-center gap-3 mb-6">
@@ -171,7 +186,7 @@ export default function StaffManagement() {
           />
           <select className="border rounded px-2 py-1" value={roleFilter} onChange={e => setRoleFilter(e.target.value)}>
             <option value="all">All Roles</option>
-            {[...new Set(staff.map(s => s.role))].map(role => (
+            {rolesAvailable.map(role => (
               <option key={role} value={role}>{role}</option>
             ))}
           </select>
@@ -186,7 +201,23 @@ export default function StaffManagement() {
               <form className="space-y-3 mt-3" onSubmit={handleAddStaff}>
                 <div className="flex gap-2">
                   <Input placeholder="Name" name="name" value={form.name} onChange={handleFormChange} required />
-                  <Input placeholder="Role" name="role" value={form.role} onChange={handleFormChange} required />
+                  {/* Role dropdown */}
+                  <select
+                    className="border rounded px-2 py-2 w-full"
+                    name="role"
+                    value={form.role}
+                    onChange={handleFormChange}
+                    required
+                  >
+                    <option value="">Select role</option>
+                    {rolesAvailable.map(role => (
+                      <option key={role} value={role}>{role}</option>
+                    ))}
+                    {/* Allow entering a custom role */}
+                    {!rolesAvailable.includes(form.role) && form.role ? (
+                      <option value={form.role}>{form.role}</option>
+                    ) : null}
+                  </select>
                 </div>
                 <div className="flex gap-2">
                   <Input placeholder="Phone" name="phone" value={form.phone} onChange={handleFormChange} required />
@@ -222,51 +253,6 @@ export default function StaffManagement() {
             </DialogContent>
           </Dialog>
         </div>
-        {/* Attendance Chart */}
-        <div className="flex flex-col md:flex-row gap-6 mb-8">
-          <Card className="flex-1 p-6">
-            <h3 className="font-semibold mb-2">Attendance Overview</h3>
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie
-                  data={attendanceData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={70}
-                  label
-                >
-                  {attendanceData.map((_, idx) => (
-                    <Cell fill={colors[idx % colors.length]} key={idx} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
-          <Card className="flex-1 p-6">
-            <h3 className="font-semibold mb-2">Payroll Status (Last 2 Months)</h3>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart
-                data={
-                  demoStaff.map(staff => ({
-                    name: staff.name,
-                    June: staff.payroll[0]?.paid ? 1 : 0,
-                    May: staff.payroll[1]?.paid ? 1 : 0,
-                  }))
-                }
-              >
-                <XAxis dataKey="name" />
-                <YAxis allowDecimals={false} tickCount={2} domain={[0, 1]} />
-                <Legend />
-                <Bar dataKey="June" fill={colors[0]} />
-                <Bar dataKey="May" fill={colors[1]} />
-                <Tooltip />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
-        </div>
         {/* Staff Table */}
         <Table>
           <TableHeader>
@@ -288,38 +274,38 @@ export default function StaffManagement() {
             {staff
               .filter(s => s.name.toLowerCase().includes(search.toLowerCase()))
               .filter(s => roleFilter === "all" || s.role === roleFilter)
-              .map(staff => (
-                <TableRow key={staff.id}>
+              .map(s => (
+                <TableRow key={s.id}>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-semibold">{staff.name}</span>
-                      <span className="text-xs text-gray-500">{staff.id}</span>
+                      <span className="font-semibold">{s.name}</span>
+                      <span className="text-xs text-gray-500">{s.id}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{staff.role}</TableCell>
+                  <TableCell>{s.role}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span>{staff.phone}</span>
-                      <span className="text-xs text-gray-500">{staff.email}</span>
+                      <span>{s.phone}</span>
+                      <span className="text-xs text-gray-500">{s.email}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{staff.dateJoined}</TableCell>
-                  <TableCell>{staff.shift}</TableCell>
-                  <TableCell>{staff.employment}</TableCell>
+                  <TableCell>{s.dateJoined}</TableCell>
+                  <TableCell>{s.shift}</TableCell>
+                  <TableCell>{s.employment}</TableCell>
                   <TableCell>
                     <span className={
-                      staff.status === 'Active' ? 'text-green-700' :
-                      staff.status === 'On Leave' ? 'text-orange-700' :
+                      s.status === 'Active' ? 'text-green-700' :
+                      s.status === 'On Leave' ? 'text-orange-700' :
                       'text-red-700'
                     }>
-                      {staff.status}
+                      {s.status}
                     </span>
                   </TableCell>
-                  <TableCell>${staff.salary}</TableCell>
-                  <TableCell>{staff.attendance}</TableCell>
+                  <TableCell>${s.salary}</TableCell>
+                  <TableCell>{s.attendance}</TableCell>
                   <TableCell>
-                    {staff.leave.length > 0
-                      ? staff.leave.map(lv => (
+                    {s.leave.length > 0
+                      ? s.leave.map(lv => (
                         <div key={lv.from}>
                           {lv.from}–{lv.to} ({lv.reason})
                         </div>
@@ -328,7 +314,13 @@ export default function StaffManagement() {
                     }
                   </TableCell>
                   <TableCell>
-                    <Button size="sm" variant="outline">Edit</Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setEditingStaff(s)}
+                    >
+                      Edit
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -336,6 +328,14 @@ export default function StaffManagement() {
         </Table>
         <div className="mt-3 text-right text-xs text-gray-400">Demo pagination</div>
       </Card>
+      {/* Edit Dialog */}
+      <StaffEditDialog
+        open={!!editingStaff}
+        staff={editingStaff}
+        onOpenChange={v => !v && setEditingStaff(null)}
+        onSave={handleUpdateStaff}
+        roles={rolesAvailable}
+      />
     </div>
   );
 }
