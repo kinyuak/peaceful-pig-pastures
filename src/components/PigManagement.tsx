@@ -1,8 +1,9 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Users, Eye, Edit, Plus } from 'lucide-react';
+import { Search, Users, Eye, Edit, Plus, Heart, AlertTriangle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import EditPigForm from './EditPigForm';
@@ -19,6 +20,7 @@ interface Pig {
   healthStatus: 'Healthy' | 'Sick' | 'Under Treatment';
   lastCheckup: string;
   lastServiceDate?: string;
+  lastHeatDate?: string;
   notes?: string;
   boarTagNumber?: string;
 }
@@ -56,7 +58,30 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
     return expectedDate.toISOString().split('T')[0];
   };
 
-  // Updated pigs data with last service dates
+  // Calculate heat cycle status
+  const calculateHeatStatus = (pig: Pig) => {
+    if (pig.category !== 'Sow' || pig.status !== 'Alive' || !pig.lastHeatDate) {
+      return null;
+    }
+
+    const today = new Date();
+    const lastHeat = new Date(pig.lastHeatDate);
+    const daysSinceLastHeat = Math.floor((today.getTime() - lastHeat.getTime()) / (1000 * 60 * 60 * 24));
+    const nextHeatDate = new Date(lastHeat.getTime() + (21 * 24 * 60 * 60 * 1000));
+    const daysUntilNextHeat = Math.floor((nextHeatDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (daysUntilNextHeat <= 0 && daysUntilNextHeat >= -2) {
+      return { status: 'due', daysUntilNextHeat, message: 'Due Now' };
+    } else if (daysUntilNextHeat <= 3 && daysUntilNextHeat > 0) {
+      return { status: 'approaching', daysUntilNextHeat, message: `${daysUntilNextHeat} days` };
+    } else if (daysUntilNextHeat < -2) {
+      return { status: 'overdue', daysUntilNextHeat, message: `${Math.abs(daysUntilNextHeat)} days overdue` };
+    }
+    
+    return { status: 'normal', daysUntilNextHeat, message: `${daysUntilNextHeat} days` };
+  };
+
+  // Updated pigs data with heat cycle information
   const [pigs, setPigs] = useState<Pig[]>([
     {
       id: '1',
@@ -69,7 +94,8 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       status: 'Alive',
       healthStatus: 'Healthy',
       lastCheckup: '2024-06-12',
-      lastServiceDate: '2024-01-17', // 115 days before June 1, 2025
+      lastServiceDate: '2024-01-17',
+      lastHeatDate: '2024-01-15', // 2 days before service
       boarTagNumber: 'B001',
       // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
@@ -114,7 +140,8 @@ SALES:
       status: 'Sold',
       healthStatus: 'Healthy',
       lastCheckup: '2025-05-29',
-      lastServiceDate: '2024-05-27', // 115 days before October 9, 2024
+      lastServiceDate: '2024-05-27',
+      lastHeatDate: '2024-05-25', // 2 days before service
       boarTagNumber: '2055',
       // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
@@ -192,6 +219,21 @@ SALES:
     }
   };
 
+  const getHeatStatusColor = (status: string) => {
+    switch (status) {
+      case 'due': return 'bg-red-100 text-red-800';
+      case 'approaching': return 'bg-yellow-100 text-yellow-800';
+      case 'overdue': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Count sows due for heat
+  const sowsDueForHeat = pigs.filter(pig => {
+    const heatStatus = calculateHeatStatus(pig);
+    return heatStatus && (heatStatus.status === 'due' || heatStatus.status === 'overdue');
+  }).length;
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -212,7 +254,7 @@ SALES:
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Pigs</CardTitle>
@@ -252,6 +294,17 @@ SALES:
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Heat Due/Overdue</CardTitle>
+                <Heart className="h-4 w-4 text-pink-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-pink-600">{sowsDueForHeat}</div>
+                <p className="text-xs text-muted-foreground">Need attention</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Under Treatment</CardTitle>
                 <div className="text-yellow-600">🏥</div>
               </CardHeader>
@@ -259,7 +312,7 @@ SALES:
                 <div className="text-2xl font-bold text-yellow-600">
                   {pigs.filter(p => p.healthStatus === 'Under Treatment').length}
                 </div>
-                <p className="text-xs text-muted-foreground">Need attention</p>
+                <p className="text-xs text-muted-foreground">Medical care</p>
               </CardContent>
             </Card>
           </div>
@@ -308,6 +361,7 @@ SALES:
                   <TableHead>Weight (kg)</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Health</TableHead>
+                  <TableHead>Next Heat</TableHead>
                   <TableHead>Expected Farrowing</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -316,6 +370,7 @@ SALES:
                 {filteredPigs.map((pig) => {
                   const age = calculateAge(pig.dateOfBirth);
                   const expectedFarrowing = calculateExpectedFarrowing(pig.lastServiceDate);
+                  const heatStatus = calculateHeatStatus(pig);
                   
                   return (
                     <TableRow key={pig.id}>
@@ -340,6 +395,20 @@ SALES:
                         <Badge className={getHealthStatusColor(pig.healthStatus)}>
                           {pig.status === 'Sold' ? 'N/A' : pig.healthStatus}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {heatStatus ? (
+                          <div className="flex items-center gap-1">
+                            {(heatStatus.status === 'due' || heatStatus.status === 'overdue') && (
+                              <AlertTriangle className="h-3 w-3 text-red-500" />
+                            )}
+                            <Badge className={getHeatStatusColor(heatStatus.status)} variant="outline">
+                              {heatStatus.message}
+                            </Badge>
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">N/A</span>
+                        )}
                       </TableCell>
                       <TableCell>
                         {expectedFarrowing && pig.status === 'Alive' && pig.category === 'Sow' ? (
@@ -470,6 +539,23 @@ SALES:
                       <span className="text-gray-600">Last Checkup:</span>
                       <span className="font-medium">{new Date(selectedPig.lastCheckup).toLocaleDateString()}</span>
                     </div>
+                    {selectedPig.category === 'Sow' && selectedPig.lastHeatDate && (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Last Heat:</span>
+                          <span className="font-medium">{new Date(selectedPig.lastHeatDate).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Next Heat:</span>
+                          <div className="font-medium text-right">
+                            {(() => {
+                              const heatStatus = calculateHeatStatus(selectedPig);
+                              return heatStatus ? heatStatus.message : 'Unknown';
+                            })()}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
