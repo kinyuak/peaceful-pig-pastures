@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Users, Eye, Edit } from 'lucide-react';
+import { Search, Users, Eye, Edit, Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import EditPigForm from './EditPigForm';
@@ -18,6 +18,7 @@ interface Pig {
   status: 'Alive' | 'Dead' | 'Sold';
   healthStatus: 'Healthy' | 'Sick' | 'Under Treatment';
   lastCheckup: string;
+  lastServiceDate?: string;
   notes?: string;
   boarTagNumber?: string;
 }
@@ -32,7 +33,30 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
   const [selectedPig, setSelectedPig] = useState<Pig | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  // Two sows data
+  // Calculate age in years, months, weeks, and days
+  const calculateAge = (dateOfBirth: string) => {
+    const birth = new Date(dateOfBirth);
+    const now = new Date();
+    const ageInMs = now.getTime() - birth.getTime();
+    const ageInDays = Math.floor(ageInMs / (1000 * 60 * 60 * 24));
+    
+    const years = Math.floor(ageInDays / 365);
+    const months = Math.floor((ageInDays % 365) / 30);
+    const weeks = Math.floor((ageInDays % 30) / 7);
+    const days = ageInDays % 7;
+    
+    return { years, months, weeks, days, totalWeeks: Math.floor(ageInDays / 7) };
+  };
+
+  // Calculate expected farrowing date (115 days from last service)
+  const calculateExpectedFarrowing = (lastServiceDate?: string) => {
+    if (!lastServiceDate) return null;
+    const serviceDate = new Date(lastServiceDate);
+    const expectedDate = new Date(serviceDate.getTime() + (115 * 24 * 60 * 60 * 1000));
+    return expectedDate.toISOString().split('T')[0];
+  };
+
+  // Updated pigs data with last service dates
   const [pigs, setPigs] = useState<Pig[]>([
     {
       id: '1',
@@ -45,7 +69,9 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       status: 'Alive',
       healthStatus: 'Healthy',
       lastCheckup: '2024-06-12',
+      lastServiceDate: '2024-01-17', // 115 days before June 1, 2025
       boarTagNumber: 'B001',
+      // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
 FARROWING RECORDS
 
@@ -88,7 +114,9 @@ SALES:
       status: 'Sold',
       healthStatus: 'Healthy',
       lastCheckup: '2025-05-29',
+      lastServiceDate: '2024-05-27', // 115 days before October 9, 2024
       boarTagNumber: '2055',
+      // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
 FARROWING RECORDS
 
@@ -169,11 +197,18 @@ SALES:
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="mb-6">
+          <div className="flex justify-between items-center mb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Pig Management</h1>
               <p className="text-gray-600 mt-2">Monitor and manage your pig inventory</p>
             </div>
+            <Button 
+              onClick={onAddPig}
+              className="bg-farm-blue-600 hover:bg-farm-blue-700"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add New Pig
+            </Button>
           </div>
 
           {/* Stats Cards */}
@@ -266,58 +301,76 @@ SALES:
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
                   <TableHead>ID</TableHead>
                   <TableHead>Breed</TableHead>
                   <TableHead>Category</TableHead>
+                  <TableHead>Age</TableHead>
                   <TableHead>Weight (kg)</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Health</TableHead>
-                  <TableHead>Last Checkup</TableHead>
+                  <TableHead>Expected Farrowing</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredPigs.map((pig) => (
-                  <TableRow key={pig.id}>
-                    <TableCell className="font-medium">{pig.name}</TableCell>
-                    <TableCell>{pig.pigId}</TableCell>
-                    <TableCell>{pig.breed}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{pig.category}</Badge>
-                    </TableCell>
-                    <TableCell>{pig.weight}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(pig.status)}>
-                        {pig.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getHealthStatusColor(pig.healthStatus)}>
-                        {pig.status === 'Sold' ? 'N/A' : pig.healthStatus}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{new Date(pig.lastCheckup).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleViewDetails(pig)}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleEditPig(pig)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {filteredPigs.map((pig) => {
+                  const age = calculateAge(pig.dateOfBirth);
+                  const expectedFarrowing = calculateExpectedFarrowing(pig.lastServiceDate);
+                  
+                  return (
+                    <TableRow key={pig.id}>
+                      <TableCell className="font-medium">{pig.pigId}</TableCell>
+                      <TableCell>{pig.breed}</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">{pig.category}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          {age.years}y {age.months}m {age.weeks}w {age.days}d
+                          <div className="text-xs text-gray-500">({age.totalWeeks} weeks)</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{pig.weight}</TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(pig.status)}>
+                          {pig.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getHealthStatusColor(pig.healthStatus)}>
+                          {pig.status === 'Sold' ? 'N/A' : pig.healthStatus}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {expectedFarrowing && pig.status === 'Alive' && pig.category === 'Sow' ? (
+                          <div className="text-sm">
+                            {new Date(expectedFarrowing).toLocaleDateString()}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">N/A</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleViewDetails(pig)}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleEditPig(pig)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
 
@@ -341,8 +394,8 @@ SALES:
             <div className="bg-white p-6 rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{selectedPig.name}</h3>
-                  <p className="text-gray-600">ID: {selectedPig.pigId}</p>
+                  <h3 className="text-2xl font-bold text-gray-900">{selectedPig.pigId}</h3>
+                  <p className="text-gray-600">Breed: {selectedPig.breed}</p>
                 </div>
                 <Button 
                   onClick={() => setSelectedPig(null)}
@@ -366,6 +419,15 @@ SALES:
                       <span className="font-medium">{new Date(selectedPig.dateOfBirth).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
+                      <span className="text-gray-600">Age:</span>
+                      <div className="font-medium text-right">
+                        {(() => {
+                          const age = calculateAge(selectedPig.dateOfBirth);
+                          return `${age.years}y ${age.months}m ${age.weeks}w ${age.days}d (${age.totalWeeks} weeks)`;
+                        })()}
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
                       <span className="text-gray-600">Category:</span>
                       <Badge variant="secondary">{selectedPig.category}</Badge>
                     </div>
@@ -377,6 +439,17 @@ SALES:
                       <div className="flex justify-between">
                         <span className="text-gray-600">Boar Tag:</span>
                         <span className="font-medium">{selectedPig.boarTagNumber}</span>
+                      </div>
+                    )}
+                    {selectedPig.lastServiceDate && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Expected Farrowing:</span>
+                        <span className="font-medium">
+                          {calculateExpectedFarrowing(selectedPig.lastServiceDate) ? 
+                            new Date(calculateExpectedFarrowing(selectedPig.lastServiceDate)!).toLocaleDateString() : 
+                            'N/A'
+                          }
+                        </span>
                       </div>
                     )}
                   </div>

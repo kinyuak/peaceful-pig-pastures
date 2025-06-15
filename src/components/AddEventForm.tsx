@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+interface Pig {
+  id: string;
+  name: string;
+  pigId: string;
+  category: 'Sow' | 'Boar' | 'Weaner' | 'Porker';
+  status: 'Alive' | 'Dead' | 'Sold';
+}
+
 interface AddEventFormProps {
   onClose: () => void;
   onSave: (event: any) => void;
@@ -17,6 +25,7 @@ interface AddEventFormProps {
 
 const AddEventForm = ({ onClose, onSave, selectedDate }: AddEventFormProps) => {
   const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     date: selectedDate || new Date().toISOString().split('T')[0],
@@ -25,6 +34,29 @@ const AddEventForm = ({ onClose, onSave, selectedDate }: AddEventFormProps) => {
     description: '',
     pigId: ''
   });
+
+  // Sample pigs data - in real app this would come from props or context
+  const pigs: Pig[] = [
+    {
+      id: '1',
+      name: 'TestSow',
+      pigId: '0980',
+      category: 'Sow',
+      status: 'Alive'
+    },
+    {
+      id: '2',
+      name: 'TestSow02',
+      pigId: '0985',
+      category: 'Sow',
+      status: 'Sold'
+    }
+  ];
+
+  const filteredPigs = pigs.filter(pig => 
+    pig.pigId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pig.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +153,8 @@ const AddEventForm = ({ onClose, onSave, selectedDate }: AddEventFormProps) => {
                 <SelectContent>
                   <SelectItem value="health">Health Check</SelectItem>
                   <SelectItem value="monitoring">Weight Check</SelectItem>
-                  <SelectItem value="breeding">Breeding/Farrowing</SelectItem>
+                  <SelectItem value="breeding">Breeding</SelectItem>
+                  <SelectItem value="farrowing">Farrowing</SelectItem>
                   <SelectItem value="vaccination">Vaccination</SelectItem>
                   <SelectItem value="feeding">Feeding</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
@@ -130,13 +163,26 @@ const AddEventForm = ({ onClose, onSave, selectedDate }: AddEventFormProps) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="pigId">Pig ID (Optional)</Label>
-              <Input
-                id="pigId"
-                value={formData.pigId}
-                onChange={(e) => handleInputChange('pigId', e.target.value)}
-                placeholder="Enter pig ID if applicable"
-              />
+              <Label htmlFor="pigId">Select Pig (Optional)</Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Search by Pig ID or Name..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Select value={formData.pigId} onValueChange={(value) => handleInputChange('pigId', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a pig" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredPigs.map(pig => (
+                      <SelectItem key={pig.id} value={pig.pigId}>
+                        {pig.pigId} - {pig.name} ({pig.category})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="space-y-2">

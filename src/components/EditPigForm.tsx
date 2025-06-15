@@ -34,7 +34,6 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
   const { toast } = useToast();
   const [showFarrowingForm, setShowFarrowingForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: pig.name,
     pigId: pig.pigId,
     breed: pig.breed,
     dateOfBirth: pig.dateOfBirth,
@@ -49,7 +48,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.pigId || !formData.breed || !formData.dateOfBirth) {
+    if (!formData.pigId || !formData.breed || !formData.dateOfBirth) {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields.",
@@ -68,7 +67,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
     onSave(updatedPig);
     toast({
       title: "Success!",
-      description: `${formData.name} has been updated successfully.`,
+      description: `Pig ${formData.pigId} has been updated successfully.`,
     });
     onClose();
   };
@@ -93,7 +92,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
           <CardHeader>
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-2xl text-farm-blue-700">Farrowing Records - {pig.name}</CardTitle>
+                <CardTitle className="text-2xl text-farm-blue-700">Farrowing Records - {pig.pigId}</CardTitle>
                 <CardDescription>
                   Detailed breeding and health records
                 </CardDescription>
@@ -125,7 +124,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle className="text-2xl text-farm-blue-700">Edit {pig.name}</CardTitle>
+              <CardTitle className="text-2xl text-farm-blue-700">Edit Pig {pig.pigId}</CardTitle>
               <CardDescription>
                 Update the information for this pig
               </CardDescription>
@@ -150,17 +149,6 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Pig Name *</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter pig name"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
                   <Label htmlFor="pigId">Pig ID/Tag Number *</Label>
                   <Input
                     id="pigId"
@@ -170,9 +158,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
                     required
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
                 <div className="space-y-2">
                   <Label htmlFor="breed">Breed *</Label>
                   <Select value={formData.breed} onValueChange={(value) => handleInputChange('breed', value)}>
@@ -191,7 +177,9 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="dateOfBirth">Date of Birth *</Label>
                   <Input
@@ -202,9 +190,7 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
                     required
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
                 <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
                   <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
@@ -219,7 +205,9 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="weight">Current Weight (kg)</Label>
                   <Input
@@ -232,16 +220,16 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
                     step="0.1"
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="boarTagNumber">Boar Tag Number</Label>
-                <Input
-                  id="boarTagNumber"
-                  value={formData.boarTagNumber}
-                  onChange={(e) => handleInputChange('boarTagNumber', e.target.value)}
-                  placeholder="Enter boar tag number if applicable"
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="boarTagNumber">Boar Tag Number</Label>
+                  <Input
+                    id="boarTagNumber"
+                    value={formData.boarTagNumber}
+                    onChange={(e) => handleInputChange('boarTagNumber', e.target.value)}
+                    placeholder="Enter boar tag number if applicable"
+                  />
+                </div>
               </div>
             </div>
 
