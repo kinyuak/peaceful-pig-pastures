@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import EditPigForm from './EditPigForm';
 import PigSowSuggestions from "./PigSowSuggestions";
+import PigReportsCharts from "./PigReportsCharts"; // <-- ADD import
 
 interface Pig {
   id: string;
@@ -97,7 +98,6 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
       lastServiceDate: '2024-01-17',
       lastHeatDate: '2024-01-15', // 2 days before service
       boarTagNumber: 'B001',
-      // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
 FARROWING RECORDS
 
@@ -143,7 +143,6 @@ SALES:
       lastServiceDate: '2024-05-27',
       lastHeatDate: '2024-05-25', // 2 days before service
       boarTagNumber: '2055',
-      // ... keep existing code (notes section)
       notes: `PEACEFUL MEADOW FARM
 FARROWING RECORDS
 
@@ -233,6 +232,12 @@ SALES:
     const heatStatus = calculateHeatStatus(pig);
     return heatStatus && (heatStatus.status === 'due' || heatStatus.status === 'overdue');
   }).length;
+
+  // -- NEW SECTION: Aggregate all sow notes for overview charts --
+  const sowNotes = pigs
+    .filter(p => p.category === "Sow" && p.notes)
+    .map(p => p.notes)
+    .join('\n');
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -343,6 +348,16 @@ SALES:
             </div>
           </div>
         </div>
+        
+        {/* === NEW DASHBOARD CHARTS: GLOBAL SOW OUTCOME CHARTS === */}
+        {sowNotes && (
+          <div className="mb-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+              <span className="block">Sow Performance Charts (All Sows)</span>
+            </h2>
+            <PigReportsCharts notes={sowNotes} />
+          </div>
+        )}
 
         {/* Pig Table */}
         <Card>
