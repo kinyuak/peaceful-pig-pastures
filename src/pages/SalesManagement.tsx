@@ -7,6 +7,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar, Search } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import { AddSaleDialog, AddSaleFormData } from "@/components/AddSaleDialog";
 
 // Demo sales data
 const demoSales = [
@@ -66,27 +67,41 @@ const salesStatuses = [
 
 // ------ Chart Data Preparation ------
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#fbbf24", "#6366f1"];
-const chartRevenueByType = [
-  { name: "Produce", Revenue: getRevenue(demoSales, "Produce") },
-  { name: "Livestock", Revenue: getRevenue(demoSales, "Livestock") },
-];
-const chartSalesTypeSplit = [
-  { name: "Produce", value: demoSales.filter((s) => s.type === "Produce").length },
-  { name: "Livestock", value: demoSales.filter((s) => s.type === "Livestock").length },
-];
+
 
 export default function SalesManagement() {
   const [tab, setTab] = useState("dashboard");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [sales, setSales] = useState([...demoSales]);
+
+  // Chart data uses current visible sales
+  const chartRevenueByType = [
+    { name: "Produce", Revenue: getRevenue(sales, "Produce") },
+    { name: "Livestock", Revenue: getRevenue(sales, "Livestock") },
+  ];
+  const chartSalesTypeSplit = [
+    { name: "Produce", value: sales.filter((s) => s.type === "Produce").length },
+    { name: "Livestock", value: sales.filter((s) => s.type === "Livestock").length },
+  ];
 
   // Filtered sales for table view
-  const filteredSales = demoSales.filter((s) => 
+  const filteredSales = sales.filter((s) => 
     (statusFilter === "All" || s.status === statusFilter) &&
     (s.item?.toLowerCase().includes(search.toLowerCase()) ||
     s.buyer?.toLowerCase().includes(search.toLowerCase()) ||
     s.id?.toLowerCase().includes(search.toLowerCase()))
   );
+
+  // Add new sale
+  const handleAddSale = (newSale: AddSaleFormData) => {
+    // If Livestock: override item for display consistency
+    let saleToAdd = { ...newSale };
+    if (saleToAdd.type === "Livestock" && saleToAdd.pigTag) {
+      saleToAdd.item = `Pig (${saleToAdd.pigTag})`;
+    }
+    setSales((prev) => [saleToAdd, ...prev]);
+  };
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
@@ -105,29 +120,29 @@ export default function SalesManagement() {
             <Card className="p-4 border-blue-100 bg-farm-blue-50">
               <div className="text-xs text-gray-500 mb-1">Total Revenue</div>
               <div className="text-2xl font-bold text-farm-blue-800">
-                Ksh {getRevenue(demoSales).toLocaleString()}
+                Ksh {getRevenue(sales).toLocaleString()}
               </div>
             </Card>
             <Card className="p-4 border-blue-100 bg-farm-blue-50">
               <div className="text-xs text-gray-500 mb-1">Livestock Sales</div>
               <div className="text-lg font-bold text-farm-blue-700">
-                Ksh {getRevenue(demoSales, "Livestock").toLocaleString()}
+                Ksh {getRevenue(sales, "Livestock").toLocaleString()}
               </div>
             </Card>
             <Card className="p-4 border-blue-100 bg-farm-blue-50">
               <div className="text-xs text-gray-500 mb-1">Produce Sales</div>
               <div className="text-lg font-bold text-farm-blue-700">
-                Ksh {getRevenue(demoSales, "Produce").toLocaleString()}
+                Ksh {getRevenue(sales, "Produce").toLocaleString()}
               </div>
             </Card>
             <Card className="p-4 border-blue-100 bg-farm-blue-50">
               <div className="text-xs text-gray-500 mb-1">Total Profit</div>
               <div className="text-lg font-bold text-green-700">
-                Ksh {(getRevenue(demoSales)-getCost(demoSales)).toLocaleString()}
+                Ksh {(getRevenue(sales)-getCost(sales)).toLocaleString()}
               </div>
             </Card>
           </div>
-          {/* --------- NEW: Analytics/Charts --------- */}
+          {/* --------- Analytics/Charts --------- */}
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             {/* Revenue by Type Bar Chart */}
             <div className="bg-white border rounded p-4 shadow-sm">
@@ -168,7 +183,6 @@ export default function SalesManagement() {
             </div>
           </div>
           {/* --------- END: Analytics/Charts --------- */}
-          {/* Analytics/Charts Placeholder REMOVED */}
         </TabsContent>
         <TabsContent value="records">
           {/* Sales Records Table */}
@@ -188,7 +202,8 @@ export default function SalesManagement() {
                 <option key={st} value={st}>{st}</option>
               ))}
             </select>
-            <Button>Add New Sale</Button>
+            {/* Replace static Button with AddSaleDialog */}
+            <AddSaleDialog onAddSale={handleAddSale} />
           </div>
           <div className="overflow-auto">
             <Table>
