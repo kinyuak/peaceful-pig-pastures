@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 
 const demoProduce = [
   {
@@ -80,14 +81,12 @@ const getLowStockItems = (items: any[]) =>
 export default function InventoryManagement() {
   const [tab, setTab] = useState("produce");
   const [search, setSearch] = useState("");
+  const [addOpen, setAddOpen] = useState(false);
 
   const data = tab === "produce" ? demoProduce : demoFeed;
   const lowStock = getLowStockItems(data);
-
-  // --- Chart Data ---
   const pieData = data.map((item) => ({ name: item.name, value: item.quantity }));
   const barData = data.map((item) => ({ name: item.name, usage: item.usage }));
-
   const colors = ["#3b82f6", "#60a5fa", "#93c5fd", "#1e40af"];
 
   return (
@@ -116,7 +115,22 @@ export default function InventoryManagement() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
-              <Button>Add New Item</Button>
+              <Dialog open={addOpen} onOpenChange={setAddOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => setAddOpen(true)}>Add New Item</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Inventory Item</DialogTitle>
+                  </DialogHeader>
+                  <div>
+                    <p className="text-gray-500 text-sm">Inventory add form will go here.</p>
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={() => setAddOpen(false)} type="button">Close</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
             {/* Charts */}
             <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -210,7 +224,22 @@ export default function InventoryManagement() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
-              <Button>Add New Item</Button>
+              <Dialog open={addOpen} onOpenChange={setAddOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => setAddOpen(true)}>Add New Item</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Inventory Item</DialogTitle>
+                  </DialogHeader>
+                  <div>
+                    <p className="text-gray-500 text-sm">Inventory add form will go here.</p>
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={() => setAddOpen(false)} type="button">Close</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
             {/* Charts */}
             <div className="flex flex-col md:flex-row gap-6 mb-8">

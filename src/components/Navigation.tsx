@@ -1,20 +1,23 @@
 
+import { NavLink, useLocation } from "react-router-dom";
 import { Home, Users, Calendar, Plus, Grid2x2, List } from 'lucide-react';
 
+const tabs = [
+  { id: 'home', label: 'Home', icon: Home, to: "/" },
+  { id: 'pigs', label: 'Pig Management', icon: Users, to: "/pigs" },
+  { id: 'inventory', label: 'Inventory', icon: Grid2x2, to: "/inventory" },
+  { id: 'staff', label: 'Staff Management', icon: List, to: "/staff" },
+  { id: 'calendar', label: 'Calendar', icon: Calendar, to: "/calendar" },
+];
+
 interface NavigationProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-  onAddPig: () => void;
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
+  onAddPig?: () => void;
 }
 
-const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
-  const tabs = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'pigs', label: 'Pig Management', icon: Users },
-    { id: 'inventory', label: 'Inventory', icon: Grid2x2 },
-    { id: 'staff', label: 'Staff Management', icon: List },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-  ];
+const Navigation = () => {
+  const location = useLocation();
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -30,18 +33,20 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
               {tabs.map((tab) => {
                 const IconComponent = tab.icon;
                 return (
-                  <button
+                  <NavLink
+                    to={tab.to}
                     key={tab.id}
-                    onClick={() => onTabChange(tab.id)}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === tab.id
-                        ? 'bg-farm-blue-100 text-farm-blue-700'
-                        : 'text-gray-600 hover:text-farm-blue-700 hover:bg-gray-50'
-                    }`}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        isActive || location.pathname === tab.to
+                          ? 'bg-farm-blue-100 text-farm-blue-700'
+                          : 'text-gray-600 hover:text-farm-blue-700 hover:bg-gray-50'
+                      }`
+                    }
                   >
                     <IconComponent className="h-4 w-4" />
                     <span>{tab.label}</span>
-                  </button>
+                  </NavLink>
                 );
               })}
             </div>
