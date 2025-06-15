@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import InventoryManagement from "./pages/InventoryManagement";
 import StaffManagement from "./pages/StaffManagement";
+import SalesManagement from "./pages/SalesManagement";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/calendar" element={<Index defaultTab="calendar" />} />
           <Route path="/inventory" element={<InventoryManagement />} />
           <Route path="/staff" element={<StaffManagement />} />
+          <Route path="/sales" element={<SalesManagement />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

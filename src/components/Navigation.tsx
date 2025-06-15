@@ -1,10 +1,11 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, Users, Calendar, Plus, Grid2x2, List } from 'lucide-react';
+import { Home, Users, Calendar, Plus, Grid2x2, List, FileText } from 'lucide-react';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home, to: "/" },
   { id: 'pigs', label: 'Pig Management', icon: Users, to: "/pigs" },
   { id: 'inventory', label: 'Inventory', icon: Grid2x2, to: "/inventory" },
+  { id: 'sales', label: 'Sales', icon: FileText, to: "/sales" },
   { id: 'staff', label: 'Staff Management', icon: List, to: "/staff" },
   { id: 'calendar', label: 'Calendar', icon: Calendar, to: "/calendar" },
 ];
