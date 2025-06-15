@@ -16,8 +16,15 @@ interface NavigationProps {
   onAddPig?: () => void;
 }
 
-const Navigation = () => {
+const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
   const location = useLocation();
+
+  const getIsActive = (tab: (typeof tabs)[number]) => {
+    if (activeTab && onTabChange) {
+      return activeTab === tab.id;
+    }
+    return location.pathname === tab.to;
+  };
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -32,21 +39,39 @@ const Navigation = () => {
             <div className="flex space-x-4">
               {tabs.map((tab) => {
                 const IconComponent = tab.icon;
+                // Is active if either the controlled activeTab is set or falling back to location
+                const isActive = getIsActive(tab);
+
+                // For Pig Management, show Add Pig button if handler present and tab is active
+                const showAddPig = tab.id === 'pigs' && typeof onAddPig === 'function' && isActive;
+
                 return (
-                  <NavLink
-                    to={tab.to}
-                    key={tab.id}
-                    className={({ isActive }) =>
-                      `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        isActive || location.pathname === tab.to
+                  <div key={tab.id} className="flex items-center space-x-1">
+                    <NavLink
+                      to={tab.to}
+                      className={
+                        `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ` +
+                        (isActive
                           ? 'bg-farm-blue-100 text-farm-blue-700'
-                          : 'text-gray-600 hover:text-farm-blue-700 hover:bg-gray-50'
-                      }`
-                    }
-                  >
-                    <IconComponent className="h-4 w-4" />
-                    <span>{tab.label}</span>
-                  </NavLink>
+                          : 'text-gray-600 hover:text-farm-blue-700 hover:bg-gray-50')
+                      }
+                      onClick={onTabChange ? () => onTabChange(tab.id) : undefined}
+                    >
+                      <IconComponent className="h-4 w-4" />
+                      <span>{tab.label}</span>
+                    </NavLink>
+                    {showAddPig && (
+                      <button
+                        className="ml-1 flex items-center rounded-full bg-farm-blue-500 text-white hover:bg-farm-blue-600 px-2 py-1 text-xs"
+                        onClick={onAddPig}
+                        title="Add New Pig"
+                        type="button"
+                      >
+                        <Plus className="w-3 h-3 mr-1" />
+                        Add Pig
+                      </button>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -58,3 +83,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
