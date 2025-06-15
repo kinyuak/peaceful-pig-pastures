@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar, Search } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 // Demo sales data
 const demoSales = [
@@ -63,6 +64,17 @@ const salesStatuses = [
   "All", "Completed", "Pending", "Cancelled"
 ];
 
+// ------ Chart Data Preparation ------
+const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#fbbf24", "#6366f1"];
+const chartRevenueByType = [
+  { name: "Produce", Revenue: getRevenue(demoSales, "Produce") },
+  { name: "Livestock", Revenue: getRevenue(demoSales, "Livestock") },
+];
+const chartSalesTypeSplit = [
+  { name: "Produce", value: demoSales.filter((s) => s.type === "Produce").length },
+  { name: "Livestock", value: demoSales.filter((s) => s.type === "Livestock").length },
+];
+
 export default function SalesManagement() {
   const [tab, setTab] = useState("dashboard");
   const [search, setSearch] = useState("");
@@ -115,11 +127,48 @@ export default function SalesManagement() {
               </div>
             </Card>
           </div>
-          {/* Analytics/Charts Placeholder */}
-          <div className="bg-white border rounded p-6 shadow-sm text-center mb-4">
-            <div className="text-farm-blue-600 font-medium mb-2">Analytics Coming Soon</div>
-            <div className="text-xs text-gray-500">Graphs and detailed breakdown will appear here…</div>
+          {/* --------- NEW: Analytics/Charts --------- */}
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Revenue by Type Bar Chart */}
+            <div className="bg-white border rounded p-4 shadow-sm">
+              <div className="font-semibold mb-2 text-farm-blue-600">Revenue Breakdown by Category</div>
+              <ResponsiveContainer height={220} width="100%">
+                <BarChart data={chartRevenueByType}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="Revenue" fill="#3b82f6" barSize={60} radius={6}>
+                    {chartRevenueByType.map((entry, idx) => (
+                      <Cell key={`bar-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Sales Distribution Pie Chart */}
+            <div className="bg-white border rounded p-4 shadow-sm">
+              <div className="font-semibold mb-2 text-farm-blue-600">Sales Distribution</div>
+              <ResponsiveContainer height={220} width="100%">
+                <PieChart>
+                  <Pie
+                    data={chartSalesTypeSplit}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={70}
+                    label
+                  >
+                    {chartSalesTypeSplit.map((entry, idx) => (
+                      <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
+          {/* --------- END: Analytics/Charts --------- */}
+          {/* Analytics/Charts Placeholder REMOVED */}
         </TabsContent>
         <TabsContent value="records">
           {/* Sales Records Table */}
