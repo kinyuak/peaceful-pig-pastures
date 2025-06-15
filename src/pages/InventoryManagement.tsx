@@ -82,6 +82,28 @@ export default function InventoryManagement() {
   const [tab, setTab] = useState("produce");
   const [search, setSearch] = useState("");
   const [addOpen, setAddOpen] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    category: tab === "produce" ? "Produce" : "Feed",
+    batch: "",
+    quantity: "",
+    unit: "",
+    added: "",
+    expiry: "",
+    supplier: "",
+    location: "",
+    cost: "",
+    usage: "",
+    notes: "",
+  });
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const data = tab === "produce" ? demoProduce : demoFeed;
   const lowStock = getLowStockItems(data);
@@ -123,11 +145,79 @@ export default function InventoryManagement() {
                   <DialogHeader>
                     <DialogTitle>Add New Inventory Item</DialogTitle>
                   </DialogHeader>
-                  <div>
-                    <p className="text-gray-500 text-sm">Inventory add form will go here.</p>
-                  </div>
+                  {/* Inventory Add Form */}
+                  <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Name</label>
+                      <Input name="name" value={form.name} onChange={handleFieldChange} required />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Category</label>
+                      <select
+                        name="category"
+                        value={form.category}
+                        onChange={handleFieldChange}
+                        className="w-full rounded-md border border-gray-200 px-3 py-2"
+                      >
+                        <option value="Produce">Produce</option>
+                        <option value="Feed">Feed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Batch/Lot Number</label>
+                      <Input name="batch" value={form.batch} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Quantity in Stock</label>
+                      <Input type="number" name="quantity" value={form.quantity} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Unit</label>
+                      <Input name="unit" value={form.unit} onChange={handleFieldChange} placeholder="kg, litres, units" />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Date Added</label>
+                      <Input type="date" name="added" value={form.added} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Expiry Date</label>
+                      <Input type="date" name="expiry" value={form.expiry} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Supplier/Source</label>
+                      <Input name="supplier" value={form.supplier} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Storage Location</label>
+                      <Input name="location" value={form.location} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Cost per Unit</label>
+                      <Input type="number" name="cost" value={form.cost} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Usage Rate</label>
+                      <Input type="number" name="usage" value={form.usage} onChange={handleFieldChange} placeholder="per month" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm text-gray-700 mb-1">Notes/Remarks</label>
+                      <Input name="notes" value={form.notes} onChange={handleFieldChange} />
+                    </div>
+                  </form>
                   <DialogFooter>
-                    <Button onClick={() => setAddOpen(false)} type="button">Close</Button>
+                    <Button
+                      onClick={() => setAddOpen(false)}
+                      type="button"
+                      variant="ghost"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      onClick={() => setAddOpen(false)}
+                    >
+                      Save
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -232,11 +322,79 @@ export default function InventoryManagement() {
                   <DialogHeader>
                     <DialogTitle>Add New Inventory Item</DialogTitle>
                   </DialogHeader>
-                  <div>
-                    <p className="text-gray-500 text-sm">Inventory add form will go here.</p>
-                  </div>
+                  {/* Inventory Add Form */}
+                  <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Name</label>
+                      <Input name="name" value={form.name} onChange={handleFieldChange} required />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Category</label>
+                      <select
+                        name="category"
+                        value={form.category}
+                        onChange={handleFieldChange}
+                        className="w-full rounded-md border border-gray-200 px-3 py-2"
+                      >
+                        <option value="Produce">Produce</option>
+                        <option value="Feed">Feed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Batch/Lot Number</label>
+                      <Input name="batch" value={form.batch} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Quantity in Stock</label>
+                      <Input type="number" name="quantity" value={form.quantity} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Unit</label>
+                      <Input name="unit" value={form.unit} onChange={handleFieldChange} placeholder="kg, litres, units" />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Date Added</label>
+                      <Input type="date" name="added" value={form.added} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Expiry Date</label>
+                      <Input type="date" name="expiry" value={form.expiry} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Supplier/Source</label>
+                      <Input name="supplier" value={form.supplier} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Storage Location</label>
+                      <Input name="location" value={form.location} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Cost per Unit</label>
+                      <Input type="number" name="cost" value={form.cost} onChange={handleFieldChange} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-1">Usage Rate</label>
+                      <Input type="number" name="usage" value={form.usage} onChange={handleFieldChange} placeholder="per month" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm text-gray-700 mb-1">Notes/Remarks</label>
+                      <Input name="notes" value={form.notes} onChange={handleFieldChange} />
+                    </div>
+                  </form>
                   <DialogFooter>
-                    <Button onClick={() => setAddOpen(false)} type="button">Close</Button>
+                    <Button
+                      onClick={() => setAddOpen(false)}
+                      type="button"
+                      variant="ghost"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      onClick={() => setAddOpen(false)}
+                    >
+                      Save
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
