@@ -1,4 +1,3 @@
-
 import { NavLink, useLocation } from "react-router-dom";
 import { Home, Users, Calendar, Plus, Grid2x2, List } from 'lucide-react';
 
@@ -42,8 +41,8 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
                 // Is active if either the controlled activeTab is set or falling back to location
                 const isActive = getIsActive(tab);
 
-                // For Pig Management, show Add Pig button if handler present and tab is active
-                const showAddPig = tab.id === 'pigs' && typeof onAddPig === 'function' && isActive;
+                // Remove the Add Pig button from the header
+                // (showAddPig logic is removed)
 
                 return (
                   <div key={tab.id} className="flex items-center space-x-1">
@@ -60,17 +59,7 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
                       <IconComponent className="h-4 w-4" />
                       <span>{tab.label}</span>
                     </NavLink>
-                    {showAddPig && (
-                      <button
-                        className="ml-1 flex items-center rounded-full bg-farm-blue-500 text-white hover:bg-farm-blue-600 px-2 py-1 text-xs"
-                        onClick={onAddPig}
-                        title="Add New Pig"
-                        type="button"
-                      >
-                        <Plus className="w-3 h-3 mr-1" />
-                        Add Pig
-                      </button>
-                    )}
+                    {/* "Add Pig" button removed from header */}
                   </div>
                 );
               })}
@@ -83,4 +72,3 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
 };
 
 export default Navigation;
-
