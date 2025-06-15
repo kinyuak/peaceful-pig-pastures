@@ -64,10 +64,19 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
       return;
     }
 
-    const updatedPig = {
+    const updatedPig: Pig = {
       ...pig,
-      ...formData,
+      pigId: formData.pigId,
+      breed: formData.breed,
+      dateOfBirth: formData.dateOfBirth,
       weight: parseFloat(formData.weight) || pig.weight,
+      category: formData.category,
+      status: formData.status,
+      healthStatus: formData.healthStatus,
+      notes: formData.notes,
+      boarTagNumber: formData.boarTagNumber,
+      lastHeatDate: formData.lastHeatDate,
+      lastServiceDate: formData.lastServiceDate,
       lastCheckup: new Date().toISOString().split('T')[0]
     };
 
@@ -379,13 +388,13 @@ const EditPigForm = ({ pig, onClose, onSave }: EditPigFormProps) => {
 
           {activeTab === 'heat' && (
             <HeatCycleTracker 
-              pig={{...pig, ...formData}} 
+              pig={{...pig, ...formData, weight: parseFloat(formData.weight) || pig.weight}} 
               onUpdateHeatDate={handleUpdateHeatDate}
             />
           )}
 
           {activeTab === 'health' && (
-            <PigHealthReports pig={{...pig, ...formData}} />
+            <PigHealthReports pig={{...pig, ...formData, weight: parseFloat(formData.weight) || pig.weight}} />
           )}
 
           {activeTab === 'records' && (
