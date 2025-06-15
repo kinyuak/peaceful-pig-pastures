@@ -9,8 +9,8 @@ import { Calendar, Search } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { AddSaleDialog, AddSaleFormData } from "@/components/AddSaleDialog";
 
-// Demo sales data
-const demoSales = [
+// Demo sales data now matches AddSaleFormData type
+const demoSales: AddSaleFormData[] = [
   {
     id: "SALE-001",
     date: "2024-06-10",
@@ -26,6 +26,7 @@ const demoSales = [
     remarks: "",
     status: "Completed",
     cost: 25,
+    // produce fields, no pigTag/category/etc
   },
   {
     id: "SALE-002",
@@ -50,12 +51,12 @@ const demoSales = [
 ];
 
 // Helper for revenue and reporting
-const getRevenue = (sales, type = "all") => {
+const getRevenue = (sales: AddSaleFormData[], type = "all") => {
   return sales
     .filter(s => (type === "all" ? true : s.type === type))
     .reduce((total, s) => total + (s.unitPrice * (s.quantity || 1)), 0);
 };
-const getCost = (sales, type = "all") => {
+const getCost = (sales: AddSaleFormData[], type = "all") => {
   return sales
     .filter(s => (type === "all" ? true : s.type === type))
     .reduce((total, s) => total + ((s.cost || 0) * (s.quantity || 1)), 0);
@@ -68,12 +69,11 @@ const salesStatuses = [
 // ------ Chart Data Preparation ------
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#fbbf24", "#6366f1"];
 
-
 export default function SalesManagement() {
   const [tab, setTab] = useState("dashboard");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [sales, setSales] = useState([...demoSales]);
+  const [sales, setSales] = useState<AddSaleFormData[]>([...demoSales]);
 
   // Chart data uses current visible sales
   const chartRevenueByType = [
@@ -100,7 +100,7 @@ export default function SalesManagement() {
     if (saleToAdd.type === "Livestock" && saleToAdd.pigTag) {
       saleToAdd.item = `Pig (${saleToAdd.pigTag})`;
     }
-    setSales((prev) => [saleToAdd, ...prev]);
+    setSales(prev => [saleToAdd, ...prev]);
   };
 
   return (
