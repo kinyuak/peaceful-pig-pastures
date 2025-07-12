@@ -24,6 +24,38 @@ interface Pig {
   lastHeatDate?: string;
   notes?: string;
   boarTagNumber?: string;
+  // Comprehensive pig data
+  litterNumber?: number;
+  dueServedDate?: string;
+  expectedFarrowingDate?: string;
+  actualFarrowingDate?: string;
+  noBornAlive?: number;
+  noBornDead?: number;
+  males?: number;
+  females?: number;
+  teethClippingDate?: string;
+  maleCastrationDate?: string;
+  malesCondition?: string;
+  weanersTotal?: number;
+  weanersCondition?: string;
+  porkersTotal?: number;
+  porkersCondition?: string;
+  vaccineDate?: string;
+  vaccineName?: string;
+  vaccineMode?: string;
+  vaccineAmount?: string;
+  healthRecordDate?: string;
+  healthCategory?: string;
+  diagnosisCause?: string;
+  precautionTaken?: string;
+  noSurvived?: number;
+  noDied?: number;
+  remarks?: string;
+  salesDate?: string;
+  numbersSold?: string;
+  salesWeight?: string;
+  salesReason?: string;
+  salesPerson?: string;
 }
 
 interface PigManagementProps {
@@ -82,90 +114,430 @@ const PigManagement = ({ onAddPig }: PigManagementProps) => {
     return { status: 'normal', daysUntilNextHeat, message: `${daysUntilNextHeat} days` };
   };
 
-  // Updated pigs data with heat cycle information
+  // Comprehensive pig data from provided table
   const [pigs, setPigs] = useState<Pig[]>([
     {
       id: '1',
-      name: 'TestSow',
-      pigId: '0980',
+      name: 'Sow 1892',
+      pigId: '1892',
       breed: 'Yorkshire',
-      dateOfBirth: '2021-01-15',
+      dateOfBirth: '2022-01-01',
+      weight: 210,
+      category: 'Sow',
+      status: 'Alive',
+      healthStatus: 'Healthy',
+      lastCheckup: '2025-05-12',
+      litterNumber: 1,
+      dueServedDate: '2025-01-14',
+      expectedFarrowingDate: '2025-05-09',
+      actualFarrowingDate: '2025-05-11',
+      noBornAlive: 9,
+      noBornDead: 0,
+      teethClippingDate: '2025-05-12',
+      weanersTotal: 0,
+      porkersTotal: 0,
+      vaccineDate: '2024-12-20',
+      vaccineName: 'Porcilis Coliclos',
+      vaccineMode: 'Injection',
+      vaccineAmount: '2ml',
+      healthRecordDate: '2025-05-12',
+      healthCategory: 'Piglet',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Iron Injection',
+      noSurvived: 9,
+      noDied: 0,
+      notes: 'Active litter, all piglets healthy'
+    },
+    {
+      id: '2',
+      name: 'Sow 2060',
+      pigId: '2060',
+      breed: 'Yorkshire',
+      dateOfBirth: '2021-06-01',
       weight: 220,
       category: 'Sow',
       status: 'Alive',
       healthStatus: 'Healthy',
-      lastCheckup: '2024-06-12',
-      lastServiceDate: '2024-01-17',
-      lastHeatDate: '2024-01-15', // 2 days before service
-      boarTagNumber: 'B001',
-      notes: `PEACEFUL MEADOW FARM
-FARROWING RECORDS
-
-SOW TAG 0980 BOAR TAG
-
-LITTER 4: Due 4/10/2024, Actual 4/7/2024 - 2 alive (1M, 1F) + 1 adopted = 3 total
-LITTER 5: Due 24/10/2024, Actual 25/10/2024 - 12 alive (6M, 6F)
-LITTER 6: Due 1/6/2025, Actual 1/6/2025 - 11 alive
-
-TEETH CLIPPING & CASTRATION:
-- 4th Litter: Teeth clipping 4/9/2024, Hernia condition
-- 5th Litter: Teeth clipping 30/10/2024, Male castration 21/11/2024 - Good condition
-- 6th Litter: Teeth clipping 3/6/2025
-
-WEANERS & PORKERS:
-- 6/26/2024: 3 weaners - Good condition
-- 8/26/2024: 2 porkers - Good condition
-- 2/1/2025: 9 weaners - Good condition
-
-HEALTH RECORDS:
-4th Litter:
-- 7/16/2024: Weaner worm infestation, dewormed - 3 survived
-- 8/15/2024: Weaner diarrhea, given Amprocox - 1 died, rest good
-
-5th Litter:
-- 27/10/2024: Piglets - 2 died, 10 remain
-- 30/10/2024: Iron deficiency prevention injection - 1 died, rest good
-
-SALES:
-- Jan 2025: 1 weaner sold (Geoffrey)`
+      lastCheckup: '2025-01-08',
+      litterNumber: 2,
+      dueServedDate: '2024-08-14',
+      expectedFarrowingDate: '2024-12-08',
+      actualFarrowingDate: '2024-12-08',
+      noBornAlive: 3,
+      noBornDead: 0,
+      teethClippingDate: null,
+      weanersTotal: 0,
+      porkersTotal: 0,
+      noSurvived: 0,
+      noDied: 0,
+      remarks: '2 piglets died, 1 given to tag 0982',
+      salesDate: '2025-01-08',
+      numbersSold: '4 Porkers',
+      salesPerson: 'Geoffry'
     },
     {
-      id: '2',
-      name: 'TestSow02',
-      pigId: '0985',
+      id: '3',
+      name: 'Sow 0982',
+      pigId: '0982',
       breed: 'Yorkshire',
-      dateOfBirth: '2021-03-20',
-      weight: 215,
+      dateOfBirth: '2020-03-01',
+      weight: 118,
       category: 'Sow',
       status: 'Sold',
       healthStatus: 'Healthy',
-      lastCheckup: '2025-05-29',
-      lastServiceDate: '2024-05-27',
-      lastHeatDate: '2024-05-25', // 2 days before service
+      lastCheckup: '2024-07-16',
+      litterNumber: 5,
+      dueServedDate: '2024-08-22',
+      expectedFarrowingDate: '2024-12-15',
+      actualFarrowingDate: '2024-12-15',
+      noBornAlive: 12,
+      noBornDead: 0,
+      teethClippingDate: '2024-12-18',
+      maleCastrationDate: '2025-01-27',
+      malesCondition: '6 castrated, good',
+      weanersTotal: 10,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-12-18',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 10,
+      noDied: 1,
+      remarks: 'Good',
+      salesDate: '2025-03-24',
+      numbersSold: 'Tag 0982',
+      salesWeight: '118kg',
+      salesReason: 'Aggressiveness',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '4',
+      name: 'Sow 0980',
+      pigId: '0980',
+      breed: 'Yorkshire',
+      dateOfBirth: '2020-01-01',
+      weight: 195,
+      category: 'Sow',
+      status: 'Alive',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-10-30',
+      litterNumber: 5,
+      dueServedDate: '2024-06-30',
+      expectedFarrowingDate: '2024-10-24',
+      actualFarrowingDate: '2024-10-25',
+      noBornAlive: 12,
+      noBornDead: 0,
+      males: 6,
+      females: 6,
+      teethClippingDate: '2024-10-30',
+      maleCastrationDate: '2024-11-21',
+      malesCondition: 'Good',
+      weanersTotal: 9,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-10-30',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 10,
+      noDied: 1,
+      remarks: 'Good',
+      salesDate: 'Jan-25',
+      numbersSold: '1 Weaner',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '5',
+      name: 'Sow 2041',
+      pigId: '2041',
+      breed: 'Yorkshire',
+      dateOfBirth: '2020-04-01',
+      weight: 234,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-12-30',
       boarTagNumber: '2055',
-      notes: `PEACEFUL MEADOW FARM
-FARROWING RECORDS
-
-SOW TAG 0985 BOAR TAG 2055
-
-LITTER 5: Due 9/10/2024, Actual 9/10/2024 - 4 alive (3M, 6F) + 5 adopted piglets
-
-TEETH CLIPPING & CASTRATION:
-- 5th Litter: Teeth clipping 12/10/2024, Male castration 21/11/2024
-
-WEANERS & PORKERS:
-- 2/1/2025: 9 weaners - Good condition
-
-VACCINE APPLICATION:
-- 6/20/2024: PORCILIS COLICLOS injection - 2ml
-
-HEALTH RECORDS:
-5th Litter:
-- 12/10/2024: Piglets iron deficiency prevention injection - 9 survived, well responded
-- 4/11/2024: 2nd iron injection - 9 survived, good condition
-
-SALES:
-- 30/5/2025: Sow sold 71kg dead weight - Unable to conceive (Geoffrey)`
+      litterNumber: 5,
+      dueServedDate: '2024-08-30',
+      expectedFarrowingDate: '2024-12-24',
+      actualFarrowingDate: '2024-12-25',
+      noBornAlive: 16,
+      noBornDead: 0,
+      teethClippingDate: '2024-12-30',
+      weanersTotal: 6,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-12-30',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Iron injection',
+      noSurvived: 10,
+      noDied: 4,
+      remarks: '4 piglets had low immunity',
+      salesDate: '2025-03-24',
+      numbersSold: '2041',
+      salesWeight: '234kg',
+      salesReason: 'Overweight',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '6',
+      name: 'Gilt A',
+      pigId: 'Gilt A',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-01-01',
+      weight: 67,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-06-15',
+      litterNumber: 1,
+      dueServedDate: '2024-01-21',
+      expectedFarrowingDate: '2024-01-20',
+      actualFarrowingDate: '2024-04-24',
+      noBornAlive: 5,
+      noBornDead: 0,
+      males: 3,
+      females: 2,
+      teethClippingDate: '2024-05-08',
+      maleCastrationDate: '2024-07-18',
+      malesCondition: 'Good',
+      weanersTotal: 5,
+      weanersCondition: 'Healthy',
+      porkersTotal: 5,
+      healthRecordDate: '2024-06-15',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Body weakness',
+      precautionTaken: 'Given multivitamin',
+      noSurvived: 5,
+      noDied: 0,
+      remarks: 'Recovering',
+      salesDate: '2024-09-28',
+      numbersSold: '1',
+      salesWeight: '67kg',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffrey'
+    },
+    {
+      id: '7',
+      name: 'Gilt B',
+      pigId: 'Gilt B',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-02-01',
+      weight: 107,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-08-15',
+      litterNumber: 1,
+      dueServedDate: '2024-02-03',
+      expectedFarrowingDate: '2024-05-29',
+      actualFarrowingDate: '2024-05-30',
+      noBornAlive: 13,
+      noBornDead: 2,
+      males: 5,
+      females: 6,
+      teethClippingDate: '2024-06-03',
+      maleCastrationDate: '2024-07-18',
+      malesCondition: 'Good',
+      weanersTotal: 6,
+      weanersCondition: 'Good',
+      porkersTotal: 2,
+      healthRecordDate: '2024-08-15',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Given Iron',
+      noSurvived: 13,
+      noDied: 0,
+      remarks: 'Health improvement',
+      salesDate: '2024-09-28',
+      numbersSold: 'Sow',
+      salesWeight: '107kg',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '8',
+      name: 'Gilt C',
+      pigId: 'Gilt C',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-03-01',
+      weight: 87,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-08-15',
+      litterNumber: 4,
+      dueServedDate: '2024-03-03',
+      expectedFarrowingDate: '2024-05-28',
+      actualFarrowingDate: '2024-05-29',
+      noBornAlive: 7,
+      noBornDead: 2,
+      males: 3,
+      females: 4,
+      teethClippingDate: '2024-06-03',
+      maleCastrationDate: '2024-07-18',
+      malesCondition: 'Good',
+      weanersTotal: 5,
+      weanersCondition: 'Good',
+      porkersTotal: 3,
+      healthRecordDate: '2024-08-15',
+      healthCategory: 'Piglets',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Given Iron',
+      noSurvived: 7,
+      noDied: 0,
+      salesDate: '2024-09-28',
+      numbersSold: 'Sow',
+      salesWeight: '87kg',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '9',
+      name: 'Gilt D',
+      pigId: 'Gilt D',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-04-01',
+      weight: 180,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-10-12',
+      litterNumber: 1,
+      dueServedDate: '2024-06-08',
+      expectedFarrowingDate: '2024-10-01',
+      actualFarrowingDate: '2024-10-13',
+      noBornAlive: 9,
+      noBornDead: 0,
+      males: 7,
+      females: 2,
+      teethClippingDate: '2024-10-12',
+      maleCastrationDate: '2024-11-21',
+      weanersTotal: 6,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-10-12',
+      healthCategory: 'Piglet',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 9,
+      noDied: 0,
+      remarks: 'Well responded',
+      salesDate: '2025-01-08',
+      numbersSold: 'Sow',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '10',
+      name: 'Gilt E',
+      pigId: 'Gilt E',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-05-01',
+      weight: 160,
+      category: 'Sow',
+      status: 'Alive',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-10-07',
+      litterNumber: 5,
+      dueServedDate: '2024-06-14',
+      expectedFarrowingDate: '2024-10-07',
+      actualFarrowingDate: '2024-10-07',
+      noBornAlive: 5,
+      noBornDead: 0,
+      teethClippingDate: '2024-10-12',
+      remarks: '5 piglets given to tag 0985'
+    },
+    {
+      id: '11',
+      name: 'Gilt F',
+      pigId: 'Gilt F',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-06-01',
+      weight: 170,
+      category: 'Sow',
+      status: 'Alive',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-11-11',
+      litterNumber: 1,
+      dueServedDate: '2024-07-14',
+      expectedFarrowingDate: '2024-11-05',
+      actualFarrowingDate: '2024-11-05',
+      noBornAlive: 7,
+      noBornDead: 0,
+      teethClippingDate: '2024-11-11',
+      healthRecordDate: '2024-11-11',
+      healthCategory: 'Piglet',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 6,
+      noDied: 1,
+      remarks: 'Well responding'
+    },
+    {
+      id: '12',
+      name: 'Gilt G',
+      pigId: 'Gilt G',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-07-01',
+      weight: 71,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-11-23',
+      litterNumber: 1,
+      dueServedDate: '2024-07-28',
+      expectedFarrowingDate: '2024-11-19',
+      actualFarrowingDate: '2024-11-19',
+      noBornAlive: 10,
+      noBornDead: 0,
+      teethClippingDate: '2024-11-23',
+      weanersTotal: 9,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-11-23',
+      healthCategory: 'Piglet',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 10,
+      noDied: 0,
+      remarks: 'Well responding',
+      salesDate: '2025-02-19',
+      numbersSold: 'Sow',
+      salesWeight: '71kg',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffry'
+    },
+    {
+      id: '13',
+      name: 'Gilt H',
+      pigId: 'Gilt H',
+      breed: 'Yorkshire',
+      dateOfBirth: '2023-08-01',
+      weight: 89,
+      category: 'Sow',
+      status: 'Sold',
+      healthStatus: 'Healthy',
+      lastCheckup: '2024-11-23',
+      litterNumber: 1,
+      dueServedDate: '2024-07-28',
+      expectedFarrowingDate: '2024-11-19',
+      actualFarrowingDate: '2024-11-20',
+      noBornAlive: 10,
+      noBornDead: 0,
+      teethClippingDate: '2024-11-23',
+      weanersTotal: 8,
+      weanersCondition: 'Good',
+      healthRecordDate: '2024-11-23',
+      healthCategory: 'Piglet',
+      diagnosisCause: 'Prevent Iron Deficiency',
+      precautionTaken: 'Injecting Iron',
+      noSurvived: 10,
+      noDied: 0,
+      remarks: 'Well responding',
+      salesDate: '2025-02-19',
+      numbersSold: 'Sow',
+      salesWeight: '89kg',
+      salesReason: 'Porker',
+      salesPerson: 'Geoffrey'
     }
   ]);
 
