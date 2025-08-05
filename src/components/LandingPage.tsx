@@ -2,57 +2,84 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Award, Shield, Heart, Phone, Mail, MapPin } from 'lucide-react';
+import { 
+  Star, 
+  Award, 
+  Shield, 
+  Heart, 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Smartphone,
+  Database,
+  BarChart3,
+  Users,
+  Zap,
+  CheckCircle,
+  ArrowRight,
+  Monitor,
+  Tablet,
+  Brain,
+  TrendingUp,
+  Target,
+  Globe
+} from 'lucide-react';
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-farm-blue-50 to-white">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-farm-blue-600/10 to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-4 bg-farm-blue-100 text-farm-blue-700 hover:bg-farm-blue-200">
-                🏆 Award-Winning Farm Since 2014
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 animate-fade-in">
-                Welcome to
-                <span className="text-farm-blue-600 block">Peaceful Meadow Farm</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-3xl animate-fade-in leading-relaxed">
-                Experience sustainable farming at its finest. We specialize in premium crop farming 
-                and ethical pig rearing, combining traditional farming wisdom with modern technology 
-                to bring you the highest quality agricultural products.
-              </p>
-              <div className="space-x-4 animate-fade-in">
-                <Button size="lg" className="bg-farm-blue-600 hover:bg-farm-blue-700">
-                  Explore Our Farm
-                </Button>
-                <Button size="lg" variant="outline" className="border-farm-blue-600 text-farm-blue-600 hover:bg-farm-blue-50">
-                  Contact Us
-                </Button>
-              </div>
-              <div className="mt-8 flex items-center space-x-6 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 mr-1" />
-                  <span>4.9/5 Customer Rating</span>
+      <div className="relative min-h-screen bg-gradient-to-br from-primary/10 via-secondary/5 to-background overflow-hidden">
+        {/* Background overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 flex items-center min-h-screen">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="animate-fade-in">
+                <Badge className="mb-6 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+                  🚀 Digital Agriculture Innovation Leader
+                </Badge>
+                <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-8 leading-tight">
+                  Transforming Agriculture Through
+                  <span className="text-primary block">Digital Innovation</span>
+                </h1>
+                <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
+                  Smart tools & expert consultancy for the modern farmer. Revolutionize your farm operations with cutting-edge technology and data-driven insights.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Button size="lg" className="group">
+                    Get a Free Consultation
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button size="lg" variant="outline">
+                    Explore Our Solutions
+                  </Button>
                 </div>
-                <div className="flex items-center">
-                  <Shield className="h-5 w-5 text-green-500 mr-1" />
-                  <span>Certified Organic</span>
+                <div className="flex items-center space-x-8 text-sm text-muted-foreground">
+                  <div className="flex items-center">
+                    <Star className="h-5 w-5 text-yellow-500 mr-2" />
+                    <span>5.0 Client Satisfaction</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Shield className="h-5 w-5 text-primary mr-2" />
+                    <span>Data Secure & GDPR Compliant</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Farm landscape with animals"
-                className="rounded-lg shadow-2xl w-full h-96 object-cover"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
-                <div className="text-2xl font-bold text-farm-blue-600">500+</div>
-                <div className="text-sm text-gray-600">Happy Customers</div>
+              <div className="relative">
+                <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 backdrop-blur-sm border border-primary/10">
+                  <img 
+                    src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    alt="Smart farming technology dashboard"
+                    className="rounded-lg shadow-2xl w-full h-80 object-cover"
+                  />
+                  <div className="absolute -bottom-4 -right-4 bg-card p-6 rounded-xl shadow-lg border">
+                    <div className="text-3xl font-bold text-primary">1000+</div>
+                    <div className="text-sm text-muted-foreground">Farms Digitized</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -60,127 +87,194 @@ const LandingPage = () => {
       </div>
 
       {/* About Section */}
-      <div className="py-16 bg-white">
+      <div className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <img 
-                src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Sheep grazing in green field"
-                className="rounded-lg shadow-lg w-full h-80 object-cover"
-              />
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  alt="Modern agriculture technology"
+                  className="rounded-xl shadow-lg w-full h-96 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-xl"></div>
+              </div>
             </div>
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story & Mission</h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Founded in 2014, Peaceful Meadow Farm began as a small family operation with a big dream: 
-                to practice sustainable agriculture that respects both the land and the animals we care for.
+            <div className="order-1 lg:order-2">
+              <Badge className="mb-4 bg-secondary/10 text-secondary">About AgriHerd Solutions</Badge>
+              <h2 className="text-4xl font-bold text-foreground mb-6">Empowering Farmers with Smart Technology</h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                AgriHerd Solutions is at the forefront of agricultural innovation, providing comprehensive digital tools and expert consultancy services that transform traditional farming into smart, data-driven operations.
               </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Today, we're proud to be a leading example of ethical farming practices, combining 
-                traditional methods with innovative technology to ensure the highest standards of 
-                animal welfare and crop quality.
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Our cutting-edge platform combines IoT sensors, AI analytics, and cloud-based management systems to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time data.
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-farm-blue-50 rounded-lg">
-                  <Award className="h-8 w-8 text-farm-blue-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">Certified</div>
-                  <div className="text-sm text-gray-600">Organic Farm</div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center p-6 bg-card rounded-lg border hover:shadow-md transition-shadow">
+                  <Award className="h-10 w-10 text-primary mx-auto mb-3" />
+                  <div className="font-semibold text-foreground">Award-Winning</div>
+                  <div className="text-sm text-muted-foreground">AgTech Innovation</div>
                 </div>
-                <div className="text-center p-4 bg-farm-blue-50 rounded-lg">
-                  <Heart className="h-8 w-8 text-farm-blue-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">Ethical</div>
-                  <div className="text-sm text-gray-600">Animal Care</div>
+                <div className="text-center p-6 bg-card rounded-lg border hover:shadow-md transition-shadow">
+                  <Brain className="h-10 w-10 text-primary mx-auto mb-3" />
+                  <div className="font-semibold text-foreground">AI-Powered</div>
+                  <div className="text-sm text-muted-foreground">Smart Analytics</div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Solutions Section */}
+      <div className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary">Our Solutions</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Comprehensive Farm Management Solutions</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              From crop tracking to livestock management, our integrated platform covers every aspect of modern farming
+            </p>
+          </div>
+          
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Crop Management */}
+            <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20">
+              <CardHeader className="pb-6">
+                <div className="h-16 w-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <span className="text-3xl">🌾</span>
+                </div>
+                <CardTitle className="text-2xl text-primary mb-2">Crop Management Solutions</CardTitle>
+                <CardDescription className="text-base">
+                  Advanced digital tools for comprehensive crop monitoring and management
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                    Production records & field tracking
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                    Automated inventory management
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                    Staff task scheduling & logs
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                    Weather integration & alerts
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Livestock Management */}
+            <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20">
+              <CardHeader className="pb-6">
+                <div className="h-16 w-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+                  <span className="text-3xl">🐄</span>
+                </div>
+                <CardTitle className="text-2xl text-secondary mb-2">Livestock Management</CardTitle>
+                <CardDescription className="text-base">
+                  Complete herd management with health monitoring and breeding optimization
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 flex-shrink-0" />
+                    Breeding & health monitoring
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 flex-shrink-0" />
+                    Smart feed formulation tools
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 flex-shrink-0" />
+                    Real-time herd tracking
+                  </li>
+                  <li className="flex items-center text-muted-foreground">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 flex-shrink-0" />
+                    Automated health alerts
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="py-16 bg-farm-blue-50">
+      <div className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Farm Specialties</h2>
-            <p className="text-lg text-gray-600">Committed to sustainable agriculture and ethical livestock management</p>
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-secondary/10 text-secondary">Platform Features</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Farm Management System Features</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Modern dashboard with comprehensive tools for complete farm operation management
+            </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🌾</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Premium Crop Farming</CardTitle>
+                <Database className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Breeding & Health Logs</CardTitle>
                 <CardDescription>
-                  Sustainable crop production using modern farming techniques, organic practices, 
-                  and precision agriculture to maximize yield while protecting the environment.
+                  Comprehensive tracking of breeding cycles, health records, and veterinary interventions with automated reminders.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🐷</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Ethical Pig Rearing</CardTitle>
+                <BarChart3 className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Sales Tracking</CardTitle>
                 <CardDescription>
-                  Humane pig farming with spacious living conditions, natural diet, and comprehensive 
-                  health monitoring to ensure the highest standards of animal welfare.
+                  Real-time sales monitoring, revenue analytics, and market performance insights with predictive forecasting.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🌱</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Sustainable Practices</CardTitle>
+                <TrendingUp className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Automated Reports</CardTitle>
                 <CardDescription>
-                  Environmental stewardship through renewable energy, water conservation, 
-                  soil health management, and biodiversity preservation initiatives.
+                  Generate detailed performance reports, compliance documentation, and financial summaries automatically.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🏥</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Advanced Health Management</CardTitle>
+                <Zap className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Inventory Alerts</CardTitle>
                 <CardDescription>
-                  Comprehensive health tracking, preventive care, and veterinary partnerships 
-                  to maintain optimal health for all our livestock.
+                  Smart inventory management with low-stock alerts, automated reordering, and supplier integration.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">📊</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Smart Technology</CardTitle>
+                <Users className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Staff Management</CardTitle>
                 <CardDescription>
-                  IoT sensors, automated feeding systems, and data analytics to optimize 
-                  farm operations and ensure consistent quality standards.
+                  Task assignment, performance tracking, and workforce optimization with mobile access for field teams.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 border hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 bg-farm-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🤝</span>
-                </div>
-                <CardTitle className="text-farm-blue-700">Community Partnership</CardTitle>
+                <Monitor className="h-12 w-12 text-primary mb-4" />
+                <CardTitle className="text-primary">Multi-Device Access</CardTitle>
                 <CardDescription>
-                  Supporting local communities through job creation, educational programs, 
-                  and partnerships with local restaurants and markets.
+                  Access your farm data anywhere with responsive web and mobile apps that sync in real-time.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -188,143 +282,186 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Gallery Section */}
-      <div className="py-16 bg-white">
+      {/* Consultancy Services */}
+      <div className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Farm Gallery</h2>
-            <p className="text-lg text-gray-600">Take a visual tour of our beautiful farm</p>
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary">Expert Consultancy</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Professional Farm Consulting Services</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Get expert guidance from agricultural specialists to optimize your farm operations and maximize profitability
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="relative group overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="Farm animals grazing"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-end">
-                <div className="p-4 text-white">
-                  <h3 className="font-semibold">Pasture Grazing</h3>
-                  <p className="text-sm opacity-90">Our animals enjoy open pastures</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="group hover:shadow-xl transition-all duration-300 text-center border-2 hover:border-primary/20">
+              <CardHeader>
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Heart className="h-8 w-8 text-primary" />
                 </div>
+                <CardTitle className="text-primary">Breeding Advisory</CardTitle>
+                <CardDescription>
+                  Genetic optimization and breeding program design for improved livestock performance
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="group hover:shadow-xl transition-all duration-300 text-center border-2 hover:border-primary/20">
+              <CardHeader>
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-primary">Health Analysis</CardTitle>
+                <CardDescription>
+                  Disease prevention strategies and health monitoring system implementation
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="group hover:shadow-xl transition-all duration-300 text-center border-2 hover:border-primary/20">
+              <CardHeader>
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Target className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-primary">Productivity Improvement</CardTitle>
+                <CardDescription>
+                  Process optimization and efficiency enhancement for maximum farm output
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="group hover:shadow-xl transition-all duration-300 text-center border-2 hover:border-primary/20">
+              <CardHeader>
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Globe className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-primary">Market Analysis</CardTitle>
+                <CardDescription>
+                  Market trends analysis and strategic planning for optimal product positioning
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Why Choose Us */}
+      <div className="py-20 bg-primary text-primary-foreground">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6">Why Choose AgriHerd Solutions?</h2>
+            <p className="text-xl opacity-90 max-w-3xl mx-auto">
+              Join thousands of satisfied farmers who have transformed their operations with our innovative solutions
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="h-16 w-16 bg-primary-foreground/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="h-8 w-8" />
               </div>
+              <h3 className="text-xl font-semibold mb-2">Expert Team</h3>
+              <p className="opacity-90">15+ years of agricultural technology expertise</p>
             </div>
             
-            <div className="relative group overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="Farm ox in field"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-end">
-                <div className="p-4 text-white">
-                  <h3 className="font-semibold">Mountain Views</h3>
-                  <p className="text-sm opacity-90">Scenic mountain backdrop</p>
-                </div>
+            <div className="text-center">
+              <div className="h-16 w-16 bg-primary-foreground/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Smartphone className="h-8 w-8" />
               </div>
+              <h3 className="text-xl font-semibold mb-2">Customizable Tools</h3>
+              <p className="opacity-90">Tailored solutions for your specific farm needs</p>
             </div>
             
-            <div className="relative group overflow-hidden rounded-lg shadow-lg md:col-span-2 lg:col-span-1">
-              <img 
-                src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="Farm crops"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-end">
-                <div className="p-4 text-white">
-                  <h3 className="font-semibold">Organic Crops</h3>
-                  <p className="text-sm opacity-90">Premium quality harvests</p>
-                </div>
+            <div className="text-center">
+              <div className="h-16 w-16 bg-primary-foreground/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Proven Results</h3>
+              <p className="opacity-90">Average 30% increase in farm productivity</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="h-16 w-16 bg-primary-foreground/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Local Support</h3>
+              <p className="opacity-90">Dedicated support team understanding local farming</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="py-20 bg-secondary text-secondary-foreground">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-5xl font-bold mb-6">Let's Digitize Your Farm Together</h2>
+          <p className="text-xl mb-10 opacity-90">
+            Ready to transform your agricultural operations with cutting-edge technology? 
+            Start your digital farming journey today with a free consultation.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button size="lg" variant="outline" className="group border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary">
+              Book a Free Strategy Call
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <div className="flex items-center space-x-4 text-sm opacity-75">
+              <div className="flex items-center">
+                <CheckCircle className="h-4 w-4 mr-1" />
+                <span>No commitment required</span>
+              </div>
+              <div className="flex items-center">
+                <CheckCircle className="h-4 w-4 mr-1" />
+                <span>Free consultation</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="py-16 bg-farm-blue-600 text-white">
+      {/* Footer */}
+      <div className="py-16 bg-background border-t">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div className="animate-fade-in">
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <div className="text-farm-blue-100">Pigs Managed</div>
-              <div className="text-sm text-farm-blue-200 mt-1">Healthy & thriving</div>
-            </div>
-            <div className="animate-fade-in">
-              <div className="text-4xl font-bold mb-2">120</div>
-              <div className="text-farm-blue-100">Acres Farmed</div>
-              <div className="text-sm text-farm-blue-200 mt-1">Sustainable cultivation</div>
-            </div>
-            <div className="animate-fade-in">
-              <div className="text-4xl font-bold mb-2">10+</div>
-              <div className="text-farm-blue-100">Years Experience</div>
-              <div className="text-sm text-farm-blue-200 mt-1">Proven expertise</div>
-            </div>
-            <div className="animate-fade-in">
-              <div className="text-4xl font-bold mb-2">99%</div>
-              <div className="text-farm-blue-100">Satisfaction Rate</div>
-              <div className="text-sm text-farm-blue-200 mt-1">Happy customers</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Contact Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Get In Touch</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                Interested in our farm products, tours, or partnerships? We'd love to hear from you!
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-2">
+              <h3 className="text-2xl font-bold text-primary mb-4">AgriHerd Solutions</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                Transforming agriculture through digital innovation. Smart tools and expert consultancy for the modern farmer.
               </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <Phone className="h-5 w-5 text-farm-blue-600 mr-3" />
-                  <span className="text-gray-700">+1 (555) 123-FARM</span>
+              <div className="space-y-3">
+                <div className="flex items-center text-muted-foreground">
+                  <Phone className="h-5 w-5 text-primary mr-3" />
+                  <span>+254712777581</span>
                 </div>
-                <div className="flex items-center">
-                  <Mail className="h-5 w-5 text-farm-blue-600 mr-3" />
-                  <span className="text-gray-700">hello@peacefulmeadowfarm.com</span>
+                <div className="flex items-center text-muted-foreground">
+                  <Mail className="h-5 w-5 text-primary mr-3" />
+                  <span>agriherdsolutions@gmail.com</span>
                 </div>
-                <div className="flex items-center">
-                  <MapPin className="h-5 w-5 text-farm-blue-600 mr-3" />
-                  <span className="text-gray-700">123 Farm Road, Green Valley, CA 95945</span>
-                </div>
-              </div>
-              
-              <div className="space-x-4">
-                <Button size="lg" className="bg-farm-blue-600 hover:bg-farm-blue-700">
-                  Schedule Farm Tour
-                </Button>
-                <Button size="lg" variant="outline" className="border-farm-blue-600 text-farm-blue-600 hover:bg-farm-blue-50">
-                  Request Quote
-                </Button>
               </div>
             </div>
             
-            <div className="bg-farm-blue-50 p-8 rounded-lg">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Quick Contact Form</h3>
-              <form className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-blue-500" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-blue-500" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                  <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-blue-500"></textarea>
-                </div>
-                <Button type="submit" className="w-full bg-farm-blue-600 hover:bg-farm-blue-700">
-                  Send Message
-                </Button>
-              </form>
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Solutions</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-colors">Crop Management</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Livestock Management</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Farm Analytics</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Mobile App</a></li>
+              </ul>
             </div>
+            
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Services</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-colors">Breeding Advisory</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Health Analysis</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Market Research</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Training & Support</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-border pt-8 mt-8 text-center text-muted-foreground">
+            <p>&copy; 2025 AgriHerd Solutions. All rights reserved. Empowering farmers with digital innovation.</p>
           </div>
         </div>
       </div>
