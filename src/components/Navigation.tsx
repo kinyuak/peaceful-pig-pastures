@@ -30,13 +30,13 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-card shadow-lg border-b border-border backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header row, with logo & burger/menu button (mobile) */}
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-farm-blue-700">
-              Peaceful Meadow Farm
+            <h1 className="text-2xl font-bold text-primary">
+              AgriHerd Solutions
             </h1>
           </div>
           {/* Desktop nav links */}
@@ -50,10 +50,10 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
                     <NavLink
                       to={tab.to}
                       className={
-                        `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ` +
+                        `flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ` +
                         (isActive
-                          ? 'bg-farm-blue-100 text-farm-blue-700'
-                          : 'text-gray-600 hover:text-farm-blue-700 hover:bg-gray-50')
+                          ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5')
                       }
                       onClick={onTabChange ? () => onTabChange(tab.id) : undefined}
                     >
@@ -69,16 +69,16 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
           <div className="md:hidden flex items-center">
             <button
               aria-label="Open menu"
-              className="p-2 rounded-md hover:bg-gray-100"
+              className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
               onClick={() => setMobileMenuOpen((v) => !v)}
             >
-              <Menu className="h-6 w-6 text-farm-blue-700" />
+              <Menu className="h-6 w-6 text-primary" />
             </button>
           </div>
         </div>
         {/* Mobile menu (collapsible) */}
         {mobileMenuOpen && (
-          <div className="md:hidden flex flex-col mt-2 pb-4 animate-fade-in-down">
+          <div className="md:hidden flex flex-col mt-2 pb-4 animate-fade-in">
             <div className="flex flex-col space-y-1">
               {tabs.map((tab) => {
                 const IconComponent = tab.icon;
@@ -88,10 +88,10 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
                     key={tab.id}
                     to={tab.to}
                     className={
-                      `flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-colors ` +
+                      `flex items-center space-x-2 px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ` +
                       (isActive
-                        ? 'bg-farm-blue-100 text-farm-blue-700'
-                        : 'text-gray-700 hover:text-farm-blue-700 hover:bg-gray-50')
+                        ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5')
                     }
                     onClick={() => {
                       if(onTabChange) onTabChange(tab.id);

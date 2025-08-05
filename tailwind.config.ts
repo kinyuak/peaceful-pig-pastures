@@ -26,32 +26,44 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(210, 100%, 45%)', // Farm blue
-					foreground: 'hsl(0, 0%, 100%)'
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(210, 40%, 96%)',
-					foreground: 'hsl(210, 100%, 45%)'
-				},
-				destructive: {
-					DEFAULT: 'hsl(0, 84.2%, 60.2%)',
-					foreground: 'hsl(210, 40%, 98%)'
-				},
-				muted: {
-					DEFAULT: 'hsl(210, 40%, 96.1%)',
-					foreground: 'hsl(215.4, 16.3%, 46.9%)'
+					DEFAULT: 'hsl(var(--secondary))',
+					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(210, 40%, 96.1%)',
-					foreground: 'hsl(210, 100%, 45%)'
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))'
+				},
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive))',
+					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				muted: {
+					DEFAULT: 'hsl(var(--muted))',
+					foreground: 'hsl(var(--muted-foreground))'
 				},
 				popover: {
-					DEFAULT: 'hsl(0, 0%, 100%)',
-					foreground: 'hsl(222.2, 84%, 4.9%)'
+					DEFAULT: 'hsl(var(--popover))',
+					foreground: 'hsl(var(--popover-foreground))'
 				},
 				card: {
-					DEFAULT: 'hsl(0, 0%, 100%)',
-					foreground: 'hsl(222.2, 84%, 4.9%)'
+					DEFAULT: 'hsl(var(--card))',
+					foreground: 'hsl(var(--card-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info))',
+					foreground: 'hsl(var(--info-foreground))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -63,17 +75,44 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				'farm-blue': {
-					50: '#eff6ff',
-					100: '#dbeafe',
-					200: '#bfdbfe',
-					300: '#93c5fd',
-					400: '#60a5fa',
-					500: '#3b82f6',
-					600: '#2563eb',
-					700: '#1d4ed8',
-					800: '#1e40af',
-					900: '#1e3a8a',
+				// AgTech brand palette
+				agri: {
+					green: {
+						50: 'hsl(142, 76%, 95%)',
+						100: 'hsl(142, 76%, 90%)',
+						200: 'hsl(142, 76%, 80%)',
+						300: 'hsl(142, 76%, 70%)',
+						400: 'hsl(142, 76%, 60%)',
+						500: 'hsl(142, 76%, 50%)',
+						600: 'hsl(142, 76%, 40%)',
+						700: 'hsl(142, 76%, 30%)',
+						800: 'hsl(142, 76%, 20%)',
+						900: 'hsl(142, 76%, 10%)',
+					},
+					earth: {
+						50: 'hsl(35, 100%, 95%)',
+						100: 'hsl(35, 100%, 90%)',
+						200: 'hsl(35, 100%, 84%)',
+						300: 'hsl(35, 100%, 74%)',
+						400: 'hsl(35, 100%, 64%)',
+						500: 'hsl(35, 100%, 54%)',
+						600: 'hsl(24, 100%, 50%)',
+						700: 'hsl(24, 100%, 40%)',
+						800: 'hsl(24, 100%, 30%)',
+						900: 'hsl(24, 100%, 20%)',
+					},
+					tech: {
+						50: 'hsl(217, 91%, 95%)',
+						100: 'hsl(217, 91%, 90%)',
+						200: 'hsl(217, 91%, 80%)',
+						300: 'hsl(217, 91%, 70%)',
+						400: 'hsl(217, 91%, 60%)',
+						500: 'hsl(217, 91%, 50%)',
+						600: 'hsl(217, 91%, 40%)',
+						700: 'hsl(217, 91%, 30%)',
+						800: 'hsl(217, 91%, 20%)',
+						900: 'hsl(217, 91%, 10%)',
+					}
 				}
 			},
 			borderRadius: {
