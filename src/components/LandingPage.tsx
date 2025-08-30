@@ -176,9 +176,9 @@ const LandingPage = () => {
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                 AgriHerd Solutions is at the forefront of agricultural innovation, providing comprehensive digital tools and expert consultancy services that transform traditional farming into smart, data-driven operations.
               </p>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Our cutting-edge platform combines IoT sensors, AI analytics, and cloud-based management systems to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time data.
-              </p>
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                  Our cutting-edge platform combines IoT sensors, data analytics, and cloud-based management systems to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time insights.
+                </p>
               <div className="flex justify-center">
                 <Button 
                   size="lg" 
@@ -294,7 +294,7 @@ const LandingPage = () => {
                 </div>
                 <CardTitle className="text-primary">Breeding & Health Logs</CardTitle>
                 <CardDescription>
-                  Comprehensive tracking of breeding cycles, health records, and veterinary interventions with automated reminders and AI-powered health insights.
+                  Comprehensive tracking of breeding cycles, health records, and veterinary interventions with automated reminders and smart health analytics.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -342,7 +342,7 @@ const LandingPage = () => {
                 </div>
                 <CardTitle className="text-secondary">Workforce Management</CardTitle>
                 <CardDescription>
-                  AI-powered task assignment, performance analytics, and workforce optimization with mobile access and GPS tracking for field teams.
+                  Smart task assignment, performance analytics, and workforce optimization with mobile access and GPS tracking for field teams.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -372,8 +372,8 @@ const LandingPage = () => {
                       <Cpu className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">AI & Machine Learning</div>
-                      <div className="text-sm text-muted-foreground">Predictive analytics for crop yields and livestock health</div>
+                      <div className="font-semibold text-foreground">Data Analytics & Insights</div>
+                      <div className="text-sm text-muted-foreground">Advanced analytics for crop yields and livestock health optimization</div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
