@@ -2,9 +2,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Star, 
-  Award, 
   Shield, 
   Heart, 
   Phone, 
@@ -19,7 +22,6 @@ import {
   ArrowRight,
   Monitor,
   Tablet,
-  Brain,
   TrendingUp,
   Target,
   Globe,
@@ -30,16 +32,70 @@ import {
   PieChart,
   Settings,
   LineChart,
-  Activity
+  Activity,
+  Send,
+  Clock,
+  MessageSquare,
+  ThumbsUp,
+  Building,
+  Rocket,
+  TreePine,
+  Lightbulb,
+  Award
 } from 'lucide-react';
+import { useState } from 'react';
 
 // Import generated images
 import smartFarmDashboard from '@/assets/smart-farm-dashboard.jpg';
 import farmerTech from '@/assets/farmer-tech.jpg';
 import smartFarmAerial from '@/assets/smart-farm-aerial.jpg';
 import livestockTech from '@/assets/livestock-tech.jpg';
+import geoffreyMburuCeo from '@/assets/geoffrey-mburu-ceo.jpg';
+import geoffreyKinyuaCto from '@/assets/geoffrey-kinyua-cto.jpg';
 
 const LandingPage = () => {
+  const { toast } = useToast();
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    farmType: '',
+    inquiry: '',
+    message: ''
+  });
+  const [feedbackForm, setFeedbackForm] = useState({
+    name: '',
+    rating: 5,
+    category: '',
+    feedback: '',
+    anonymous: false
+  });
+
+  const scrollToSection = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Thank you for your inquiry!",
+      description: "We'll get back to you within 24 hours.",
+    });
+    setContactForm({ name: '', email: '', phone: '', farmType: '', inquiry: '', message: '' });
+  };
+
+  const handleFeedbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Feedback submitted successfully!",
+      description: "Thank you for helping us improve our services.",
+    });
+    setFeedbackForm({ name: '', rating: 5, category: '', feedback: '', anonymous: false });
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -63,11 +119,11 @@ const LandingPage = () => {
                   Smart tools & expert consultancy for the modern farmer. Revolutionize your farm operations with cutting-edge technology and data-driven insights.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button size="lg" className="group">
+                  <Button size="lg" className="group" onClick={() => scrollToSection('contact-us')}>
                     Get a Free Consultation
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                  <Button size="lg" variant="outline">
+                  <Button size="lg" variant="outline" onClick={() => scrollToSection('solutions')}>
                     Explore Our Solutions
                   </Button>
                 </div>
@@ -123,17 +179,15 @@ const LandingPage = () => {
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 Our cutting-edge platform combines IoT sensors, AI analytics, and cloud-based management systems to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time data.
               </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-card rounded-lg border hover:shadow-md transition-shadow">
-                  <Award className="h-10 w-10 text-primary mx-auto mb-3" />
-                  <div className="font-semibold text-foreground">Award-Winning</div>
-                  <div className="text-sm text-muted-foreground">AgTech Innovation</div>
-                </div>
-                <div className="text-center p-6 bg-card rounded-lg border hover:shadow-md transition-shadow">
-                  <Brain className="h-10 w-10 text-primary mx-auto mb-3" />
-                  <div className="font-semibold text-foreground">AI-Powered</div>
-                  <div className="text-sm text-muted-foreground">Smart Analytics</div>
-                </div>
+              <div className="flex justify-center">
+                <Button 
+                  size="lg" 
+                  className="group"
+                  onClick={() => scrollToSection('solutions')}
+                >
+                  Explore Our Technology
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </div>
           </div>
@@ -141,7 +195,7 @@ const LandingPage = () => {
       </div>
 
       {/* Solutions Section */}
-      <div className="py-20 bg-background">
+      <div id="solutions" className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-primary/10 text-primary">Our Solutions</Badge>
@@ -427,142 +481,128 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Success Stories Section */}
+      {/* Team Section */}
       <div className="py-20 bg-gradient-to-br from-muted/50 to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-success/10 text-success">Success Stories</Badge>
-            <h2 className="text-4xl font-bold text-foreground mb-6">Real Results from Real Farms</h2>
+            <Badge className="mb-4 bg-primary/10 text-primary">Our Leadership Team</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Meet the Founders</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              See how farmers across the region have transformed their operations and increased profitability
+              Experienced leaders with 20+ years combined expertise in agritech, animal health, and system development
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            <Card className="group hover:shadow-xl transition-all duration-300 border hover:border-success/20">
-              <CardHeader>
-                <div className="flex items-center space-x-4 mb-4">
+          <div className="grid lg:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20">
+              <CardContent className="p-8 text-center">
+                <div className="relative mb-6">
                   <img 
-                    src={livestockTech}
-                    alt="Livestock monitoring technology"
-                    className="w-16 h-16 rounded-full object-cover"
+                    src={geoffreyMburuCeo}
+                    alt="Geoffrey Mburu, CEO & Co-Founder"
+                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
                   />
-                  <div>
-                    <div className="font-semibold text-foreground">Green Valley Dairy</div>
-                    <div className="text-sm text-muted-foreground">500 head cattle farm</div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-full"></div>
                 </div>
-                <CardTitle className="text-success">45% Reduction in Mortality</CardTitle>
-                <CardDescription>
-                  "AgriHerd's health monitoring system helped us identify sick animals early. We've saved thousands in veterinary costs and increased our herd's overall productivity significantly."
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-success">$15K</div>
-                    <div className="text-xs text-muted-foreground">Annual Savings</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-success">98%</div>
-                    <div className="text-xs text-muted-foreground">Herd Health Rate</div>
-                  </div>
-                </div>
+                <h3 className="text-2xl font-bold text-primary mb-2">Geoffrey Mburu</h3>
+                <p className="text-lg text-secondary font-semibold mb-4">CEO & Co-Founder</p>
+                <p className="text-muted-foreground mb-4">
+                  Agricultural Technology Leadership • Business Strategy • Livestock Management
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  10+ years in agritech with specialized expertise in animal health and livestock management systems. 
+                  Passionate about revolutionizing African agriculture through technology.
+                </p>
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border hover:border-secondary/20">
-              <CardHeader>
-                <div className="flex items-center space-x-4 mb-4">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-secondary/20">
+              <CardContent className="p-8 text-center">
+                <div className="relative mb-6">
                   <img 
-                    src={smartFarmAerial}
-                    alt="Smart farm aerial view"
-                    className="w-16 h-16 rounded-full object-cover"
+                    src={geoffreyKinyuaCto}
+                    alt="Geoffrey Kinyua, CTO & Co-Founder"
+                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-secondary/20"
                   />
-                  <div>
-                    <div className="font-semibold text-foreground">Sunrise Crop Farm</div>
-                    <div className="text-sm text-muted-foreground">1200 acres maize & wheat</div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent rounded-full"></div>
                 </div>
-                <CardTitle className="text-secondary">30% Yield Increase</CardTitle>
-                <CardDescription>
-                  "The precision agriculture tools and weather integration helped us optimize planting schedules and irrigation. Our yields have never been better."
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-secondary">$45K</div>
-                    <div className="text-xs text-muted-foreground">Extra Revenue</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-secondary">20%</div>
-                    <div className="text-xs text-muted-foreground">Water Savings</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-xl transition-all duration-300 border hover:border-accent/20">
-              <CardHeader>
-                <div className="flex items-center space-x-4 mb-4">
-                  <img 
-                    src={farmerTech}
-                    alt="Farmer using technology"
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <div className="font-semibold text-foreground">Heritage Pig Farm</div>
-                    <div className="text-sm text-muted-foreground">300 breeding sows</div>
-                  </div>
-                </div>
-                <CardTitle className="text-accent">25% Staff Efficiency</CardTitle>
-                <CardDescription>
-                  "The mobile app and automated reporting saved our team hours of paperwork daily. We can now focus more on animal care and less on administrative tasks."
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-accent">6hrs</div>
-                    <div className="text-xs text-muted-foreground">Daily Time Saved</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-accent">99%</div>
-                    <div className="text-xs text-muted-foreground">Data Accuracy</div>
-                  </div>
-                </div>
+                <h3 className="text-2xl font-bold text-secondary mb-2">Geoffrey Kinyua</h3>
+                <p className="text-lg text-accent font-semibold mb-4">CTO & Co-Founder</p>
+                <p className="text-muted-foreground mb-4">
+                  System Development • Software Architecture • Agricultural Data Analytics
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Senior software engineer with deep expertise in agricultural systems and data analytics. 
+                  Specializes in building scalable, farmer-friendly technology solutions.
+                </p>
               </CardContent>
             </Card>
           </div>
+        </div>
+      </div>
 
-          {/* Stats Overview */}
-          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 border border-primary/10">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-2">Platform Impact Across Kenya</h3>
-              <p className="text-muted-foreground">Real results from our growing network of digital farms</p>
+      {/* About Our Journey - Startup Information */}
+      <div className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <Badge className="mb-4 bg-accent/10 text-accent">Our Journey</Badge>
+              <h2 className="text-4xl font-bold text-foreground mb-6">Kenyan Startup Revolutionizing Agriculture</h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Born from a deep understanding of African farming challenges, AgriHerd Solutions is a Kenya-based 
+                agritech startup dedicated to transforming traditional farming into smart, data-driven operations.
+              </p>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Based in Nanyuki Town, we understand the unique challenges facing Kenyan farmers - from smallholder 
+                operations to large commercial farms. Our locally-developed solutions are designed specifically 
+                for African agricultural conditions and practices.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start space-x-3">
+                  <div className="h-8 w-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Rocket className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">Founded in Kenya</div>
+                    <div className="text-sm text-muted-foreground">Local solutions for local challenges</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="h-8 w-8 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <TreePine className="h-4 w-4 text-secondary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">African-Focused</div>
+                    <div className="text-sm text-muted-foreground">Technology adapted for African farming conditions</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="h-8 w-8 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Lightbulb className="h-4 w-4 text-accent" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">Innovation Hub</div>
+                    <div className="text-sm text-muted-foreground">Expanding across East Africa with proven solutions</div>
+                  </div>
+                </div>
+              </div>
+
+              <Button 
+                size="lg" 
+                className="group"
+                onClick={() => scrollToSection('contact-us')}
+              >
+                Join Our Journey
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
             </div>
-            <div className="grid md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl font-bold text-primary mb-2">1,200+</div>
-                <div className="text-foreground font-medium">Active Farms</div>
-                <div className="text-sm text-muted-foreground">Across 15 counties</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-secondary mb-2">35%</div>
-                <div className="text-foreground font-medium">Avg. Productivity</div>
-                <div className="text-sm text-muted-foreground">Increase in first year</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-accent mb-2">₹2.5M</div>
-                <div className="text-foreground font-medium">Cost Savings</div>
-                <div className="text-sm text-muted-foreground">Generated for farmers</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-success mb-2">98%</div>
-                <div className="text-foreground font-medium">Satisfaction Rate</div>
-                <div className="text-sm text-muted-foreground">Farmer retention</div>
-              </div>
+            <div className="relative">
+              <img 
+                src={smartFarmAerial}
+                alt="Smart farm technology in Kenya"
+                className="rounded-xl shadow-lg w-full h-96 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-xl"></div>
             </div>
           </div>
         </div>
@@ -623,7 +663,12 @@ const LandingPage = () => {
             Start your digital farming journey today with a free consultation.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" variant="outline" className="group border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="group border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary"
+              onClick={() => scrollToSection('contact-us')}
+            >
               Book a Free Strategy Call
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -638,6 +683,248 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Contact Us Section */}
+      <div id="contact-us" className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary">Contact Us</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Get in Touch</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Ready to transform your farm? Let's discuss how our solutions can help you achieve your agricultural goals.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Contact Information */}
+            <div>
+              <Card className="p-8">
+                <h3 className="text-2xl font-bold text-foreground mb-6">Visit Our Office</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <MapPin className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Location</div>
+                      <div className="text-muted-foreground">Nanyuki Town, Kenya</div>
+                      <div className="text-sm text-muted-foreground">Central Kenya Hub for Agricultural Innovation</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="h-12 w-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Phone className="h-6 w-6 text-secondary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Phone</div>
+                      <div className="text-muted-foreground">+254712777581</div>
+                      <div className="text-sm text-muted-foreground">Mon-Fri: 8:00 AM - 6:00 PM EAT</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="h-12 w-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Mail className="h-6 w-6 text-accent" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Email</div>
+                      <div className="text-muted-foreground">agriherdsolutions@gmail.com</div>
+                      <div className="text-sm text-muted-foreground">24-hour response time guaranteed</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="h-12 w-12 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="h-6 w-6 text-success" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground">Office Hours</div>
+                      <div className="text-muted-foreground">Monday - Friday: 8:00 AM - 6:00 PM</div>
+                      <div className="text-sm text-muted-foreground">Saturday: 9:00 AM - 2:00 PM</div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Contact Form */}
+            <div>
+              <Card className="p-8">
+                <h3 className="text-2xl font-bold text-foreground mb-6">Send us a Message</h3>
+                <form onSubmit={handleContactSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+                      <Input
+                        type="text"
+                        value={contactForm.name}
+                        onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                        placeholder="Your full name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">Phone</label>
+                      <Input
+                        type="tel"
+                        value={contactForm.phone}
+                        onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                        placeholder="+254..."
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Email *</label>
+                    <Input
+                      type="email"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      placeholder="your@email.com"
+                      required
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">Farm Type</label>
+                      <Select value={contactForm.farmType} onValueChange={(value) => setContactForm({...contactForm, farmType: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select farm type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="crop">Crop Farming</SelectItem>
+                          <SelectItem value="livestock">Livestock</SelectItem>
+                          <SelectItem value="mixed">Mixed Farming</SelectItem>
+                          <SelectItem value="dairy">Dairy Farming</SelectItem>
+                          <SelectItem value="poultry">Poultry</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">Inquiry Type</label>
+                      <Select value={contactForm.inquiry} onValueChange={(value) => setContactForm({...contactForm, inquiry: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select inquiry type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="consultation">Free Consultation</SelectItem>
+                          <SelectItem value="demo">Product Demo</SelectItem>
+                          <SelectItem value="pricing">Pricing Information</SelectItem>
+                          <SelectItem value="support">Technical Support</SelectItem>
+                          <SelectItem value="partnership">Partnership</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Message *</label>
+                    <Textarea
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                      placeholder="Tell us about your farm and how we can help you..."
+                      rows={4}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full group">
+                    Send Message
+                    <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </form>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Feedback Section */}
+      <div className="py-20 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-secondary/10 text-secondary">Customer Feedback</Badge>
+            <h2 className="text-4xl font-bold text-foreground mb-6">Share Your Experience</h2>
+            <p className="text-xl text-muted-foreground">
+              Help us improve our services by sharing your feedback and experience with AgriHerd Solutions.
+            </p>
+          </div>
+
+          <Card className="p-8">
+            <form onSubmit={handleFeedbackSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Name</label>
+                  <Input
+                    type="text"
+                    value={feedbackForm.name}
+                    onChange={(e) => setFeedbackForm({...feedbackForm, name: e.target.value})}
+                    placeholder="Your name (optional if anonymous)"
+                    disabled={feedbackForm.anonymous}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Overall Rating</label>
+                  <Select value={feedbackForm.rating.toString()} onValueChange={(value) => setFeedbackForm({...feedbackForm, rating: parseInt(value)})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">⭐⭐⭐⭐⭐ Excellent</SelectItem>
+                      <SelectItem value="4">⭐⭐⭐⭐ Very Good</SelectItem>
+                      <SelectItem value="3">⭐⭐⭐ Good</SelectItem>
+                      <SelectItem value="2">⭐⭐ Fair</SelectItem>
+                      <SelectItem value="1">⭐ Needs Improvement</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Feedback Category</label>
+                <Select value={feedbackForm.category} onValueChange={(value) => setFeedbackForm({...feedbackForm, category: value})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="service">Service Quality</SelectItem>
+                    <SelectItem value="platform">Platform Usability</SelectItem>
+                    <SelectItem value="support">Support Response</SelectItem>
+                    <SelectItem value="features">Feature Requests</SelectItem>
+                    <SelectItem value="overall">Overall Satisfaction</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Your Feedback *</label>
+                <Textarea
+                  value={feedbackForm.feedback}
+                  onChange={(e) => setFeedbackForm({...feedbackForm, feedback: e.target.value})}
+                  placeholder="Share your experience, suggestions, or concerns..."
+                  rows={5}
+                  required
+                />
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="anonymous"
+                  checked={feedbackForm.anonymous}
+                  onChange={(e) => setFeedbackForm({...feedbackForm, anonymous: e.target.checked, name: e.target.checked ? '' : feedbackForm.name})}
+                  className="rounded border-border"
+                />
+                <label htmlFor="anonymous" className="text-sm text-muted-foreground">
+                  Submit feedback anonymously
+                </label>
+              </div>
+
+              <Button type="submit" className="w-full group">
+                <MessageSquare className="mr-2 h-4 w-4" />
+                Submit Feedback
+                <ThumbsUp className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+              </Button>
+            </form>
+          </Card>
         </div>
       </div>
 
