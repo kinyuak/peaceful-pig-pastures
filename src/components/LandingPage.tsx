@@ -145,6 +145,10 @@ const LandingPage = () => {
                     alt="Smart farming technology dashboard"
                     className="rounded-lg shadow-2xl w-full h-80 object-cover"
                   />
+                  <div className="absolute -bottom-4 -right-4 bg-card p-6 rounded-xl shadow-lg border">
+                    <div className="text-3xl font-bold text-primary">1000+</div>
+                    <div className="text-sm text-muted-foreground">Farms Digitized</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -410,91 +414,6 @@ const LandingPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-xl"></div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Featured Products */}
-      <div className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-secondary/10 text-secondary">Farm Products</Badge>
-            <h2 className="text-4xl font-bold text-foreground mb-6">Featured Products</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Premium agricultural products directly from our partner farms
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-green-100 to-agri-green-200 flex items-center justify-center">
-                <div className="text-6xl">🥬</div>
-              </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-primary">Fresh Cabbages</CardTitle>
-                <CardDescription>Organic farm-fresh cabbages, perfect for your kitchen</CardDescription>
-                <div className="text-2xl font-bold text-secondary mt-2">KSH 80/kg</div>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => window.location.href = '/store'}>
-                  Buy Now
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-earth-100 to-agri-earth-200 flex items-center justify-center">
-                <div className="text-6xl">🧅</div>
-              </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-primary">Red Onions</CardTitle>
-                <CardDescription>Premium red onions with rich flavor and long shelf life</CardDescription>
-                <div className="text-2xl font-bold text-secondary mt-2">KSH 120/kg</div>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => window.location.href = '/store'}>
-                  Buy Now
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-tech-100 to-agri-tech-200 flex items-center justify-center">
-                <div className="text-6xl">🐷</div>
-              </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-primary">Farm Pigs</CardTitle>
-                <CardDescription>Healthy, well-bred pigs for livestock farming</CardDescription>
-                <div className="text-2xl font-bold text-secondary mt-2">KSH 15,000/pig</div>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => window.location.href = '/store'}>
-                  Buy Now
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-green-200 to-agri-green-300 flex items-center justify-center">
-                <div className="text-6xl">🌱</div>
-              </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-primary">Green Grams</CardTitle>
-                <CardDescription>High-quality green grams rich in protein and nutrients</CardDescription>
-                <div className="text-2xl font-bold text-secondary mt-2">KSH 200/kg</div>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => window.location.href = '/store'}>
-                  Buy Now
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" variant="outline" onClick={() => window.location.href = '/store'}>
-              View All Products
-            </Button>
           </div>
         </div>
       </div>
