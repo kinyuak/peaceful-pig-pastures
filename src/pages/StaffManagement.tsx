@@ -9,6 +9,7 @@ import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, Resp
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import StaffEditDialog from "@/components/StaffEditDialog";
+import Navigation from "@/components/Navigation";
 
 const demoStaff = [
   {
@@ -171,11 +172,12 @@ export default function StaffManagement() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
-      <div className="flex items-center gap-3 mb-6">
-        <Button variant="outline" onClick={() => navigate("/")}>Home</Button>
-        <h2 className="text-2xl font-bold text-farm-blue-700">Staff Management</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="text-2xl font-bold text-primary">Staff Management</h2>
+        </div>
       <Card className="p-4 mb-10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
           <Input
@@ -336,6 +338,7 @@ export default function StaffManagement() {
         onSave={handleUpdateStaff}
         roles={rolesAvailable}
       />
+      </div>
     </div>
   );
 }

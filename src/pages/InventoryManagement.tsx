@@ -8,6 +8,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { PieChart, Pie, Tooltip, Cell, BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const demoProduce = [
   {
@@ -114,11 +115,12 @@ export default function InventoryManagement() {
   const colors = ["#3b82f6", "#60a5fa", "#93c5fd", "#1e40af"];
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
-      <div className="flex items-center gap-3 mb-6">
-        <Button variant="outline" onClick={() => navigate("/")}>Home</Button>
-        <h2 className="text-2xl font-bold text-farm-blue-700">Inventory Management</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="text-2xl font-bold text-primary">Inventory Management</h2>
+        </div>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="produce">Farm Produce</TabsTrigger>
@@ -476,7 +478,8 @@ export default function InventoryManagement() {
             <div className="mt-3 text-right text-xs text-gray-400">Demo pagination</div>
           </Card>
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 }

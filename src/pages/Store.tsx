@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ShoppingCart, Search, Filter } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import Navigation from '@/components/Navigation';
 
 // Import product images
 import cabbageImage from '@/assets/products/cabbage.jpg';
@@ -175,6 +176,7 @@ const Store = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navigation />
       {/* Header */}
       <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar, Search } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { AddSaleDialog, AddSaleFormData } from "@/components/AddSaleDialog";
+import Navigation from "@/components/Navigation";
 
 // Demo sales data now matches AddSaleFormData type
 const demoSales: AddSaleFormData[] = [
@@ -103,13 +104,12 @@ export default function SalesManagement() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-4 px-2 md:p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-6">
-        <Button variant="outline" asChild className="w-full sm:w-auto order-2 sm:order-1">
-          <a href="/">Home</a>
-        </Button>
-        <h2 className="text-xl sm:text-2xl font-bold text-farm-blue-700 order-1 sm:order-2">
-          Sales Management
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="max-w-7xl mx-auto py-4 px-2 md:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-primary order-1 sm:order-2">
+            Sales Management
         </h2>
       </div>
       <Tabs value={tab} onValueChange={setTab} className="w-full mb-4 md:mb-6">
@@ -264,7 +264,8 @@ export default function SalesManagement() {
             )}
           </div>
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 }
