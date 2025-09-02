@@ -53,6 +53,12 @@ import livestockTech from '@/assets/livestock-tech.jpg';
 import geoffreyMburuCeo from '@/assets/geoffrey-mburu-ceo.jpg';
 import geoffreyKinyuaCto from '@/assets/geoffrey-kinyua-cto.jpg';
 
+// Import product images
+import cabbageImage from '@/assets/products/cabbage.jpg';
+import onionsImage from '@/assets/products/onions.jpg';
+import pigImage from '@/assets/products/pig.jpg';
+import greenGramsImage from '@/assets/products/green-grams.jpg';
+
 const LandingPage = () => {
   const { toast } = useToast();
   const [contactForm, setContactForm] = useState({
@@ -427,8 +433,12 @@ const LandingPage = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-green-100 to-agri-green-200 flex items-center justify-center">
-                <div className="text-6xl">🥬</div>
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img 
+                  src={cabbageImage} 
+                  alt="Fresh Cabbages"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <CardHeader className="text-center">
                 <CardTitle className="text-primary">Fresh Cabbages</CardTitle>
@@ -443,8 +453,12 @@ const LandingPage = () => {
             </Card>
 
             <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-earth-100 to-agri-earth-200 flex items-center justify-center">
-                <div className="text-6xl">🧅</div>
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img 
+                  src={onionsImage} 
+                  alt="Red Onions"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <CardHeader className="text-center">
                 <CardTitle className="text-primary">Red Onions</CardTitle>
@@ -459,8 +473,12 @@ const LandingPage = () => {
             </Card>
 
             <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-tech-100 to-agri-tech-200 flex items-center justify-center">
-                <div className="text-6xl">🐷</div>
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img 
+                  src={pigImage} 
+                  alt="Farm Pigs"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <CardHeader className="text-center">
                 <CardTitle className="text-primary">Farm Pigs</CardTitle>
@@ -475,8 +493,12 @@ const LandingPage = () => {
             </Card>
 
             <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-agri-green-200 to-agri-green-300 flex items-center justify-center">
-                <div className="text-6xl">🌱</div>
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img 
+                  src={greenGramsImage} 
+                  alt="Green Grams"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <CardHeader className="text-center">
                 <CardTitle className="text-primary">Green Grams</CardTitle>

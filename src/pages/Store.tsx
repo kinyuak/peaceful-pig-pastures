@@ -7,6 +7,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ShoppingCart, Search, Filter } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
+// Import product images
+import cabbageImage from '@/assets/products/cabbage.jpg';
+import onionsImage from '@/assets/products/onions.jpg';
+import pigImage from '@/assets/products/pig.jpg';
+import greenGramsImage from '@/assets/products/green-grams.jpg';
+import sweetPotatoesImage from '@/assets/products/sweet-potatoes.jpg';
+import maizeImage from '@/assets/products/maize.jpg';
+import chickensImage from '@/assets/products/chickens.jpg';
+import irishPotatoesImage from '@/assets/products/irish-potatoes.jpg';
+
 interface Product {
   id: string;
   name: string;
@@ -14,7 +24,7 @@ interface Product {
   price: number;
   currency: string;
   category: string;
-  emoji: string;
+  imageUrl: string;
   inStock: boolean;
   unit: string;
 }
@@ -27,7 +37,7 @@ const products: Product[] = [
     price: 80,
     currency: 'KSH',
     category: 'vegetables',
-    emoji: '🥬',
+    imageUrl: cabbageImage,
     inStock: true,
     unit: 'kg'
   },
@@ -38,7 +48,7 @@ const products: Product[] = [
     price: 120,
     currency: 'KSH',
     category: 'vegetables',
-    emoji: '🧅',
+    imageUrl: onionsImage,
     inStock: true,
     unit: 'kg'
   },
@@ -49,7 +59,7 @@ const products: Product[] = [
     price: 15000,
     currency: 'KSH',
     category: 'livestock',
-    emoji: '🐷',
+    imageUrl: pigImage,
     inStock: true,
     unit: 'pig'
   },
@@ -60,7 +70,7 @@ const products: Product[] = [
     price: 200,
     currency: 'KSH',
     category: 'grains',
-    emoji: '🌱',
+    imageUrl: greenGramsImage,
     inStock: true,
     unit: 'kg'
   },
@@ -71,7 +81,7 @@ const products: Product[] = [
     price: 60,
     currency: 'KSH',
     category: 'vegetables',
-    emoji: '🍠',
+    imageUrl: sweetPotatoesImage,
     inStock: true,
     unit: 'kg'
   },
@@ -82,7 +92,7 @@ const products: Product[] = [
     price: 45,
     currency: 'KSH',
     category: 'grains',
-    emoji: '🌽',
+    imageUrl: maizeImage,
     inStock: true,
     unit: 'kg'
   },
@@ -93,7 +103,7 @@ const products: Product[] = [
     price: 800,
     currency: 'KSH',
     category: 'livestock',
-    emoji: '🐓',
+    imageUrl: chickensImage,
     inStock: true,
     unit: 'chicken'
   },
@@ -104,7 +114,7 @@ const products: Product[] = [
     price: 70,
     currency: 'KSH',
     category: 'vegetables',
-    emoji: '🥔',
+    imageUrl: irishPotatoesImage,
     inStock: true,
     unit: 'kg'
   }
@@ -225,10 +235,12 @@ const Store = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                <div className="text-6xl group-hover:scale-110 transition-transform">
-                  {product.emoji}
-                </div>
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img 
+                  src={product.imageUrl} 
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <CardHeader>
                 <div className="flex items-center justify-between">
