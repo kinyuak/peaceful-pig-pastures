@@ -47,11 +47,11 @@ import { useState } from 'react';
 
 // Import generated images
 import smartFarmDashboard from '@/assets/smart-farm-dashboard.jpg';
-import farmerTech from '@/assets/farmer-tech-new.jpg';
+import farmerTech from '@/assets/farmer-tech.jpg';
 import smartFarmAerial from '@/assets/smart-farm-aerial.jpg';
 import livestockTech from '@/assets/livestock-tech.jpg';
-import geoffreyNjugunaCto from '@/assets/geoffrey-njuguna-cto.jpg';
-import geoffreyKinyua from '@/assets/geoffrey-kinyua.jpg';
+import geoffreyMburuCeo from '@/assets/geoffrey-mburu-ceo.jpg';
+import geoffreyKinyuaCto from '@/assets/geoffrey-kinyua-cto.jpg';
 
 // Import product images
 import cabbageImage from '@/assets/products/cabbage.jpg';
@@ -600,14 +600,14 @@ const LandingPage = () => {
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6">
                   <img 
-                    src={geoffreyNjugunaCto}
-                    alt="Geoffrey Njuguna, CTO & Co-Founder"
+                    src={geoffreyMburuCeo}
+                    alt="Geoffrey Njuguna, CEO & Co-Founder"
                     className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent rounded-full"></div>
                 </div>
                 <h3 className="text-2xl font-bold text-primary mb-2">Geoffrey Njuguna</h3>
-                <p className="text-lg text-secondary font-semibold mb-4">CTO & Co-Founder</p>
+                <p className="text-lg text-secondary font-semibold mb-4">CEO & Co-Founder</p>
                 <p className="text-muted-foreground mb-4">
                   Agricultural Technology Leadership • Business Strategy • Livestock Management
                 </p>
@@ -622,7 +622,7 @@ const LandingPage = () => {
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6">
                   <img 
-                    src={geoffreyKinyua}
+                    src={geoffreyKinyuaCto}
                     alt="Geoffrey Kinyua, CTO & Co-Founder"
                     className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-secondary/20"
                   />
