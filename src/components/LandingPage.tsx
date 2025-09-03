@@ -47,11 +47,11 @@ import { useState } from 'react';
 
 // Import generated images
 import smartFarmDashboard from '@/assets/smart-farm-dashboard.jpg';
-import farmerTech from '@/assets/farmer-tech-new.jpg';
+import farmerTech from '@/assets/farmer-tech.jpg';
 import smartFarmAerial from '@/assets/smart-farm-aerial.jpg';
 import livestockTech from '@/assets/livestock-tech.jpg';
-import geoffreyNjugunaCeo from '@/assets/geoffrey-njuguna-ceo.jpg';
-import geoffreyKinyuaCto from '@/assets/geoffrey-kinyua-cto-new.jpg';
+import geoffreyMburuCeo from '@/assets/geoffrey-mburu-ceo.jpg';
+import geoffreyKinyuaCto from '@/assets/geoffrey-kinyua-cto.jpg';
 
 // Import product images
 import cabbageImage from '@/assets/products/cabbage.jpg';
@@ -600,7 +600,7 @@ const LandingPage = () => {
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6">
                   <img 
-                    src={geoffreyNjugunaCeo}
+                    src={geoffreyMburuCeo}
                     alt="Geoffrey Njuguna, CEO & Co-Founder"
                     className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
                   />
