@@ -179,7 +179,7 @@ const LandingPage = () => {
                 AgriHerd Solutions is at the forefront of agricultural innovation, providing comprehensive digital tools and expert consultancy services that transform traditional farming into smart, data-driven operations.
               </p>
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  Our cutting-edge platform combines smart farm technology, real-time monitoring, and easy-to-use management tools to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time insights.
+                  Our cutting-edge platform combines IoT sensors, data analytics, and cloud-based management systems to help farmers optimize productivity, reduce costs, and make informed decisions based on real-time insights.
                 </p>
               <div className="flex justify-center">
                 <Button 
@@ -332,7 +332,7 @@ const LandingPage = () => {
                 </div>
                 <CardTitle className="text-primary">Smart Inventory Alerts</CardTitle>
                 <CardDescription>
-                  Smart inventory tracking with automatic alerts, predictive restocking, automated ordering, and real-time supply chain integration.
+                  IoT-enabled inventory management with predictive restocking, automated ordering, and real-time supply chain integration.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -356,7 +356,7 @@ const LandingPage = () => {
                 </div>
                 <CardTitle className="text-accent">Cross-Platform Access</CardTitle>
                 <CardDescription>
-                  Access your farm data anywhere with our mobile-friendly platform, native mobile apps, and offline capabilities for seamless farm management anywhere.
+                  Cloud-based platform with progressive web app, native mobile apps, and offline capabilities for seamless farm management anywhere.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -374,7 +374,7 @@ const LandingPage = () => {
                       <Cpu className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">Farm Performance Reports</div>
+                      <div className="font-semibold text-foreground">Data Analytics & Insights</div>
                       <div className="text-sm text-muted-foreground">Advanced analytics for crop yields and livestock health optimization</div>
                     </div>
                   </div>
@@ -383,7 +383,7 @@ const LandingPage = () => {
                       <Wifi className="h-5 w-5 text-secondary" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">Real-time Farm Monitoring</div>
+                      <div className="font-semibold text-foreground">IoT Sensor Networks</div>
                       <div className="text-sm text-muted-foreground">Real-time environmental and animal monitoring</div>
                     </div>
                   </div>
@@ -631,7 +631,7 @@ const LandingPage = () => {
                 <h3 className="text-2xl font-bold text-secondary mb-2">Geoffrey Kinyua</h3>
                 <p className="text-lg text-accent font-semibold mb-4">CTO & Co-Founder</p>
                 <p className="text-muted-foreground mb-4">
-                  Smart Farm Technology • System Development • Digital Agriculture Solutions
+                  System Development • Software Architecture • Agricultural Data Analytics
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Senior software engineer with deep expertise in agricultural systems and data analytics. 
