@@ -50,7 +50,7 @@ import smartFarmDashboard from '@/assets/smart-farm-dashboard.jpg';
 import farmerTech from '@/assets/farmer-tech-new.jpg';
 import smartFarmAerial from '@/assets/smart-farm-aerial.jpg';
 import livestockTech from '@/assets/livestock-tech.jpg';
-import geoffreyNjugunaCeo from '@/assets/geoffrey-njuguna-ceo.jpg';
+import geoffreyNjugunaCto from '@/assets/geoffrey-njuguna-cto.jpg';
 import geoffreyKinyua from '@/assets/geoffrey-kinyua.jpg';
 
 // Import product images
@@ -600,7 +600,7 @@ const LandingPage = () => {
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6">
                   <img 
-                    src={geoffreyNjugunaCeo}
+                    src={geoffreyNjugunaCto}
                     alt="Geoffrey Njuguna, CEO & Co-Founder"
                     className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
                   />
