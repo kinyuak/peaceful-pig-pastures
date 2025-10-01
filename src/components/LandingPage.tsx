@@ -133,16 +133,6 @@ const LandingPage = () => {
                     Explore Our Solutions
                   </Button>
                 </div>
-                <div className="flex items-center space-x-8 text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <Star className="h-5 w-5 text-yellow-500 mr-2" />
-                    <span>5.0 Client Satisfaction</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Shield className="h-5 w-5 text-primary mr-2" />
-                    <span>Data Secure & GDPR Compliant</span>
-                  </div>
-                </div>
               </div>
               <div className="relative">
                 <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 backdrop-blur-sm border border-primary/10">
@@ -344,7 +334,7 @@ const LandingPage = () => {
                 </div>
                 <CardTitle className="text-secondary">Workforce Management</CardTitle>
                 <CardDescription>
-                  Smart task assignment, performance analytics, and workforce optimization with mobile access and GPS tracking for field teams.
+                  Smart task assignment, performance analytics, and workforce optimization with mobile access for efficient field operations.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -591,7 +581,7 @@ const LandingPage = () => {
             <Badge className="mb-4 bg-primary/10 text-primary">Our Leadership Team</Badge>
             <h2 className="text-4xl font-bold text-foreground mb-6">Meet the Founders</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experienced leaders with 20+ years combined expertise in agritech, animal health, and system development
+              Experienced leaders with 14+ years combined expertise in agritech, animal health, and system development
             </p>
           </div>
 
@@ -612,7 +602,7 @@ const LandingPage = () => {
                   Agricultural Technology Leadership • Business Strategy • Livestock Management
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  10+ years in agritech with specialized expertise in animal health and livestock management systems. 
+                  7+ years in agritech with specialized expertise in animal health and livestock management systems. 
                   Passionate about revolutionizing African agriculture through technology.
                 </p>
               </CardContent>
@@ -631,10 +621,10 @@ const LandingPage = () => {
                 <h3 className="text-2xl font-bold text-secondary mb-2">Geoffrey Kinyua</h3>
                 <p className="text-lg text-accent font-semibold mb-4">CTO & Co-Founder</p>
                 <p className="text-muted-foreground mb-4">
-                  System Development • Software Architecture • Smart Farm Technology
+                  System Development • Web Development • Software Architecture
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Senior software engineer with deep expertise in agricultural systems and data analytics. 
+                  Senior software engineer with deep expertise in system development and web development. 
                   Specializes in building scalable, farmer-friendly technology solutions.
                 </p>
               </CardContent>
