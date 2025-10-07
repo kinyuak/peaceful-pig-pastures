@@ -41,7 +41,13 @@ import {
   Rocket,
   TreePine,
   Lightbulb,
-  Award
+  Award,
+  UserCheck,
+  Calendar,
+  Handshake,
+  ClipboardCheck,
+  Plus,
+  Minus
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -78,6 +84,17 @@ const LandingPage = () => {
     anonymous: false
   });
 
+  const [labourForm, setLabourForm] = useState({
+    fullName: '',
+    contact: '',
+    location: '',
+    serviceType: '',
+    numberOfWorkers: 1,
+    duration: '',
+    preferredDate: '',
+    additionalNotes: ''
+  });
+
   const scrollToSection = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (element) {
@@ -92,6 +109,24 @@ const LandingPage = () => {
       description: "We'll get back to you within 24 hours.",
     });
     setContactForm({ name: '', email: '', phone: '', farmType: '', inquiry: '', message: '' });
+  };
+
+  const handleLabourSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "✅ Booking Received!",
+      description: "Thank you! Our Agriherd team will contact you shortly to confirm availability and finalize arrangements.",
+    });
+    setLabourForm({
+      fullName: '',
+      contact: '',
+      location: '',
+      serviceType: '',
+      numberOfWorkers: 1,
+      duration: '',
+      preferredDate: '',
+      additionalNotes: ''
+    });
   };
 
   const handleFeedbackSubmit = (e: React.FormEvent) => {
@@ -570,6 +605,383 @@ const LandingPage = () => {
                   Market trends analysis and strategic planning for optimal product positioning
                 </CardDescription>
               </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Casual Labour as a Service Section */}
+      <div id="labour-service" className="py-20 bg-gradient-to-br from-primary/5 via-background to-secondary/5 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%234ade80" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Hero Header */}
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Labour Solutions</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Hire Trained Farm Labourers Easily
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              Connect with verified and skilled farm workers whenever you need them. Quality work, reliable service, countywide coverage.
+            </p>
+            
+            {/* Trust Badges */}
+            <div className="flex flex-wrap justify-center gap-6 mb-8">
+              <div className="flex items-center gap-2 text-primary">
+                <UserCheck className="h-5 w-5" />
+                <span className="font-semibold">Verified Workers</span>
+              </div>
+              <div className="flex items-center gap-2 text-primary">
+                <Calendar className="h-5 w-5" />
+                <span className="font-semibold">Flexible Scheduling</span>
+              </div>
+              <div className="flex items-center gap-2 text-primary">
+                <MapPin className="h-5 w-5" />
+                <span className="font-semibold">Countywide Service</span>
+              </div>
+            </div>
+
+            <Button 
+              size="lg" 
+              onClick={() => scrollToSection('labour-booking-form')}
+              className="group"
+            >
+              Book Labour Service
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+
+          {/* Intro Paragraph with Icons */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div className="space-y-6 animate-fade-in">
+              <h3 className="text-3xl font-bold text-foreground">Professional Farm Labour On Demand</h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Agriherd Solutions connects you with trained and reliable farm labourers whenever you need them. 
+                Whether you need hands for planting, weeding, milking, or harvesting, we provide skilled workers 
+                who understand farm operations and deliver quality work.
+              </p>
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Handshake className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Trained & Vetted</h4>
+                    <p className="text-sm text-muted-foreground">All workers are properly trained</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Shield className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Insured</h4>
+                    <p className="text-sm text-muted-foreground">Safety & reliability guaranteed</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Clock className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Flexible Hours</h4>
+                    <p className="text-sm text-muted-foreground">Half day to multi-day options</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <ClipboardCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Quality Work</h4>
+                    <p className="text-sm text-muted-foreground">Experienced farm hands</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Icons Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 group">
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <h4 className="font-semibold text-foreground mb-2">Team Work</h4>
+                <p className="text-sm text-muted-foreground">Coordinated labour teams</p>
+              </Card>
+              <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 hover:border-secondary/20 group">
+                <div className="h-16 w-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-secondary/20 transition-colors">
+                  <Leaf className="h-8 w-8 text-secondary" />
+                </div>
+                <h4 className="font-semibold text-foreground mb-2">Crop Care</h4>
+                <p className="text-sm text-muted-foreground">Planting & harvesting</p>
+              </Card>
+              <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 hover:border-accent/20 group">
+                <div className="h-16 w-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Heart className="h-8 w-8 text-accent" />
+                </div>
+                <h4 className="font-semibold text-foreground mb-2">Livestock Care</h4>
+                <p className="text-sm text-muted-foreground">Feeding & milking</p>
+              </Card>
+              <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 group">
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Settings className="h-8 w-8 text-primary" />
+                </div>
+                <h4 className="font-semibold text-foreground mb-2">Maintenance</h4>
+                <p className="text-sm text-muted-foreground">Fencing & repairs</p>
+              </Card>
+            </div>
+          </div>
+
+          {/* Booking Form Section */}
+          <div id="labour-booking-form" className="max-w-4xl mx-auto">
+            <Card className="border-2 border-primary/10 shadow-2xl">
+              <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5">
+                <div className="text-center">
+                  <CardTitle className="text-3xl mb-2">Book Labour Service</CardTitle>
+                  <CardDescription className="text-base">
+                    Fill out the form below and our team will contact you to confirm availability
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleLabourSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Full Name */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary" />
+                        Full Name *
+                      </label>
+                      <Input
+                        required
+                        placeholder="Enter your full name"
+                        value={labourForm.fullName}
+                        onChange={(e) => setLabourForm({ ...labourForm, fullName: e.target.value })}
+                        className="border-2 focus:border-primary"
+                      />
+                    </div>
+
+                    {/* Phone Number / Email */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-primary" />
+                        Phone Number / Email *
+                      </label>
+                      <Input
+                        required
+                        placeholder="Phone or email address"
+                        value={labourForm.contact}
+                        onChange={(e) => setLabourForm({ ...labourForm, contact: e.target.value })}
+                        className="border-2 focus:border-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Farm Location / County */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        Farm Location / County *
+                      </label>
+                      <Input
+                        required
+                        placeholder="e.g., Nanyuki, Laikipia"
+                        value={labourForm.location}
+                        onChange={(e) => setLabourForm({ ...labourForm, location: e.target.value })}
+                        className="border-2 focus:border-primary"
+                      />
+                    </div>
+
+                    {/* Service Type */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <ClipboardCheck className="h-4 w-4 text-primary" />
+                        Service Type Needed *
+                      </label>
+                      <Select
+                        required
+                        value={labourForm.serviceType}
+                        onValueChange={(value) => setLabourForm({ ...labourForm, serviceType: value })}
+                      >
+                        <SelectTrigger className="border-2 focus:border-primary">
+                          <SelectValue placeholder="Select service type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="planting">Planting</SelectItem>
+                          <SelectItem value="harvesting">Harvesting</SelectItem>
+                          <SelectItem value="weeding">Weeding</SelectItem>
+                          <SelectItem value="livestock-feeding">Livestock Feeding</SelectItem>
+                          <SelectItem value="milking">Milking</SelectItem>
+                          <SelectItem value="fencing">Fencing</SelectItem>
+                          <SelectItem value="spraying">Spraying</SelectItem>
+                          <SelectItem value="cleaning">Cleaning</SelectItem>
+                          <SelectItem value="general-labour">General Labour</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Number of Workers */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary" />
+                        Number of Casual Labourers *
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setLabourForm({ ...labourForm, numberOfWorkers: Math.max(1, labourForm.numberOfWorkers - 1) })}
+                          className="h-10 w-10 border-2"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          type="number"
+                          min="1"
+                          required
+                          value={labourForm.numberOfWorkers}
+                          onChange={(e) => setLabourForm({ ...labourForm, numberOfWorkers: parseInt(e.target.value) || 1 })}
+                          className="border-2 focus:border-primary text-center"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setLabourForm({ ...labourForm, numberOfWorkers: labourForm.numberOfWorkers + 1 })}
+                          className="h-10 w-10 border-2"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Duration */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-primary" />
+                        Duration of Work *
+                      </label>
+                      <Select
+                        required
+                        value={labourForm.duration}
+                        onValueChange={(value) => setLabourForm({ ...labourForm, duration: value })}
+                      >
+                        <SelectTrigger className="border-2 focus:border-primary">
+                          <SelectValue placeholder="Select duration" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="half-day">Half Day (4 hours)</SelectItem>
+                          <SelectItem value="full-day">Full Day (8 hours)</SelectItem>
+                          <SelectItem value="multi-day">Multi-Day</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Preferred Date */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      Preferred Date *
+                    </label>
+                    <Input
+                      type="date"
+                      required
+                      value={labourForm.preferredDate}
+                      onChange={(e) => setLabourForm({ ...labourForm, preferredDate: e.target.value })}
+                      className="border-2 focus:border-primary"
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </div>
+
+                  {/* Additional Notes */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4 text-primary" />
+                      Additional Notes / Requirements
+                    </label>
+                    <Textarea
+                      placeholder="Any special requirements or additional information..."
+                      value={labourForm.additionalNotes}
+                      onChange={(e) => setLabourForm({ ...labourForm, additionalNotes: e.target.value })}
+                      className="border-2 focus:border-primary min-h-24"
+                    />
+                  </div>
+
+                  {/* Information Note */}
+                  <div className="bg-primary/5 border-2 border-primary/20 rounded-lg p-4 flex gap-3">
+                    <Shield className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-muted-foreground">
+                      <strong className="text-foreground">All Agriherd labourers are trained, insured, and verified</strong> for safety and reliability. 
+                      We ensure professional service delivery for your peace of mind.
+                    </p>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="flex-1 group"
+                    >
+                      Book Labour Service
+                      <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="lg"
+                      className="sm:w-auto"
+                      onClick={() => window.open('https://wa.me/254700000000?text=Hi, I need help choosing labour services', '_blank')}
+                    >
+                      <MessageSquare className="mr-2 h-5 w-5" />
+                      Need Help Choosing?
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Call-to-Action Banner */}
+          <div className="mt-16 text-center">
+            <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/10 via-background to-secondary/10">
+              <CardContent className="p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Need Reliable Farm Help? Book Verified Labourers from Agriherd Today!
+                </h3>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Professional farm workers ready to help you succeed
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button 
+                    size="lg" 
+                    onClick={() => scrollToSection('labour-booking-form')}
+                    className="group"
+                  >
+                    Get Started
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    onClick={() => window.open('tel:+254700000000')}
+                  >
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call Us Now
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
           </div>
         </div>
