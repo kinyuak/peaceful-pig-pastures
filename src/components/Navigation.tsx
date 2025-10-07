@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Home, Users, Calendar, Plus, Grid2x2, List, FileText, Menu, Eye, ShoppingCart } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home, to: "/" },
@@ -37,9 +38,12 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
         {/* Header row, with logo & burger/menu button (mobile) */}
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-primary">
-              AgriHerd Solutions
-            </h1>
+            <div className="flex items-center space-x-3">
+              <img src={logo} alt="AgriHerd Solutions Logo" className="h-10 w-10" />
+              <h1 className="text-2xl font-bold text-primary">
+                AgriHerd Solutions
+              </h1>
+            </div>
             {/* Always visible Home button */}
             <NavLink
               to="/"

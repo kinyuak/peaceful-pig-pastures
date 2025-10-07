@@ -58,6 +58,7 @@ import cabbageImage from '@/assets/products/cabbage.jpg';
 import onionsImage from '@/assets/products/onions.jpg';
 import pigImage from '@/assets/products/pig.jpg';
 import greenGramsImage from '@/assets/products/green-grams.jpg';
+import logo from '@/assets/logo.png';
 
 const LandingPage = () => {
   const { toast } = useToast();
@@ -1026,7 +1027,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="lg:col-span-2">
-              <h3 className="text-2xl font-bold text-primary mb-4">AgriHerd Solutions</h3>
+              <div className="flex items-center space-x-3 mb-4">
+                <img src={logo} alt="AgriHerd Solutions Logo" className="h-12 w-12" />
+                <h3 className="text-2xl font-bold text-primary">AgriHerd Solutions</h3>
+              </div>
               <p className="text-muted-foreground mb-6 max-w-md">
                 Transforming agriculture through digital innovation. Smart tools and expert consultancy for the modern farmer.
               </p>
