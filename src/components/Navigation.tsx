@@ -54,16 +54,19 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
               <span className="hidden sm:inline">Home</span>
             </NavLink>
           )}
-          </div>
+        </div>
+        {/* Demo button - visible on all screen sizes */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setShowDemo(!showDemo)}
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/80"
+          >
+            <Eye className="h-4 w-4" />
+            <span className="hidden sm:inline">{showDemo ? 'Hide Demo' : 'Show Demo'}</span>
+            <span className="sm:hidden">{showDemo ? 'Hide' : 'Demo'}</span>
+          </button>
           {/* Desktop nav links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => setShowDemo(!showDemo)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/80"
-            >
-              <Eye className="h-4 w-4" />
-              <span>{showDemo ? 'Hide Demo' : 'Show Demo'}</span>
-            </button>
+          <div className="hidden md:flex items-center space-x-4">
             {showDemo && (
               <div className="flex space-x-4 animate-fade-in">
                 {tabs.map((tab) => {
@@ -90,54 +93,35 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
               </div>
             )}
           </div>
-          {/* Mobile nav burger */}
-          <div className="md:hidden flex items-center">
-            <button
-              aria-label="Open menu"
-              className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
-              onClick={() => setMobileMenuOpen((v) => !v)}
-            >
-              <Menu className="h-6 w-6 text-primary" />
-            </button>
-          </div>
         </div>
-        {/* Mobile menu (collapsible) */}
-        {mobileMenuOpen && (
+        </div>
+        {/* Mobile menu tabs (collapsible) */}
+        {showDemo && (
           <div className="md:hidden flex flex-col mt-2 pb-4 animate-fade-in">
-            <button
-              onClick={() => setShowDemo(!showDemo)}
-              className="flex items-center space-x-2 px-3 py-2 mb-2 rounded-lg text-base font-medium transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/80"
-            >
-              <Eye className="h-5 w-5" />
-              <span>{showDemo ? 'Hide Demo' : 'Show Demo'}</span>
-            </button>
-            {showDemo && (
-              <div className="flex flex-col space-y-1 animate-fade-in">
-                {tabs.map((tab) => {
-                  const IconComponent = tab.icon;
-                  const isActive = getIsActive(tab);
-                  return (
-                    <NavLink
-                      key={tab.id}
-                      to={tab.to}
-                      className={
-                        `flex items-center space-x-2 px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ` +
-                        (isActive
-                          ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
-                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5')
-                      }
-                      onClick={() => {
-                        if(onTabChange) onTabChange(tab.id);
-                        setMobileMenuOpen(false);
-                      }}
-                    >
-                      <IconComponent className="h-5 w-5" />
-                      <span>{tab.label}</span>
-                    </NavLink>
-                  );
-                })}
-              </div>
-            )}
+            <div className="flex flex-col space-y-1 animate-fade-in">
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                const isActive = getIsActive(tab);
+                return (
+                  <NavLink
+                    key={tab.id}
+                    to={tab.to}
+                    className={
+                      `flex items-center space-x-2 px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ` +
+                      (isActive
+                        ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5')
+                    }
+                    onClick={() => {
+                      if(onTabChange) onTabChange(tab.id);
+                    }}
+                  >
+                    <IconComponent className="h-5 w-5" />
+                    <span>{tab.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
