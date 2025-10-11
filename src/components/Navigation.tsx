@@ -38,13 +38,14 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
         {/* Header row, with logo & burger/menu button (mobile) */}
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <img src={logo} alt="AgriHerd Solutions Logo" className="h-10 w-10" />
-              <h1 className="text-2xl font-bold text-primary">
-                AgriHerd Solutions
-              </h1>
-            </div>
-            {/* Always visible Home button */}
+          <div className="flex items-center space-x-3">
+            <img src={logo} alt="AgriHerd Solutions Logo" className="h-10 w-10" />
+            <h1 className="text-2xl font-bold text-primary">
+              AgriHerd Solutions
+            </h1>
+          </div>
+          {/* Home button visible on all pages except home */}
+          {location.pathname !== "/" && (
             <NavLink
               to="/"
               className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
@@ -52,6 +53,7 @@ const Navigation = ({ activeTab, onTabChange, onAddPig }: NavigationProps) => {
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Home</span>
             </NavLink>
+          )}
           </div>
           {/* Desktop nav links */}
           <div className="hidden md:flex items-center space-x-8">
