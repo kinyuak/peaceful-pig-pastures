@@ -52,6 +52,7 @@ export default function Signup() {
       farm_name: farmName,
       contact_phone: phone,
       location: location,
+      account_type: accountType,
     });
 
     if (error) {
