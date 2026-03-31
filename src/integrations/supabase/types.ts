@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          account_type: string | null
           avatar_url: string | null
           contact_phone: string | null
           created_at: string
@@ -23,9 +24,12 @@ export type Database = {
           farm_type: string | null
           id: string
           location: string | null
+          trial_active: boolean | null
+          trial_start_date: string | null
           updated_at: string
         }
         Insert: {
+          account_type?: string | null
           avatar_url?: string | null
           contact_phone?: string | null
           created_at?: string
@@ -33,9 +37,12 @@ export type Database = {
           farm_type?: string | null
           id: string
           location?: string | null
+          trial_active?: boolean | null
+          trial_start_date?: string | null
           updated_at?: string
         }
         Update: {
+          account_type?: string | null
           avatar_url?: string | null
           contact_phone?: string | null
           created_at?: string
@@ -43,6 +50,8 @@ export type Database = {
           farm_type?: string | null
           id?: string
           location?: string | null
+          trial_active?: boolean | null
+          trial_start_date?: string | null
           updated_at?: string
         }
         Relationships: []

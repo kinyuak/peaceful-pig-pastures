@@ -59,7 +59,7 @@ interface Pig {
 }
 
 interface PigManagementProps {
-  onAddPig: () => void;
+  onAddPig?: () => void;
 }
 
 const PigManagement = ({ onAddPig }: PigManagementProps) => {

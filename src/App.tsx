@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import DashboardLayout from "@/components/DashboardLayout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import InventoryManagement from "./pages/InventoryManagement";
@@ -18,6 +19,14 @@ import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
+function ProtectedDashboard({ children }: { children: React.ReactNode }) {
+  return (
+    <ProtectedRoute>
+      <DashboardLayout>{children}</DashboardLayout>
+    </ProtectedRoute>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -26,22 +35,21 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/pigs" element={<Index defaultTab="pigs" />} />
-            <Route path="/calendar" element={<Index defaultTab="calendar" />} />
-            <Route path="/inventory" element={<InventoryManagement />} />
-            <Route path="/staff" element={<StaffManagement />} />
-            <Route path="/sales" element={<SalesManagement />} />
-            <Route path="/store" element={<Store />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+            {/* Protected routes with sidebar */}
+            <Route path="/dashboard" element={<ProtectedDashboard><Dashboard /></ProtectedDashboard>} />
+            <Route path="/pigs" element={<ProtectedDashboard><PigManagementPage /></ProtectedDashboard>} />
+            <Route path="/calendar" element={<ProtectedDashboard><CalendarPage /></ProtectedDashboard>} />
+            <Route path="/inventory" element={<ProtectedDashboard><InventoryManagement /></ProtectedDashboard>} />
+            <Route path="/staff" element={<ProtectedDashboard><StaffManagement /></ProtectedDashboard>} />
+            <Route path="/sales" element={<ProtectedDashboard><SalesManagement /></ProtectedDashboard>} />
+            <Route path="/store" element={<ProtectedDashboard><Store /></ProtectedDashboard>} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
@@ -49,5 +57,36 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
+
+// Inline page wrappers for components that need it
+function PigManagementPage() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-foreground mb-6">Animal Management</h2>
+      <PigManagementContent />
+    </div>
+  );
+}
+
+function CalendarPage() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-foreground mb-6">Farm Calendar</h2>
+      <CalendarContent />
+    </div>
+  );
+}
+
+// Lazy imports for content components
+import PigManagement from "@/components/PigManagement";
+import FarmCalendar from "@/components/FarmCalendar";
+
+function PigManagementContent() {
+  return <PigManagement />;
+}
+
+function CalendarContent() {
+  return <FarmCalendar />;
+}
 
 export default App;
