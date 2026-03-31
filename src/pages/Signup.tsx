@@ -96,13 +96,35 @@ export default function Signup() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="farmName">Farm Name</Label>
+              <Label htmlFor="accountType">Account Type</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  type="button"
+                  variant={accountType === 'farmer' ? 'default' : 'outline'}
+                  className="w-full"
+                  onClick={() => setAccountType('farmer')}
+                >
+                  🌾 Farmer
+                </Button>
+                <Button
+                  type="button"
+                  variant={accountType === 'organization' ? 'default' : 'outline'}
+                  className="w-full"
+                  onClick={() => setAccountType('organization')}
+                >
+                  🏢 Organization
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="farmName">{accountType === 'organization' ? 'Organization Name' : 'Farm Name'}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="farmName"
                   type="text"
-                  placeholder="My Farm"
+                  placeholder={accountType === 'organization' ? 'My Organization' : 'My Farm'}
                   value={farmName}
                   onChange={(e) => setFarmName(e.target.value)}
                   className="pl-10"
