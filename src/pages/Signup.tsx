@@ -18,6 +18,7 @@ export default function Signup() {
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [accountType, setAccountType] = useState<'farmer' | 'organization'>('farmer');
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signUp, signInWithGoogle } = useAuth();
