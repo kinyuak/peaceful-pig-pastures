@@ -16,7 +16,7 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata?: { farm_name?: string; contact_phone?: string; location?: string }) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, metadata?: { farm_name?: string; contact_phone?: string; location?: string; account_type?: string }) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
