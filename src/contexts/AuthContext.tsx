@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (
     email: string, 
     password: string, 
-    metadata?: { farm_name?: string; contact_phone?: string; location?: string }
+    metadata?: { farm_name?: string; contact_phone?: string; location?: string; account_type?: string }
   ) => {
     const { error } = await supabase.auth.signUp({
       email,
