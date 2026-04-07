@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ShoppingCart, Search, Filter } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ShoppingCart, Search, Trash2, Minus, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 import cabbageImage from '@/assets/products/cabbage.jpg';
@@ -36,6 +37,7 @@ const Store = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [cart, setCart] = useState<{[key: string]: number}>({});
+  const [cartOpen, setCartOpen] = useState(false);
   const { toast } = useToast();
 
   const filteredProducts = products.filter(product => {
@@ -50,6 +52,24 @@ const Store = () => {
     toast({ title: "Added to cart", description: `${product?.name} added.` });
   };
 
+  const updateCartQty = (productId: string, delta: number) => {
+    setCart(prev => {
+      const newQty = (prev[productId] || 0) + delta;
+      if (newQty <= 0) {
+        const { [productId]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [productId]: newQty };
+    });
+  };
+
+  const removeFromCart = (productId: string) => {
+    setCart(prev => {
+      const { [productId]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
   const getCartTotal = () => Object.entries(cart).reduce((total, [productId, quantity]) => {
     const product = products.find(p => p.id === productId);
     return total + (product?.price || 0) * quantity;
@@ -57,16 +77,63 @@ const Store = () => {
 
   const getCartItemCount = () => Object.values(cart).reduce((total, quantity) => total + quantity, 0);
 
+  const cartItems = Object.entries(cart).map(([id, qty]) => ({
+    product: products.find(p => p.id === id)!,
+    quantity: qty,
+  })).filter(item => item.product);
+
+  const handleCheckout = () => {
+    toast({ title: 'Checkout', description: `Order of KSH ${getCartTotal().toLocaleString()} submitted. M-Pesa integration coming soon!` });
+    setCart({});
+    setCartOpen(false);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-foreground">Marketplace</h2>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={() => setCartOpen(true)}>
           <ShoppingCart className="h-4 w-4 mr-2" />
           Cart ({getCartItemCount()})
           {getCartItemCount() > 0 && <Badge className="ml-2">{getCartTotal().toLocaleString()} KSH</Badge>}
         </Button>
       </div>
+
+      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Shopping Cart</DialogTitle></DialogHeader>
+          {cartItems.length === 0 ? (
+            <p className="text-center py-8 text-muted-foreground">Your cart is empty.</p>
+          ) : (
+            <div className="space-y-3 max-h-[400px] overflow-y-auto">
+              {cartItems.map(({ product, quantity }) => (
+                <div key={product.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                  <img src={product.imageUrl} alt={product.name} className="w-12 h-12 rounded object-cover" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{product.name}</p>
+                    <p className="text-xs text-muted-foreground">{product.currency} {product.price}/{product.unit}</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, -1)}><Minus className="h-3 w-3" /></Button>
+                    <span className="text-sm w-6 text-center">{quantity}</span>
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, 1)}><Plus className="h-3 w-3" /></Button>
+                  </div>
+                  <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => removeFromCart(product.id)}><Trash2 className="h-3 w-3" /></Button>
+                </div>
+              ))}
+            </div>
+          )}
+          {cartItems.length > 0 && (
+            <div className="border-t pt-4 space-y-3">
+              <div className="flex justify-between font-semibold">
+                <span>Total</span>
+                <span>KSH {getCartTotal().toLocaleString()}</span>
+              </div>
+              <Button className="w-full" onClick={handleCheckout}>Checkout with M-Pesa</Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
