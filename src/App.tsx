@@ -16,6 +16,12 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import PigManagement from "@/components/PigManagement";
+import FarmCalendar from "@/components/FarmCalendar";
+import CropsManagement from "./pages/CropsManagement";
+import LabourServices from "./pages/LabourServices";
+import AIAssistant from "./pages/AIAssistant";
+import SettingsPage from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -35,20 +41,22 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            {/* Public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Protected routes with sidebar */}
             <Route path="/dashboard" element={<ProtectedDashboard><Dashboard /></ProtectedDashboard>} />
-            <Route path="/pigs" element={<ProtectedDashboard><PigManagementPage /></ProtectedDashboard>} />
-            <Route path="/calendar" element={<ProtectedDashboard><CalendarPage /></ProtectedDashboard>} />
+            <Route path="/pigs" element={<ProtectedDashboard><div><h2 className="text-2xl font-bold text-foreground mb-6">Animal Management</h2><PigManagement /></div></ProtectedDashboard>} />
+            <Route path="/crops" element={<ProtectedDashboard><CropsManagement /></ProtectedDashboard>} />
+            <Route path="/calendar" element={<ProtectedDashboard><div><h2 className="text-2xl font-bold text-foreground mb-6">Farm Calendar</h2><FarmCalendar /></div></ProtectedDashboard>} />
             <Route path="/inventory" element={<ProtectedDashboard><InventoryManagement /></ProtectedDashboard>} />
             <Route path="/staff" element={<ProtectedDashboard><StaffManagement /></ProtectedDashboard>} />
             <Route path="/sales" element={<ProtectedDashboard><SalesManagement /></ProtectedDashboard>} />
             <Route path="/store" element={<ProtectedDashboard><Store /></ProtectedDashboard>} />
+            <Route path="/labour" element={<ProtectedDashboard><LabourServices /></ProtectedDashboard>} />
+            <Route path="/ai-assistant" element={<ProtectedDashboard><AIAssistant /></ProtectedDashboard>} />
+            <Route path="/settings" element={<ProtectedDashboard><SettingsPage /></ProtectedDashboard>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -57,36 +65,5 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
-
-// Inline page wrappers for components that need it
-function PigManagementPage() {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-foreground mb-6">Animal Management</h2>
-      <PigManagementContent />
-    </div>
-  );
-}
-
-function CalendarPage() {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-foreground mb-6">Farm Calendar</h2>
-      <CalendarContent />
-    </div>
-  );
-}
-
-// Lazy imports for content components
-import PigManagement from "@/components/PigManagement";
-import FarmCalendar from "@/components/FarmCalendar";
-
-function PigManagementContent() {
-  return <PigManagement />;
-}
-
-function CalendarContent() {
-  return <FarmCalendar />;
-}
 
 export default App;

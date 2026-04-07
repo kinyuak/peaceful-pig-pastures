@@ -9,6 +9,9 @@ interface Profile {
   location: string | null;
   farm_type: string | null;
   avatar_url: string | null;
+  account_type: string | null;
+  trial_start_date: string | null;
+  trial_active: boolean | null;
 }
 
 interface AuthContextType {
@@ -21,6 +24,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
+  bypassLogin: (accountType: 'farmer' | 'organization') => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,19 +43,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single();
     
     if (!error && data) {
-      setProfile(data);
+      setProfile(data as Profile);
     }
   };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Use setTimeout to avoid deadlock with Supabase auth
           setTimeout(() => fetchProfile(session.user.id), 0);
         } else {
           setProfile(null);
@@ -61,7 +63,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    // THEN get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -75,6 +76,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const bypassLogin = (accountType: 'farmer' | 'organization') => {
+    const mockId = accountType === 'farmer' ? 'bypass-farmer-id' : 'bypass-org-id';
+    const mockUser = {
+      id: mockId,
+      email: accountType === 'farmer' ? 'farmer@demo.agriherd.com' : 'org@demo.agriherd.com',
+      aud: 'authenticated',
+      role: 'authenticated',
+      app_metadata: {},
+      user_metadata: {},
+      created_at: new Date().toISOString(),
+    } as unknown as User;
+
+    const mockProfile: Profile = {
+      id: mockId,
+      farm_name: accountType === 'farmer' ? 'Demo Farm' : 'Demo Organization',
+      contact_phone: '+254700000000',
+      location: 'Nairobi, Kenya',
+      farm_type: 'mixed',
+      avatar_url: null,
+      account_type: accountType,
+      trial_start_date: new Date().toISOString(),
+      trial_active: true,
+    };
+
+    setUser(mockUser);
+    setProfile(mockProfile);
+    setSession({} as Session);
+  };
 
   const signUp = async (
     email: string, 
@@ -93,19 +123,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error };
   };
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: window.location.origin,
-      },
+      options: { redirectTo: window.location.origin },
     });
     return { error };
   };
@@ -120,6 +145,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('Not authenticated') };
     
+    // If bypass user, just update local state
+    if (user.id.startsWith('bypass-')) {
+      setProfile(prev => prev ? { ...prev, ...updates } : null);
+      return { error: null };
+    }
+
     const { error } = await supabase
       .from('profiles')
       .update(updates)
@@ -134,15 +165,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={{
-      user,
-      session,
-      profile,
-      loading,
-      signUp,
-      signIn,
-      signInWithGoogle,
-      signOut,
-      updateProfile,
+      user, session, profile, loading,
+      signUp, signIn, signInWithGoogle, signOut, updateProfile, bypassLogin,
     }}>
       {children}
     </AuthContext.Provider>
