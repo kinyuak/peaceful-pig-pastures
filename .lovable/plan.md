@@ -1,107 +1,87 @@
 
 
-# AgriHerd Solutions - SaaS Landing Page Transformation
+# Fix All Dashboard Features & Add Login Bypass
 
 ## Overview
-Complete redesign of the public-facing website into a modern, investor-ready SaaS landing page inspired by Stripe/Linear/Notion. The current 1,491-line LandingPage component and navigation will be replaced with a clean, conversion-focused one-page design. The post-login experience gets a sidebar-based dashboard.
+Ensure every sidebar link works, all dashboard features function properly, add login bypass buttons, and create a full Organization dashboard with farmer management.
 
-## What Changes
+## Changes
 
-### 1. Update Color System
-- Change primary green from `142 76% 36%` to Deep Green matching `#1B5E20` (approx `122 76% 24%`)
-- Keep white/light gray backgrounds
-- Ensure Inter font is loaded
+### 1. Add Login Bypass Buttons (`src/pages/Login.tsx`)
+- Add two bypass buttons below the Google login: "Bypass as Farmer" and "Bypass as Organization"
+- These call a helper that signs in with a test account or sets a mock user in AuthContext
+- Simplest approach: create two test accounts via `signUp` on first click, then `signIn` automatically
+- Alternative (faster): add a `bypassLogin` method to AuthContext that sets a fake user/session locally without hitting Supabase auth, allowing dashboard access
 
-### 2. Completely Rewrite Landing Page (`src/components/LandingPage.tsx`)
-Replace the current 1,491-line component with a clean SaaS landing page containing these sections in order:
+Best approach: Add a `bypassLogin(accountType)` method to `AuthContext` that creates a mock user object and profile, sets `user` and `profile` state directly, bypassing Supabase. The `ProtectedRoute` only checks `if (!user)` so this works.
 
-1. **Hero** - Bold headline, subtext, two CTAs (Start Free Trial + Book Demo), dashboard mockup image
-2. **Trust Bar** - "Built for modern agriculture across Africa" + placeholder partner logos
-3. **Who It's For** - 4 cards: Farmers, Cooperatives, Agribusinesses, Counties/Organizations
-4. **Value Proposition** - "Everything You Need to Run a Modern Farm Operation" with 5 outcome-focused benefit blocks
-5. **Feature Categories** - 6 abstracted cards (Farm Management, Livestock Tracking, Sales & Inventory, Workforce Management, Marketplace Access, AI Insights)
-6. **How It Works** - 3-step flow with icons
-7. **Pricing** - 4 tiers (Starter, Growth, Pro, Enterprise) with "5-Day Free Trial" badge
-8. **Final CTA** - "Start Managing Your Farm the Smart Way"
-9. **Footer** - Company info, contact, socials, links
+### 2. Create Missing Pages
 
-Remove all existing sections: About, Solutions, Features, Featured Products, Consultancy, Labour Booking, Team, Testimonials, Contact Form, Feedback Form. These features move behind the dashboard.
+The sidebar has links to `/crops`, `/labour`, `/ai-assistant`, `/settings` — none have routes or pages.
 
-### 3. Simplify Public Navigation (`src/components/Navigation.tsx`)
-The public nav becomes minimal:
-- Logo + "AgriHerd Solutions"
-- Links: Features, Pricing, Book Demo
-- CTAs: Login, Start Free Trial
-- Remove: Store, Calendar, Farm Management dropdown (all move behind auth)
+**Create `src/pages/CropsManagement.tsx`:**
+- Crop registry (name, type, field/plot, planting date, expected harvest, status)
+- Add crop form dialog
+- Summary cards (total crops, active fields, upcoming harvests)
+- Simple table with demo data
 
-### 4. Update Signup Page (`src/pages/Signup.tsx`)
-- Add "Account Type" selector: Farmer / Organization
-- Add trial logic: store `trial_start_date` in profiles table
-- Keep existing fields (farm name, email, password, phone, location)
+**Create `src/pages/LabourServices.tsx`:**
+- Book labour form (task type, date, workers needed, location, notes)
+- Requests table showing status (Pending, Confirmed, Completed)
+- Demo data with sample requests
 
-### 5. Database Migration
-Add columns to `profiles` table:
-- `account_type` (text, default 'farmer') - farmer or organization
-- `trial_start_date` (timestamptz, default now())
-- `trial_active` (boolean, default true)
+**Create `src/pages/AIAssistant.tsx`:**
+- Simple chat-style UI with a text input
+- Placeholder responses or connect to Lovable AI (gemini-2.5-flash)
+- Show suggestions like "Ask about pig breeding", "Crop disease diagnosis"
 
-### 6. Build Post-Login Dashboard with Sidebar (`src/pages/Dashboard.tsx`)
-Replace current top-nav dashboard with a sidebar layout using SidebarProvider:
+**Create `src/pages/Settings.tsx`:**
+- Profile editing form (farm name, phone, location, farm type)
+- Uses `useAuth().updateProfile()` to save
+- Avatar upload placeholder
+- Account info display (email, account type, trial status)
 
-**Sidebar items:**
-- Dashboard, Animals, Crops, Sales, Inventory, Staff, Marketplace, Labour Services, AI Assistant, Settings
+### 3. Create Organization Dashboard (`src/pages/OrgDashboard.tsx`)
 
-**Dashboard view:**
-- Summary cards (Total animals, Revenue, Tasks)
-- Charts area (placeholder)
-- Alerts panel
+When `profile.account_type === 'organization'`, the Dashboard page shows an organization view:
 
-### 7. Update Routing (`src/App.tsx`)
-- Public routes: `/` (landing), `/login`, `/signup`, `/reset-password`
-- Protected routes: `/dashboard`, `/pigs`, `/calendar`, `/inventory`, `/staff`, `/sales`, `/store`
-- All management pages wrapped in ProtectedRoute + sidebar layout
+- **Farmers Management section:** Table of farmers under the organization, with "Add Farmer" button
+- **Aggregated Stats:** Total animals across all farmers, total revenue, total staff
+- **Farm Overview:** Cards for each farmer showing their farm name, location, animal count
+- For now, this uses local state with demo data (no new DB tables yet)
 
-### 8. Create Shared Dashboard Layout Component
-`src/components/DashboardLayout.tsx` - wraps protected pages with sidebar + header
+Alternatively, modify `Dashboard.tsx` to conditionally render Org vs Farmer dashboard based on `profile.account_type`.
 
-### 9. Add Scroll Animations
-Add intersection observer-based fade-in animations on the landing page sections using a custom hook.
+### 4. Add All Missing Routes (`src/App.tsx`)
+Add routes for:
+- `/crops` → CropsManagement
+- `/labour` → LabourServices  
+- `/ai-assistant` → AIAssistant
+- `/settings` → Settings
 
----
+All wrapped in `ProtectedDashboard`.
 
-## Technical Details
+### 5. Fix Existing Feature Issues
+- **Inventory "Add New Item":** The save button doesn't actually add items to the list — wire up `handleAddItem` to append to state
+- **Store cart:** Cart button shows count but clicking it does nothing — add a cart drawer/dialog showing items with remove/checkout buttons
 
-### Files to Create
-- `src/components/DashboardLayout.tsx` - Sidebar layout wrapper
-- `src/components/DashboardSidebar.tsx` - Sidebar navigation component
-- `src/hooks/useScrollAnimation.ts` - Intersection observer hook for fade-in
+## Files to Create
+1. `src/pages/CropsManagement.tsx`
+2. `src/pages/LabourServices.tsx`
+3. `src/pages/AIAssistant.tsx`
+4. `src/pages/Settings.tsx`
 
-### Files to Heavily Modify
-- `src/components/LandingPage.tsx` - Complete rewrite (~400 lines vs current 1,491)
-- `src/components/Navigation.tsx` - Simplify for public pages
-- `src/pages/Dashboard.tsx` - Sidebar layout + real summary cards
-- `src/pages/Signup.tsx` - Add account type + trial fields
-- `src/App.tsx` - Restructure routes with DashboardLayout
-- `src/index.css` - Update primary color, add Inter font, scroll animation classes
+## Files to Modify
+1. `src/pages/Login.tsx` — Add bypass buttons
+2. `src/contexts/AuthContext.tsx` — Add `bypassLogin` method
+3. `src/App.tsx` — Add 4 new routes
+4. `src/pages/Dashboard.tsx` — Add org dashboard view conditionally
+5. `src/pages/InventoryManagement.tsx` — Fix add item to actually save to state
+6. `src/pages/Store.tsx` — Add cart drawer with item list and checkout
 
-### Files to Lightly Modify
-- `src/pages/Store.tsx` - Wrap in DashboardLayout, remove Navigation import
-- `src/pages/StaffManagement.tsx` - Wrap in DashboardLayout
-- `src/pages/InventoryManagement.tsx` - Wrap in DashboardLayout
-- `src/pages/SalesManagement.tsx` - Wrap in DashboardLayout
-
-### Database Migration
-```sql
-ALTER TABLE public.profiles 
-  ADD COLUMN account_type text DEFAULT 'farmer',
-  ADD COLUMN trial_start_date timestamptz DEFAULT now(),
-  ADD COLUMN trial_active boolean DEFAULT true;
-```
-
-### Key Design Decisions
-- Landing page hides ALL complexity - no feature lists, no product catalogs
-- Everything operational lives behind authentication in the sidebar dashboard
-- Pricing drives conversion with trial badges
-- Scroll animations use Intersection Observer (no heavy library)
-- Sidebar uses shadcn Sidebar component with `collapsible="icon"` for mini mode
+## Technical Notes
+- Bypass login creates a mock user with `id: 'bypass-farmer'` or `'bypass-org'` and sets profile with appropriate `account_type`
+- No database changes needed — all new pages use local state with demo data
+- Organization dashboard shows a "Farmers" tab with ability to add/view farmer entries (local state)
+- Settings page uses existing `updateProfile` from AuthContext for real saves
 
