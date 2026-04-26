@@ -74,7 +74,7 @@ export default function LabourServices() {
           <h3 className="font-semibold">Labour Requests</h3>
           <Dialog open={addOpen} onOpenChange={setAddOpen}>
             <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Book Labour</Button></DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader><DialogTitle>Book Casual Labour</DialogTitle></DialogHeader>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <Select value={form.taskType} onValueChange={v => setForm(f => ({ ...f, taskType: v }))}>
@@ -102,7 +102,8 @@ export default function LabourServices() {
             </DialogContent>
           </Dialog>
         </div>
-        <Table>
+        <div className="overflow-x-auto">
+        <Table className="min-w-[700px]">
           <TableHeader>
             <TableRow>
               <TableHead>Task</TableHead><TableHead>Date</TableHead><TableHead>Workers</TableHead>
@@ -122,6 +123,7 @@ export default function LabourServices() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Card>
     </div>
   );

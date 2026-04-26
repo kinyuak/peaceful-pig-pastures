@@ -71,7 +71,7 @@ export default function CropsManagement() {
           </div>
           <Dialog open={addOpen} onOpenChange={setAddOpen}>
             <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Add Crop</Button></DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader><DialogTitle>Add New Crop</DialogTitle></DialogHeader>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <Input placeholder="Crop Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
@@ -96,7 +96,8 @@ export default function CropsManagement() {
             </DialogContent>
           </Dialog>
         </div>
-        <Table>
+        <div className="overflow-x-auto">
+        <Table className="min-w-[700px]">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead><TableHead>Type</TableHead><TableHead>Field</TableHead>
@@ -117,6 +118,7 @@ export default function CropsManagement() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Card>
     </div>
   );
