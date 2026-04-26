@@ -229,7 +229,10 @@ function OrgDashboard() {
   );
 }
 
+import AdminDashboard from './AdminDashboard';
+
 export default function Dashboard() {
-  const { profile } = useAuth();
+  const { profile, role } = useAuth();
+  if (role === 'admin') return <AdminDashboard />;
   return profile?.account_type === 'organization' ? <OrgDashboard /> : <FarmerDashboard />;
 }
