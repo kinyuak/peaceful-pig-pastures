@@ -196,7 +196,8 @@ function OrgDashboard() {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
+          <div className="overflow-x-auto">
+          <Table className="min-w-[700px]">
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead><TableHead>Farm</TableHead><TableHead>Location</TableHead>
@@ -223,6 +224,7 @@ function OrgDashboard() {
               ))}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
     </>
