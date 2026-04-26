@@ -14,17 +14,20 @@ interface Profile {
   trial_active: boolean | null;
 }
 
+type AppRole = 'admin' | 'moderator' | 'user';
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  role: AppRole | null;
   loading: boolean;
   signUp: (email: string, password: string, metadata?: { farm_name?: string; contact_phone?: string; location?: string; account_type?: string }) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
-  bypassLogin: (accountType: 'farmer' | 'organization') => void;
+  bypassLogin: (accountType: 'farmer' | 'organization' | 'admin') => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [role, setRole] = useState<AppRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (userId: string) => {
@@ -47,6 +51,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const fetchRole = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .order('role', { ascending: true });
+    if (!error && data && data.length > 0) {
+      // Prefer admin > moderator > user
+      const roles = data.map((r: any) => r.role as AppRole);
+      if (roles.includes('admin')) setRole('admin');
+      else if (roles.includes('moderator')) setRole('moderator');
+      else setRole('user');
+    } else {
+      setRole('user');
+    }
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -54,9 +75,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          setTimeout(() => fetchProfile(session.user.id), 0);
+          setTimeout(() => {
+            fetchProfile(session.user.id);
+            fetchRole(session.user.id);
+          }, 0);
         } else {
           setProfile(null);
+          setRole(null);
         }
         
         setLoading(false);
@@ -69,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (session?.user) {
         fetchProfile(session.user.id);
+        fetchRole(session.user.id);
       }
       
       setLoading(false);
@@ -77,11 +103,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const bypassLogin = (accountType: 'farmer' | 'organization') => {
-    const mockId = accountType === 'farmer' ? 'bypass-farmer-id' : 'bypass-org-id';
+  const bypassLogin = (accountType: 'farmer' | 'organization' | 'admin') => {
+    const mockId = `bypass-${accountType}-id`;
     const mockUser = {
       id: mockId,
-      email: accountType === 'farmer' ? 'farmer@demo.agriherd.com' : 'org@demo.agriherd.com',
+      email: `${accountType}@demo.agriherd.com`,
       aud: 'authenticated',
       role: 'authenticated',
       app_metadata: {},
@@ -91,18 +117,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const mockProfile: Profile = {
       id: mockId,
-      farm_name: accountType === 'farmer' ? 'Demo Farm' : 'Demo Organization',
+      farm_name: accountType === 'farmer' ? 'Demo Farm' : accountType === 'organization' ? 'Demo Organization' : 'Platform Admin',
       contact_phone: '+254700000000',
       location: 'Nairobi, Kenya',
       farm_type: 'mixed',
       avatar_url: null,
-      account_type: accountType,
+      account_type: accountType === 'admin' ? 'farmer' : accountType,
       trial_start_date: new Date().toISOString(),
       trial_active: true,
     };
 
     setUser(mockUser);
     setProfile(mockProfile);
+    setRole(accountType === 'admin' ? 'admin' : 'user');
     setSession({} as Session);
   };
 
@@ -140,6 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setSession(null);
     setProfile(null);
+    setRole(null);
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {
@@ -165,7 +193,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={{
-      user, session, profile, loading,
+      user, session, profile, role, loading,
       signUp, signIn, signInWithGoogle, signOut, updateProfile, bypassLogin,
     }}>
       {children}

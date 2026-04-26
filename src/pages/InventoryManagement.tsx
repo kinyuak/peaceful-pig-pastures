@@ -74,7 +74,8 @@ export default function InventoryManagement() {
   const barData = data.map((item) => ({ name: item.name, usage: item.usage }));
 
   const renderTable = (items: InventoryItem[]) => (
-    <Table>
+    <div className="overflow-x-auto">
+    <Table className="min-w-[600px]">
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead><TableHead>Batch</TableHead><TableHead>Qty</TableHead>
@@ -92,12 +93,13 @@ export default function InventoryManagement() {
         ))}
       </TableBody>
     </Table>
+    </div>
   );
 
   const renderAddDialog = () => (
     <Dialog open={addOpen} onOpenChange={setAddOpen}>
       <DialogTrigger asChild><Button>Add New Item</Button></DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader><DialogTitle>Add New Inventory Item</DialogTitle></DialogHeader>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2" onSubmit={e => { e.preventDefault(); handleSave(); }}>
           <Input placeholder="Name" name="name" value={form.name} onChange={handleFieldChange} required />

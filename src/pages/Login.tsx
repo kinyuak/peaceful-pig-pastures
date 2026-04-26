@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Mail, Lock, Users, Building2 } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Users, Building2, Shield } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 export default function Login() {
@@ -41,7 +41,7 @@ export default function Login() {
     }
   };
 
-  const handleBypass = (accountType: 'farmer' | 'organization') => {
+  const handleBypass = (accountType: 'farmer' | 'organization' | 'admin') => {
     bypassLogin(accountType);
     toast({ title: `Bypassed as ${accountType}`, description: 'You are now in demo mode.' });
     navigate('/dashboard', { replace: true });
@@ -104,14 +104,18 @@ export default function Login() {
             <div className="relative flex justify-center text-sm"><span className="bg-card px-2 text-muted-foreground">Demo Access</span></div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Button type="button" variant="outline" className="h-auto py-3 flex flex-col gap-1 border-primary/30 hover:bg-primary/5" onClick={() => handleBypass('farmer')}>
               <Users className="h-5 w-5 text-primary" />
               <span className="text-xs font-medium">Bypass as Farmer</span>
             </Button>
             <Button type="button" variant="outline" className="h-auto py-3 flex flex-col gap-1 border-primary/30 hover:bg-primary/5" onClick={() => handleBypass('organization')}>
               <Building2 className="h-5 w-5 text-primary" />
-              <span className="text-xs font-medium">Bypass as Organization</span>
+              <span className="text-xs font-medium">Bypass as Org</span>
+            </Button>
+            <Button type="button" variant="outline" className="h-auto py-3 flex flex-col gap-1 border-primary/30 hover:bg-primary/5" onClick={() => handleBypass('admin')}>
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium">Bypass as Admin</span>
             </Button>
           </div>
         </CardContent>

@@ -62,7 +62,7 @@ export default function StaffManagement() {
           </select>
           <Dialog open={openAdd} onOpenChange={setOpenAdd}>
             <DialogTrigger asChild><Button>Add Staff</Button></DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader><DialogTitle>Add Staff Member</DialogTitle></DialogHeader>
               <form className="space-y-3 mt-3" onSubmit={handleAddStaff}>
                 <div className="flex gap-2">
