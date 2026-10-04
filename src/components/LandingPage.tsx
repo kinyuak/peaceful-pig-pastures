@@ -100,7 +100,7 @@ export default function LandingPage() {
               🌱 Built for Modern Agriculture
             </Badge>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
-              Manage Farms, Farmers, and Agribusiness Operations —{' '}
+              Manage Farms, Farmers, and Agribusiness Operations, 
               <span className="text-primary">All in One Platform</span>
             </h1>
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -130,7 +130,7 @@ export default function LandingPage() {
               <div className="p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
                   { label: 'Total Animals', value: '248', color: 'text-primary' },
-                  { label: 'Revenue', value: 'KES 1.2M', color: 'text-success' },
+                  { label: 'Total Farms', value: '\n', color: 'text-success' },
                   { label: 'Active Tasks', value: '12', color: 'text-accent' },
                   { label: 'Staff Online', value: '8', color: 'text-secondary' },
                 ].map((stat) => (
