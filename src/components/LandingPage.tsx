@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -20,9 +21,21 @@ import {
   Mail,
   Phone,
   ShoppingCart,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import logo from '@/assets/logo.png';
+
+// Product images
+import cabbageImage from '@/assets/products/cabbage.jpg';
+import onionsImage from '@/assets/products/onions.jpg';
+import pigImage from '@/assets/products/pig.jpg';
+import greenGramsImage from '@/assets/products/green-grams.jpg';
+import sweetPotatoesImage from '@/assets/products/sweet-potatoes.jpg';
+import maizeImage from '@/assets/products/maize.jpg';
+import chickensImage from '@/assets/products/chickens.jpg';
+import irishPotatoesImage from '@/assets/products/irish-potatoes.jpg';
 
 const whoItsFor = [
   { icon: Sprout, title: 'Farmers', desc: 'Individual and smallholder farmers looking to digitize their operations.' },
@@ -52,6 +65,17 @@ const steps = [
   { icon: UserPlus, step: '01', title: 'Create Account', desc: 'Sign up in seconds with email or Google.' },
   { icon: ClipboardList, step: '02', title: 'Onboard Your Farm', desc: 'Add your farm details, animals, and crops.' },
   { icon: Rocket, step: '03', title: 'Start Managing & Growing', desc: 'Use the dashboard to run your operations.' },
+];
+
+const featuredProducts = [
+  { id: '1', name: 'Fresh Cabbages', description: 'Organic farm-fresh cabbages.', price: 65, currency: 'KSH', category: 'vegetables', imageUrl: cabbageImage, unit: 'kg' },
+  { id: '2', name: 'Red Onions', description: 'Premium red onions with rich flavor.', price: 100, currency: 'KSH', category: 'vegetables', imageUrl: onionsImage, unit: 'kg' },
+  { id: '3', name: 'Farm Pigs', description: 'Healthy, well-bred pigs.', price: 15500, currency: 'KSH', category: 'livestock', imageUrl: pigImage, unit: 'pig' },
+  { id: '4', name: 'Green Grams', description: 'High-quality green grams.', price: 220, currency: 'KSH', category: 'grains', imageUrl: greenGramsImage, unit: 'kg' },
+  { id: '5', name: 'Sweet Potatoes', description: 'Fresh orange sweet potatoes.', price: 60, currency: 'KSH', category: 'vegetables', imageUrl: sweetPotatoesImage, unit: 'kg' },
+  { id: '6', name: 'Maize (Corn)', description: 'Premium quality maize.', price: 48, currency: 'KSH', category: 'grains', imageUrl: maizeImage, unit: 'kg' },
+  { id: '7', name: 'Free-Range Chickens', description: 'Healthy free-range chickens.', price: 900, currency: 'KSH', category: 'livestock', imageUrl: chickensImage, unit: 'chicken' },
+  { id: '8', name: 'Irish Potatoes', description: 'Fresh Irish potatoes.', price: 75, currency: 'KSH', category: 'vegetables', imageUrl: irishPotatoesImage, unit: 'kg' },
 ];
 
 const pricing = [
@@ -87,6 +111,82 @@ const pricing = [
   },
 ];
 
+function MarketplaceCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? featuredProducts.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === featuredProducts.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const currentProduct = featuredProducts[currentIndex];
+
+  return (
+    <div className="relative">
+      <Card className="hover:shadow-lg transition-all overflow-hidden">
+        <CardContent className="p-0">
+          {/* Product Image */}
+          <div className="relative h-48 bg-muted/20 overflow-hidden">
+            <img
+              src={currentProduct.imageUrl}
+              alt={currentProduct.name}
+              className="w-full h-full object-cover"
+            />
+            <Badge className="absolute top-4 right-4 capitalize">
+              {currentProduct.category}
+            </Badge>
+          </div>
+
+          {/* Product Info */}
+          <div className="p-4">
+            <h4 className="font-semibold text-foreground text-lg">{currentProduct.name}</h4>
+            <p className="text-sm text-muted-foreground mt-1">{currentProduct.description}</p>
+            <p className="text-2xl font-bold text-primary mt-3">
+              {currentProduct.currency} {currentProduct.price.toLocaleString()}/{currentProduct.unit}
+            </p>
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 mt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goToPrevious}
+                className="flex-1"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goToNext}
+                className="flex-1"
+              >
+                Next
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
+
+            {/* Product Counter */}
+            <div className="text-center mt-2 text-xs text-muted-foreground">
+              {currentIndex + 1} of {featuredProducts.length}
+            </div>
+
+            <Button className="w-full mt-3">View Details</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const scrollRef = useScrollAnimation();
 
@@ -101,7 +201,7 @@ export default function LandingPage() {
               🌱 Built for Modern Agriculture
             </Badge>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
-              Manage Farms, Farmers, and Agribusiness Operations, 
+              Manage Farms, Farmers, and Agribusiness Operations, 
               <span className="text-primary">All in One Platform</span>
             </h1>
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -244,6 +344,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 items-center">
+            {/* Left: Key Benefits */}
             <div className="space-y-6">
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
@@ -274,20 +375,10 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <Card className="hover:shadow-lg transition-all">
-                <CardContent className="p-4">
-                  <div className="h-32 bg-muted/30 rounded-lg mb-3 flex items-center justify-center">
-                    <span className="text-muted-foreground">Farm Pigs</span>
-                  </div>
-                  <h4 className="font-semibold text-foreground">Farm Pigs</h4>
-                  <p className="text-sm text-muted-foreground mt-1">Healthy, well-bred pigs</p>
-                  <p className="text-lg font-bold text-primary mt-2">KSH 15,500</p>
-                  <Button className="w-full mt-3" size="sm">View Details</Button>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Center: Product Carousel */}
+            <MarketplaceCarousel />
 
+            {/* Right: Stats & CTA */}
             <div className="space-y-6">
               <div className="bg-card rounded-lg p-6 border">
                 <p className="text-sm text-muted-foreground mb-2">Active Products</p>
@@ -311,7 +402,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="scroll-fade-in py-20 md:py-28 bg-muted/30">
+      <section className="scroll-fade-in py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">How It Works</h2>
@@ -333,7 +424,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section className="scroll-fade-in py-20 md:py-28" id="pricing">
+      <section className="scroll-fade-in py-20 md:py-28 bg-muted/30" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">Simple, Transparent Pricing</h2>
