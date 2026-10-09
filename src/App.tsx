@@ -62,6 +62,9 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
+            {/* Public marketplace - accessible to everyone */}
+            <Route path="/store" element={<Store />} />
+
             <Route path="/dashboard" element={<ProtectedDashboard><Dashboard /></ProtectedDashboard>} />
             <Route path="/animals" element={<ProtectedDashboard><AnimalsOverview /></ProtectedDashboard>} />
             <Route path="/animals/pigs" element={<ProtectedDashboard><div><h2 className="text-2xl font-bold text-foreground mb-6">Pig Management</h2><PigManagement /></div></ProtectedDashboard>} />
@@ -75,7 +78,6 @@ const App = () => (
             <Route path="/inventory" element={<ProtectedDashboard><InventoryManagement /></ProtectedDashboard>} />
             <Route path="/staff" element={<ProtectedDashboard><StaffManagement /></ProtectedDashboard>} />
             <Route path="/sales" element={<ProtectedDashboard><SalesManagement /></ProtectedDashboard>} />
-            <Route path="/store" element={<ProtectedDashboard><Store /></ProtectedDashboard>} />
             <Route path="/labour" element={<ProtectedDashboard><LabourServices /></ProtectedDashboard>} />
             <Route path="/ai-assistant" element={<ProtectedDashboard><AIAssistant /></ProtectedDashboard>} />
             <Route path="/settings" element={<ProtectedDashboard><SettingsPage /></ProtectedDashboard>} />
