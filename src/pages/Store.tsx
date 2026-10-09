@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ShoppingCart, Search, Trash2, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Search, Trash2, Minus, Plus, Upload, LogIn } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 import cabbageImage from '@/assets/products/cabbage.jpg';
 import onionsImage from '@/assets/products/onions.jpg';
@@ -39,6 +41,7 @@ const Store = () => {
   const [cart, setCart] = useState<{[key: string]: number}>({});
   const [cartOpen, setCartOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -49,7 +52,7 @@ const Store = () => {
   const addToCart = (productId: string) => {
     setCart(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
     const product = products.find(p => p.id === productId);
-    toast({ title: "Added to cart", description: `${product?.name} added.` });
+    toast({ title: 'Added to cart', description: `${product?.name} added.` });
   };
 
   const updateCartQty = (productId: string, delta: number) => {
@@ -83,106 +86,142 @@ const Store = () => {
   })).filter(item => item.product);
 
   const handleCheckout = () => {
+    if (!user) {
+      toast({ title: 'Sign In Required', description: 'Please sign in to complete your order.' });
+      return;
+    }
+
     toast({ title: 'Checkout', description: `Order of KSH ${getCartTotal().toLocaleString()} submitted. M-Pesa integration coming soon!` });
     setCart({});
     setCartOpen(false);
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Marketplace</h2>
-        <Button variant="outline" size="sm" onClick={() => setCartOpen(true)}>
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Cart ({getCartItemCount()})
-          {getCartItemCount() > 0 && <Badge className="ml-2">{getCartTotal().toLocaleString()} KSH</Badge>}
-        </Button>
-      </div>
-
-      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader><DialogTitle>Shopping Cart</DialogTitle></DialogHeader>
-          {cartItems.length === 0 ? (
-            <p className="text-center py-8 text-muted-foreground">Your cart is empty.</p>
-          ) : (
-            <div className="space-y-3 max-h-[400px] overflow-y-auto">
-              {cartItems.map(({ product, quantity }) => (
-                <div key={product.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                  <img src={product.imageUrl} alt={product.name} className="w-12 h-12 rounded object-cover" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{product.name}</p>
-                    <p className="text-xs text-muted-foreground">{product.currency} {product.price}/{product.unit}</p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, -1)}><Minus className="h-3 w-3" /></Button>
-                    <span className="text-sm w-6 text-center">{quantity}</span>
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, 1)}><Plus className="h-3 w-3" /></Button>
-                  </div>
-                  <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => removeFromCart(product.id)}><Trash2 className="h-3 w-3" /></Button>
-                </div>
-              ))}
+    <div className="min-h-screen bg-background">
+      <div className="bg-card border-b sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Marketplace</h1>
+              <p className="text-sm text-muted-foreground mt-1">Browse and buy farm products from local producers</p>
             </div>
-          )}
-          {cartItems.length > 0 && (
-            <div className="border-t pt-4 space-y-3">
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>KSH {getCartTotal().toLocaleString()}</span>
-              </div>
-              <Button className="w-full" onClick={handleCheckout}>Checkout with M-Pesa</Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
-      <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
-        </div>
-        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger className="w-48"><SelectValue placeholder="Filter" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="vegetables">Vegetables</SelectItem>
-            <SelectItem value="grains">Grains</SelectItem>
-            <SelectItem value="livestock">Livestock</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+            <div className="flex items-center gap-3">
+              {user && (
+                <Button variant="outline" className="flex items-center gap-2" asChild>
+                  <Link to="/dashboard">
+                    <Upload className="h-4 w-4" />
+                    Sell Products
+                  </Link>
+                </Button>
+              )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
-          <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div className="h-48 bg-muted/20 overflow-hidden">
-              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">{product.name}</CardTitle>
-                <Badge variant="secondary" className="capitalize">{product.category}</Badge>
-              </div>
-              <CardDescription className="text-sm">{product.description}</CardDescription>
-              <div className="flex items-center justify-between mt-4">
-                <div className="text-2xl font-bold text-primary">{product.currency} {product.price.toLocaleString()}/{product.unit}</div>
-                {product.inStock ? <Badge className="bg-success/10 text-success">In Stock</Badge> : <Badge variant="destructive">Out of Stock</Badge>}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" onClick={() => addToCart(product.id)} disabled={!product.inStock}>
-                {cart[product.id] ? `In Cart (${cart[product.id]})` : 'Add to Cart'}
+              <Button variant="outline" size="sm" onClick={() => setCartOpen(true)}>
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Cart ({getCartItemCount()})
+                {getCartItemCount() > 0 && <Badge className="ml-2">{getCartTotal().toLocaleString()} KSH</Badge>}
               </Button>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <h3 className="text-2xl font-semibold text-muted-foreground mb-2">No products found</h3>
-          <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Dialog open={cartOpen} onOpenChange={setCartOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader><DialogTitle>Shopping Cart</DialogTitle></DialogHeader>
+            {cartItems.length === 0 ? (
+              <p className="text-center py-8 text-muted-foreground">Your cart is empty.</p>
+            ) : (
+              <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                {cartItems.map(({ product, quantity }) => (
+                  <div key={product.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                    <img src={product.imageUrl} alt={product.name} className="w-12 h-12 rounded object-cover" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{product.name}</p>
+                      <p className="text-xs text-muted-foreground">{product.currency} {product.price}/{product.unit}</p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, -1)}><Minus className="h-3 w-3" /></Button>
+                      <span className="text-sm w-6 text-center">{quantity}</span>
+                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => updateCartQty(product.id, 1)}><Plus className="h-3 w-3" /></Button>
+                    </div>
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => removeFromCart(product.id)}><Trash2 className="h-3 w-3" /></Button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {cartItems.length > 0 && (
+              <div className="border-t pt-4 space-y-3">
+                <div className="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>KSH {getCartTotal().toLocaleString()}</span>
+                </div>
+
+                {!user ? (
+                  <Button className="w-full" variant="outline" asChild>
+                    <Link to="/login" className="flex items-center justify-center gap-2">
+                      <LogIn className="h-4 w-4" />
+                      Sign In to Checkout
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button className="w-full" onClick={handleCheckout}>Checkout with M-Pesa</Button>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <div className="mb-8 flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
+          </div>
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-full sm:w-48"><SelectValue placeholder="Filter by category" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="vegetables">Vegetables</SelectItem>
+              <SelectItem value="grains">Grains</SelectItem>
+              <SelectItem value="livestock">Livestock</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-      )}
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+              <div className="h-48 bg-muted/20 overflow-hidden">
+                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">{product.name}</CardTitle>
+                  <Badge variant="secondary" className="capitalize">{product.category}</Badge>
+                </div>
+                <CardDescription className="text-sm">{product.description}</CardDescription>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="text-2xl font-bold text-primary">{product.currency} {product.price.toLocaleString()}/{product.unit}</div>
+                  {product.inStock ? <Badge className="bg-success/10 text-success">In Stock</Badge> : <Badge variant="destructive">Out of Stock</Badge>}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full" onClick={() => addToCart(product.id)} disabled={!product.inStock}>
+                  {cart[product.id] ? `In Cart (${cart[product.id]})` : 'Add to Cart'}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <h3 className="text-2xl font-semibold text-muted-foreground mb-2">No products found</h3>
+            <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
