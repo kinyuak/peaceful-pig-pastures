@@ -19,6 +19,7 @@ import {
   ArrowRight,
   Mail,
   Phone,
+  ShoppingCart,
 } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import logo from '@/assets/logo.png';
@@ -225,6 +226,86 @@ export default function LandingPage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Marketplace Section */}
+      <section className="scroll-fade-in py-20 md:py-28 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4">Featured</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              Access Markets Directly
+            </h2>
+            <p className="mt-4 text-muted-foreground text-lg">
+              Buy and sell farm products through our integrated marketplace.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 items-center">
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                  <ShoppingCart className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Direct Market Access</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Connect directly with buyers and expand your reach.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                  <TrendingDown className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Better Prices</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Reduce intermediaries and maximize your profits.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Landmark className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Secure Transactions</h3>
+                  <p className="text-sm text-muted-foreground mt-1">M-Pesa integration for safe and quick payments.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <Card className="hover:shadow-lg transition-all">
+                <CardContent className="p-4">
+                  <div className="h-32 bg-muted/30 rounded-lg mb-3 flex items-center justify-center">
+                    <span className="text-muted-foreground">Farm Pigs</span>
+                  </div>
+                  <h4 className="font-semibold text-foreground">Farm Pigs</h4>
+                  <p className="text-sm text-muted-foreground mt-1">Healthy, well-bred pigs</p>
+                  <p className="text-lg font-bold text-primary mt-2">KSH 15,500</p>
+                  <Button className="w-full mt-3" size="sm">View Details</Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-card rounded-lg p-6 border">
+                <p className="text-sm text-muted-foreground mb-2">Active Products</p>
+                <p className="text-4xl font-bold text-primary mb-2">8+</p>
+                <p className="text-sm text-muted-foreground">Vegetables, grains & livestock</p>
+              </div>
+              <div className="bg-card rounded-lg p-6 border">
+                <p className="text-sm text-muted-foreground mb-2">Categories</p>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {['Vegetables', 'Grains', 'Livestock'].map((cat) => (
+                    <Badge key={cat} variant="secondary">{cat}</Badge>
+                  ))}
+                </div>
+              </div>
+              <Button size="lg" className="w-full" asChild>
+                <Link to="/store">Explore Marketplace</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
